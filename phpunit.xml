@@ -1,7 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<!-- http://www.phpunit.de/manual/current/en/appendixes.configuration.html -->
-<!-- bootstrap                   = "bootstrap.php.cache" -->
 <phpunit
     backupGlobals               = "false"
     backupStaticAttributes      = "false"
@@ -11,8 +8,8 @@
     convertWarningsToExceptions = "true"
     processIsolation            = "false"
     stopOnFailure               = "false"
-    syntaxCheck                 = "false">
-<!--    bootstrap                   = "bootstrap.php.cache"-->
+    syntaxCheck                 = "false"
+    bootstrap                   = "vendor/autoload.php">
 
     <testsuites>
         <testsuite name="unit">
@@ -20,23 +17,9 @@
         </testsuite>
     </testsuites>
 
-    <!--
-    <listeners>
-        <listener class="Fazland\WebsiteBundle\Tests\BootstrapListener" file="../src/Fazland/WebsiteBundle/Tests/BootstrapListener.php" />
-    </listeners>
--->
-    <!--<filter>
+    <filter>
         <whitelist>
-            <directory>../src</directory>
-            <exclude>
-                <directory>../src/*/*Bundle/Resources</directory>
-                <directory>../src/*/*Bundle/Tests</directory>
-                <directory>../src/*/Bundle/*Bundle/Resources</directory>
-                <directory>../src/*/Bundle/*Bundle/Tests</directory>
-                <directory>../src/*/*Bundle/DataFixtures</directory>
-                <directory>../src/*/*Bundle/Features</directory>
-                <directory>../src/*/*Bundle/DependencyInjection</directory>
-            </exclude>
+            <directory>./lib</directory>
         </whitelist>
-    </filter> -->
+    </filter>
 </phpunit>
