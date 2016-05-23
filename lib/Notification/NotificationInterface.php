@@ -8,13 +8,6 @@ namespace Fazland\Notifire\Notification;
 interface NotificationInterface
 {
     /**
-     * Returns the name of the notification.
-     * 
-     * @return string
-     */
-    public function getName();
-
-    /**
      * Implementors MUST dispatch an {@see NotifyEvent}.
      */
     public function send();
