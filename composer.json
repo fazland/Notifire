@@ -6,6 +6,16 @@
     "require-dev": {
         "phpunit/phpunit": "*"
     },
+    "autoload": {
+        "psr-4": {
+            "Fazland\\Notifire\\": "lib/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Fazland\\Notifire\\Tests\\": "tests/"
+        }
+    },
     "config": {
         "bin-dir": "bin/"
     },
