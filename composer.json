@@ -1,0 +1,11 @@
+{
+    "name": "fazland/notifire",
+    "require": {
+        "symfony/event-dispatcher": "^2.7|^3.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "*"
+    },
+    "license": "MIT",
+    "minimum-stability": "stable"
+}
