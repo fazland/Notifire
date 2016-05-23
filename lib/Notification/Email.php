@@ -46,6 +46,17 @@ class Email implements NotificationInterface
      */
     private $parts;
 
+    public function __construct()
+    {
+        $this->to = [];
+        $this->cc = [];
+        $this->bcc = [];
+        $this->from = [];
+        $this->subject = '';
+        $this->attachments = [];
+        $this->parts = [];
+    }
+
     /**
      * @return Attachment[]
      */

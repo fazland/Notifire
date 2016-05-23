@@ -17,6 +17,15 @@ class Part
      */
     private $contentType;
 
+    public static function create($content = null, $contentType = null)
+    {
+        $instance = new static();
+
+        $instance->content = $content;
+        $instance->contentType = $contentType;
+        return $instance;
+    }
+
     /**
      * @return string
      */

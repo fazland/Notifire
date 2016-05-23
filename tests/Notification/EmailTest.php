@@ -11,9 +11,9 @@ class EmailTest extends \PHPUnit_Framework_TestCase
 {
     public function test_mandatory_fields()
     {
-
-        $email = new Email([]);
-        $email->setTo(null);
+//
+//        $email = new Email([]);
+//        $email->setTo(null);
 
 
     }

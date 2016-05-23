@@ -90,10 +90,14 @@ class Notifire
      */
     public static function __callStatic($name, $arguments)
     {
-        if (isset ($arguments[0]) && ! is_array($arguments[0])) {
-            throw new \InvalidArgumentException();
+        if (! isset ($arguments[0])) {
+            $arguments[0] = [];
         }
 
-        return static::factory($name, $arguments[0] ?: []);
+        if (! is_array($arguments[0])) {
+            throw new \InvalidArgumentException('Argument 1 should be an array or null');
+        }
+
+        return static::factory($name, $arguments[0]);
     }
 }

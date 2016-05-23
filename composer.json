@@ -1,11 +1,13 @@
 {
     "name": "fazland/notifire",
     "require": {
+        "php": ">=5.5.0",
         "symfony/event-dispatcher": "^2.7|^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",
-        "swiftmailer/swiftmailer": "^5.4"
+        "swiftmailer/swiftmailer": "^5.4",
+        "mikey179/vfsStream": "^1.6"
     },
     "autoload": {
         "psr-4": {
