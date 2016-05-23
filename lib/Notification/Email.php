@@ -2,28 +2,32 @@
 
 namespace Fazland\Notifire\Notification;
 
+use Fazland\Notifire\Notification\Email\Attachment;
+use Fazland\Notifire\Notification\Email\Part;
+use Fazland\Notifire\Notification\NotificationInterface;
+
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
-class Email
+class Email implements NotificationInterface
 {
     /**
-     * @var array
+     * @var string[]
      */
-    private $attachments;
+    private $to;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $content;
+    private $cc;
 
     /**
-     * @var string
+     * @var string[]
      */
-    private $contentType;
+    private $bcc;
 
     /**
-     * @var string
+     * @var string[]
      */
     private $from;
 
@@ -33,12 +37,17 @@ class Email
     private $subject;
 
     /**
-     * @var string
+     * @var Attachment[]
      */
-    private $to;
+    private $attachments;
 
     /**
-     * @return array
+     * @var Part[]
+     */
+    private $parts;
+
+    /**
+     * @return Attachment[]
      */
     public function getAttachments()
     {
@@ -46,11 +55,11 @@ class Email
     }
 
     /**
-     * @param array $attachments
+     * @param Attachment[] $attachments
      *
      * @return $this
      */
-    public function setAttachments($attachments)
+    public function setAttachments(array $attachments)
     {
         $this->attachments = $attachments;
 
@@ -58,46 +67,83 @@ class Email
     }
 
     /**
-     * @return string
-     */
-    public function getContent()
-    {
-        return $this->content;
-    }
-
-    /**
-     * @param string $content
+     * @param Attachment $attachment
      *
      * @return $this
      */
-    public function setContent($content)
+    public function addAttachment(Attachment $attachment)
     {
-        $this->content = $content;
+        $this->attachments[] = $attachment;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @return string[]
      */
-    public function getContentType()
+    public function getBcc()
     {
-        return $this->contentType;
+        return $this->bcc;
     }
 
     /**
-     * @param string $contentType
-     * @return email
+     * @param string[] $bcc
+     *
+     * @return $this
      */
-    public function setContentType($contentType)
+    public function setBcc(array $bcc)
     {
-        $this->contentType = $contentType;
+        $this->bcc = $bcc;
 
         return $this;
     }
 
     /**
-     * @return string
+     * @param string $bcc
+     *
+     * @return $this
+     */
+    public function addBcc($bcc)
+    {
+        $this->bcc[] = $bcc;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getCc()
+    {
+        return $this->cc;
+    }
+
+    /**
+     * @param string[] $cc
+     *
+     * @return Email
+     */
+    public function setCc(array $cc)
+    {
+        $this->cc = $cc;
+
+        return $this;
+    }
+
+    /**
+     * @param string $cc
+     *
+     * @return $this
+     */
+    public function addCc($cc)
+    {
+        $this->cc[] = $cc;
+
+        return $this;
+    }
+
+    /**
+     * @return string[]
      */
     public function getFrom()
     {
@@ -105,13 +151,57 @@ class Email
     }
 
     /**
+     * @param string[] $from
+     *
+     * @return $this
+     */
+    public function setFrom(array $from)
+    {
+        $this->from = $from;
+
+        return $this;
+    }
+
+    /**
      * @param string $from
      *
      * @return $this
      */
-    public function setFrom($from)
+    public function addFrom($from)
     {
-        $this->from = $from;
+        $this->from[] = $from;
+
+        return $this;
+    }
+
+    /**
+     * @return Part[]
+     */
+    public function getParts()
+    {
+        return $this->parts;
+    }
+
+    /**
+     * @param Part[] $parts
+     *
+     * @return $this
+     */
+    public function setParts(array $parts)
+    {
+        $this->parts = $parts;
+
+        return $this;
+    }
+
+    /**
+     * @param Part $part
+     *
+     * @return $this
+     */
+    public function addPart(Part $part)
+    {
+        $this->parts[] = $part;
 
         return $this;
     }
@@ -137,7 +227,7 @@ class Email
     }
 
     /**
-     * @return string
+     * @return string[]
      */
     public function getTo()
     {
@@ -145,14 +235,35 @@ class Email
     }
 
     /**
-     * @param string $to
+     * @param string[] $to
      *
      * @return $this
      */
-    public function setTo($to)
+    public function setTo(array $to)
     {
         $this->to = $to;
 
         return $this;
     }
+
+    /**
+     * @param string $to
+     *
+     * @return $this
+     */
+    public function addTo($to)
+    {
+        $this->to[] = $to;
+
+        return $this;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function send()
+    {
+        // TODO: Implement send() method.
+    }
+
 }
