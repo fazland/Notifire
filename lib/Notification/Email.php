@@ -1,6 +1,6 @@
 <?php
 
-namespace Fazland\Notification;
+namespace Fazland\Notifire\Notification;
 
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
