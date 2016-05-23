@@ -6,6 +6,9 @@
     "require-dev": {
         "phpunit/phpunit": "*"
     },
+    "config": {
+        "bin-dir": "bin/"
+    },
     "license": "MIT",
     "minimum-stability": "stable"
 }
