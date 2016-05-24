@@ -14,6 +14,11 @@ class Email implements NotificationInterface
     use NotificationTrait;
 
     /**
+     * @var array[string]string
+     */
+    private $additionalHeaders;
+
+    /**
      * @var string[]
      */
     private $to;
@@ -67,6 +72,7 @@ class Email implements NotificationInterface
         $this->subject = '';
         $this->attachments = [];
         $this->parts = [];
+        $this->additionalHeaders = [];
 
         $this->configureOptions($options);
     }
@@ -295,6 +301,57 @@ class Email implements NotificationInterface
 
         return $this;
     }
+
+    /**
+     * @return array[string]string
+     */
+    public function getAdditionalHeaders()
+    {
+        return $this->additionalHeaders;
+    }
+
+    /**
+     * @param array[string]string $additionalHeaders
+     *
+     * @return $this
+     */
+    public function setAdditionalHeaders($additionalHeaders)
+    {
+        $this->additionalHeaders = $additionalHeaders;
+
+        return $this;
+    }
+
+    /**
+     * @param array $additionalHeader
+     *
+     * @return $this
+     */
+    public function addAdditionalHeaders($additionalHeader)
+    {
+        if (sizeof($additionalHeader) === 2) {
+            $this->additionalHeaders[] = $additionalHeader;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function removeAdditionalHeaders($key) {
+
+        if (isset($this->additionalHeaders[$key])) {
+            unset($this->additionalHeaders[$key]);
+        }
+
+        return $this;
+
+    }
+
+
 
     /**
      * @param array $options

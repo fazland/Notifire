@@ -81,6 +81,7 @@ class EmailNotificator extends NotifyEventSubscriber
         foreach ($notification->getFrom() as $from) {
             $email->addFrom($from);
         }
+
     }
 
     /**
@@ -115,6 +116,20 @@ class EmailNotificator extends NotifyEventSubscriber
     {
         foreach ($notification->getAttachments() as $attachment) {
             $email->attach(\Swift_Attachment::newInstance($attachment->getContent(), $attachment->getName(), $attachment->getContentType()));
+        }
+    }
+
+    protected function addHeaders(Email $notification, \Swift_Message $email)
+    {
+        $headers = $email->getHeaders();
+        foreach ($notification->getAdditionalHeaders() as $key => $value) {
+
+            if ($value instanceof \DateTime) {
+                $headers->addDateHeader($key, $value);
+            } else {
+                $headers->addTextHeader($key, $value);
+            }
+
         }
     }
 }
