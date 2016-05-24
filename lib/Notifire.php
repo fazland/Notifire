@@ -4,6 +4,7 @@ namespace Fazland\Notifire;
 
 use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
 use Fazland\Notifire\Exception\UnregisteredNotificationException;
+use Fazland\Notifire\Exception\UnsupportedClassException;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -52,6 +53,7 @@ class Notifire
      * @param string $notificationClass
      *
      * @throws NotificationAlreadyRegisteredException
+     * @throws UnsupportedClassException
      */
     public static function addNotification($notificationName, $notificationClass)
     {
@@ -59,6 +61,13 @@ class Notifire
             throw new NotificationAlreadyRegisteredException();
         }
 
+        $notificationInterfaceName = NotificationInterface::class;
+        if (! is_subclass_of($notificationClass, $notificationInterfaceName)) {
+            $message = "Expected instance of $notificationInterfaceName, got $notificationClass";
+
+            throw new UnsupportedClassException($message);
+        }
+        
         static::$notifications[$notificationName] = $notificationClass;
     }
 
@@ -94,7 +103,7 @@ class Notifire
      */
     public static function __callStatic($name, $arguments)
     {
-        if (! isset ($arguments[0])) {
+        if (! isset($arguments[0])) {
             $arguments[0] = [];
         }
 

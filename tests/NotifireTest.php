@@ -25,10 +25,18 @@ class NotifireTest extends \PHPUnit_Framework_TestCase
     /**
      * @expectedException \Fazland\Notifire\Exception\NotificationAlreadyRegisteredException
      */
-    public function testNotificationAlreadyRegisteredShouldBeThrownIfAlreadyRegistered()
+    public function testNotificationAlreadyRegisteredExceptionShouldBeThrownIfAlreadyRegistered()
     {
         Notifire::addNotification('email', Email::class);
         Notifire::addNotification('email', Email::class);
+    }
+
+    /**
+     * @expectedException \Fazland\Notifire\Exception\UnsupportedClassException
+     */
+    public function testUnsupportedClassExceptionShouldBeThrownIfClassIsNotSupported()
+    {
+        Notifire::addNotification('unsupported', \stdClass::class);
     }
 
     /**
