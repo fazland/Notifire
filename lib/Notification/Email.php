@@ -49,6 +49,11 @@ class Email implements NotificationInterface
     private $parts;
 
     /**
+     * @var array
+     */
+    private $config;
+
+    /**
      * Email constructor.
      *
      * @param array $options
@@ -63,10 +68,20 @@ class Email implements NotificationInterface
         $this->attachments = [];
         $this->parts = [];
 
-        $resolver = new OptionsResolver();
+        $this->configureOptions($options);
+    }
 
-        $options = $resolver->resolve($options);
+    public static function create(array $options = [])
+    {
+        return new static($options);
+    }
 
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
+        return $this->config;
     }
 
     /**
@@ -281,4 +296,19 @@ class Email implements NotificationInterface
         return $this;
     }
 
+    /**
+     * @param array $options
+     */
+    protected function configureOptions(array $options)
+    {
+        $resolver = new OptionsResolver();
+        $resolver->setDefaults([
+            'provider' => 'swiftmailer',
+            'mailer' => 'default'
+        ]);
+
+        $resolver->setAllowedValues('provider', 'swiftmailer');
+
+        $this->config = $resolver->resolve($options);
+    }
 }

@@ -5,6 +5,7 @@ namespace Fazland\Notifire\Tests\EventSubscriber;
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\EventSubscriber\EmailNotificator;
 use Fazland\Notifire\Notification\Email;
+use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -164,5 +165,23 @@ class EmailNotificatorTest extends \PHPUnit_Framework_TestCase
         }))
             ->willReturn(1);
         $this->notificator->notify(new NotifyEvent($email));
+    }
+
+    public function unsupportedNotificationsDataProvider()
+    {
+        return [
+            [$this->prophesize(NotificationInterface::class)->reveal()],
+            [Email::create(['mailer' => 'no_default'])]
+        ];
+    }
+
+    /**
+     * @dataProvider unsupportedNotificationsDataProvider
+     */
+    public function testShouldNotSendOnUnsupportedNotifications($notification)
+    {
+        $this->mailer->send(Argument::cetera())->shouldNotBeCalled();
+
+        $this->notificator->notify(new NotifyEvent($notification));
     }
 }

@@ -13,9 +13,15 @@ class EmailNotificator extends NotifyEventSubscriber
      */
     private $mailer;
 
-    public function __construct(\Swift_Mailer $mailer)
+    /**
+     * @var string
+     */
+    private $mailerName;
+
+    public function __construct(\Swift_Mailer $mailer, $mailerName = 'default')
     {
         $this->mailer = $mailer;
+        $this->mailerName = $mailerName;
     }
 
     /**
@@ -26,8 +32,9 @@ class EmailNotificator extends NotifyEventSubscriber
         if (! $notification instanceof Email) {
             return false;
         }
-        
-        return true;
+
+        $config = $notification->getConfig();
+        return $config['provider'] === 'swiftmailer' && $config['mailer'] === $this->mailerName;
     }
 
     /**
