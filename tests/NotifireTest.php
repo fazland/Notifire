@@ -4,6 +4,7 @@ namespace Fazland\Notifire\Tests;
 
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notifire;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
@@ -13,6 +14,12 @@ class NotifireTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         Notifire::reset();
+    }
+
+    protected function setUp()
+    {
+        $dispatcher = $this->prophesize(EventDispatcher::class);
+        Notifire::setEventDispatcher($dispatcher->reveal());
     }
 
     /**
@@ -35,7 +42,6 @@ class NotifireTest extends \PHPUnit_Framework_TestCase
     public function testFactoryEmailShouldReturnAnInstanceOfEmail()
     {
         Notifire::addNotification('email', Email::class);
-
         $email = Notifire::email();
 
         $this->assertInstanceOf(Email::class, $email);

@@ -39,6 +39,7 @@ class Notifire
     public static function reset()
     {
         static::$notifications = [];
+        static::$dispatcher = [];
     }
 
     /**
@@ -77,7 +78,10 @@ class Notifire
 
         $class = static::$notifications[$notificationName];
 
-        return new $class($options);
+        $instance = new $class($options);
+        $instance->setEventDispatcher(static::$dispatcher);
+
+        return $instance;
     }
 
     /**

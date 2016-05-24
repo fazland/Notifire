@@ -2,19 +2,25 @@
 
 namespace Fazland\Tests\Notification;
 
+use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Notification\Email;
+use Prophecy\Argument;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class EmailTest extends \PHPUnit_Framework_TestCase
 {
-    public function test_mandatory_fields()
+    public function testSendShouldDispatchEvent()
     {
-//
-//        $email = new Email([]);
-//        $email->setTo(null);
+        $dispatcher = $this->prophesize(EventDispatcher::class);
+        $dispatcher->dispatch(NotifyEvent::NOTIFY, Argument::type(NotifyEvent::class))->shouldBeCalled();
 
+        $email = new Email();
+        $email->setEventDispatcher($dispatcher->reveal());
+
+        $email->send();
 
     }
 }

@@ -2,7 +2,8 @@
     "name": "fazland/notifire",
     "require": {
         "php": ">=5.5.0",
-        "symfony/event-dispatcher": "^2.7|^3.0"
+        "symfony/event-dispatcher": "^2.7|^3.0",
+        "symfony/options-resolver": "^2.7|^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "*",

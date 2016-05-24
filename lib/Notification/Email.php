@@ -4,13 +4,15 @@ namespace Fazland\Notifire\Notification;
 
 use Fazland\Notifire\Notification\Email\Attachment;
 use Fazland\Notifire\Notification\Email\Part;
-use Fazland\Notifire\Notification\NotificationInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Email implements NotificationInterface
 {
+    use NotificationTrait;
+
     /**
      * @var string[]
      */
@@ -46,7 +48,12 @@ class Email implements NotificationInterface
      */
     private $parts;
 
-    public function __construct()
+    /**
+     * Email constructor.
+     *
+     * @param array $options
+     */
+    public function __construct(array $options = [])
     {
         $this->to = [];
         $this->cc = [];
@@ -55,6 +62,11 @@ class Email implements NotificationInterface
         $this->subject = '';
         $this->attachments = [];
         $this->parts = [];
+
+        $resolver = new OptionsResolver();
+
+        $options = $resolver->resolve($options);
+
     }
 
     /**
@@ -267,14 +279,6 @@ class Email implements NotificationInterface
         $this->to[] = $to;
 
         return $this;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function send()
-    {
-        // TODO: Implement send() method.
     }
 
 }
