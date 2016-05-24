@@ -8,7 +8,8 @@
     "require-dev": {
         "phpunit/phpunit": "*",
         "swiftmailer/swiftmailer": "^5.4",
-        "mikey179/vfsStream": "^1.6"
+        "mikey179/vfsStream": "^1.6",
+        "twilio/sdk": "^4.10"
     },
     "autoload": {
         "psr-4": {

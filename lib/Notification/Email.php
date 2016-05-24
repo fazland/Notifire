@@ -14,7 +14,7 @@ class Email implements NotificationInterface
     use NotificationTrait;
 
     /**
-     * @var array[string]string
+     * @var string[]
      */
     private $additionalHeaders;
 
@@ -54,7 +54,7 @@ class Email implements NotificationInterface
     private $parts;
 
     /**
-     * @var array
+     * @var string[]
      */
     private $config;
 
@@ -83,7 +83,7 @@ class Email implements NotificationInterface
     }
 
     /**
-     * @return array
+     * @return string[]
      */
     public function getConfig()
     {
@@ -311,7 +311,7 @@ class Email implements NotificationInterface
     }
 
     /**
-     * @param array[string]string $additionalHeaders
+     * @param string[] $additionalHeaders
      *
      * @return $this
      */
@@ -323,15 +323,14 @@ class Email implements NotificationInterface
     }
 
     /**
-     * @param array $additionalHeader
+     * @param string $key
+     * @param string $value
      *
      * @return $this
      */
-    public function addAdditionalHeaders($additionalHeader)
+    public function addAdditionalHeader($key, $value)
     {
-        if (sizeof($additionalHeader) === 2) {
-            $this->additionalHeaders[] = $additionalHeader;
-        }
+        $this->additionalHeaders[$key] = $value;
 
         return $this;
     }
@@ -341,17 +340,14 @@ class Email implements NotificationInterface
      *
      * @return $this
      */
-    public function removeAdditionalHeaders($key) {
-
+    public function removeAdditionalHeader($key)
+    {
         if (isset($this->additionalHeaders[$key])) {
             unset($this->additionalHeaders[$key]);
         }
 
         return $this;
-
     }
-
-
 
     /**
      * @param array $options
