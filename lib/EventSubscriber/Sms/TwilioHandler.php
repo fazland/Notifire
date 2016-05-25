@@ -21,11 +21,18 @@ class TwilioHandler extends NotifyEventSubscriber
     private $twilio;
 
     /**
-     * @param \Services_Twilio $twilio
+     * @var string
      */
-    public function __construct(\Services_Twilio $twilio)
+    private $accountName;
+
+    /**
+     * @param \Services_Twilio $twilio
+     * @param string $name
+     */
+    public function __construct(\Services_Twilio $twilio, $name = 'default')
     {
         $this->twilio = $twilio;
+        $this->accountName = $name;
     }
 
     /**
@@ -68,6 +75,7 @@ class TwilioHandler extends NotifyEventSubscriber
         }
 
         $config = $notification->getConfig();
-        return $config['provider'] === 'twilio';
+        return $config['provider'] === 'twilio' && $config['account_name'] === $this->accountName;
     }
+
 }
