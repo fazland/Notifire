@@ -34,10 +34,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
     public function withoutTo()
     {
         $s1 = new Sms;
-        $s1->setTo([])
-            ->configureOptions([
-                'provider' => 'twilio'
-            ]);
+        $s1->setTo([]);
 
         $s2 = clone $s1;
         $s2->setFrom('+393333333333');
@@ -58,9 +55,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $sms->setTo(['+393333333333'])
             ->setFrom('+393333333333')
             ->setContent('Foo Bar')
-            ->configureOptions([
-                'provider' => 'twilio'
-            ]);
+        ;
 
         return [
             [$sms]
@@ -75,37 +70,27 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
     {
         $event = new NotifyEvent($sms);
         $this->notificator->notify($event);
-
-        $this->assertFalse($event->isNotified());
     }
-/*
+
     public function testShouldCallSendMessage()
     {
         $sms = new Sms;
         $sms->setTo(['+393333333333'])
             ->setFrom('+393333333333')
             ->setContent('Foo Bar')
-            ->configureOptions([
-                'provider' => 'twilio'
-            ]);
+            ;
 
         $twilio = $this->twilio->reveal();
-        $twilio->accounts = $this->prophesize(\Services_Twilio_Rest_Accounts::class);
+        $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
+        $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
 
-        $arg = Argument::type('string');
-        $twilio->accounts->get($arg)->willReturn(new \Services_Twilio_Rest_Account($twilio, Argument::any()));
+        $twilio->account = $account->reveal();
+        $twilio->account->messages = $messages->reveal();
 
-        $twilio->account = $twilio->accounts->get($arg);
-        $twilio->account->messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
-
-        $twilio->account->messages->sendMessage(
-            $sms->getFrom(),
-            $sms->getTo(),
-            $sms->getContent()
-        )->shouldBeCalled();
+        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
 
         $this->notificator->notify(new NotifyEvent($sms));
-    } */
+    }
 
     /**
      * @dataProvider right
@@ -120,5 +105,32 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $this->notificator->notify($event);
 
         $this->assertTrue($event->isNotified());
+    }
+
+    public function testShouldSetExceptionOnEventIfNotifyPartiallyFail()
+    {
+        $twilio = $this->twilio->reveal();
+        $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
+        $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
+
+        $twilio->account = $account->reveal();
+        $twilio->account->messages = $messages->reveal();
+
+        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
+        $messages->sendMessage('+393333333333', 'pappagallo', 'Foo Bar')->willThrow(new \Exception())->shouldBeCalled();
+
+        $sms = new Sms;
+        $sms->setTo([
+                '+393333333333',
+                'pappagallo'
+            ])
+            ->setFrom('+393333333333')
+            ->setContent('Foo Bar')
+        ;
+
+        $event = new NotifyEvent($sms);
+
+        $this->notificator->notify($event);
+        $this->assertNotNull($event->getException());
     }
 }

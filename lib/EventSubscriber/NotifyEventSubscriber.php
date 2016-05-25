@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\EventSubscriber;
 
+use Fazland\Notifire\Exception\IncompleteNotificationException;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Notification\NotificationInterface;
@@ -30,7 +31,11 @@ abstract class NotifyEventSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $this->doNotify($notification);
+        try {
+            $this->doNotify($notification);
+        }catch (IncompleteNotificationException $e) {
+            $event->setException($e);
+        }
         $event->setNotified();
     }
 

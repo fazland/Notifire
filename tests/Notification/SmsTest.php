@@ -1,6 +1,6 @@
 <?php
 
-namespace Fazland\Notifire\Tests\EventSubscriber\Sms;
+namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Notification\Sms;

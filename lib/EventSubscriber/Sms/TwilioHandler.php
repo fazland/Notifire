@@ -4,6 +4,7 @@ namespace Fazland\Notifire\EventSubscriber\Sms;
 
 use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
+use Fazland\Notifire\Exception\IncompleteNotificationException;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 
@@ -32,35 +33,28 @@ class TwilioHandler extends NotifyEventSubscriber
      */
     protected function doNotify(NotificationInterface $notification)
     {
-        $sentSms = [];
+        $failedSms = [];
 
-        try {
-            /** @var Sms $notification */
-            $from = $notification->getFrom();
-            $content = $notification->getContent();
+        /** @var Sms $notification */
+        $from = $notification->getFrom();
+        $content = $notification->getContent();
+        $tos = $notification->getTo();
 
-            foreach ($notification->getTo() as $to) {
-                $sentSms[] = $this->twilio->account->messages->sendMessage($from, $to, $content);
+        foreach ($tos as $to) {
+            try{
+                $this->twilio->account->messages->sendMessage($from, $to, $content);
+            }catch(\Exception $e) {
+                $failedSms[] = [
+                    "to" => $to,
+                    "error_message" => $e->getMessage(),
+                ];
             }
-        } catch (\Services_Twilio_RestException $e) {
-            $errorMessage = "Twilio reported an exception while sending the desired messages. " .
-                "These messages were sent:\n";
-
-            foreach ($sentSms as $sms) {
-                $errorMessage .=
-                    "Twilio Account: $sms->account_sid\n" .
-                    "SID: $sms->sid\n" .
-                    "From: $sms->from\n" .
-                    "To: $sms->to\n" .
-                    "Content: $sms->body\n\n"
-                ;
-            }
-
-            throw new NotificationFailedException($errorMessage, -1, $e);
         }
 
-        if (count($sentSms) === 0) {
-            throw new NotificationFailedException("Sms sender service reported that no sms were sent.");
+        if (count($tos) === count($failedSms)) {
+            throw new NotificationFailedException("All the sms failed to be send", ['failed_sms' => $failedSms]);
+        } elseif (count($failedSms) > 0) {
+            throw new IncompleteNotificationException("Some of the sms have not been sent", ['failed_sms' => $failedSms]);
         }
     }
 

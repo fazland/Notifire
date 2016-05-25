@@ -15,6 +15,11 @@ class NotifyEvent extends Event
     const NOTIFY = 'notifire.notify';
 
     /**
+     * @var \Exception
+     */
+    private $exception;
+
+    /**
      * @var NotificationInterface
      */
     private $notification;
@@ -64,4 +69,26 @@ class NotifyEvent extends Event
     {
         return $this->notified;
     }
+
+    /**
+     * @return \Exception
+     */
+    public function getException()
+    {
+        return $this->exception;
+    }
+
+    /**
+     * @param \Exception $exception
+     */
+    public function setException($exception)
+    {
+        $this->exception = $exception;
+    }
+
+
+
+
+
+
 }
