@@ -15,7 +15,11 @@ class SmsTest extends \PHPUnit_Framework_TestCase
     public function testShouldDispatchNotifyEvent()
     {
         $dispatcher = $this->prophesize(EventDispatcher::class);
-        $dispatcher->dispatch(NotifyEvent::NOTIFY, Argument::type(NotifyEvent::class))->shouldBeCalled();
+        $dispatcher->dispatch(NotifyEvent::NOTIFY, Argument::type(NotifyEvent::class))
+            ->will(function ($arguments) {
+                $arguments[1]->setNotified();
+            })
+            ->shouldBeCalled();
 
         $sms = new Sms();
         $sms->setEventDispatcher($dispatcher->reveal());

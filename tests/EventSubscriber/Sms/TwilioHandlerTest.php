@@ -10,7 +10,6 @@ use Prophecy\Prophecy\ObjectProphecy;
 
 /**
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
- * @group sms
  */
 class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 {
