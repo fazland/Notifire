@@ -8,6 +8,8 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 
 /**
+ * Twilio event subscriber.
+ *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class TwilioHandler extends NotifyEventSubscriber
@@ -18,7 +20,6 @@ class TwilioHandler extends NotifyEventSubscriber
     private $twilio;
 
     /**
-     * SmsNotificator constructor.
      * @param \Services_Twilio $twilio
      */
     public function __construct(\Services_Twilio $twilio)
@@ -27,7 +28,7 @@ class TwilioHandler extends NotifyEventSubscriber
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function doNotify(NotificationInterface $notification)
     {
@@ -64,7 +65,7 @@ class TwilioHandler extends NotifyEventSubscriber
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     protected function supports(NotificationInterface $notification)
     {

@@ -7,6 +7,11 @@ use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 
+/**
+ * SwiftMailer event subscriber. 
+ *
+ * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ */
 class SwiftMailerHandler extends NotifyEventSubscriber
 {
     /**
@@ -19,6 +24,10 @@ class SwiftMailerHandler extends NotifyEventSubscriber
      */
     private $mailerName;
 
+    /**
+     * @param \Swift_Mailer $mailer
+     * @param string $mailerName
+     */
     public function __construct(\Swift_Mailer $mailer, $mailerName = 'default')
     {
         $this->mailer = $mailer;
@@ -26,7 +35,7 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function supports(NotificationInterface $notification)
     {
@@ -39,14 +48,15 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function doNotify(NotificationInterface $notification)
     {
         /** @var Email $notification */
         /** @var \Swift_Message $email */
         $email = \Swift_Message::newInstance()
-            ->setSubject($notification->getSubject());
+            ->setSubject($notification->getSubject())
+        ;
 
         $this->addAddresses($notification, $email);
         $this->addParts($notification, $email);
@@ -60,7 +70,7 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     }
 
     /**
-     * Add to, cc, bcc and from addresses to the mail object
+     * Adds to, cc, bcc and from addresses to the mail object.
      *
      * @param Email $notification
      * @param $email
@@ -82,11 +92,10 @@ class SwiftMailerHandler extends NotifyEventSubscriber
         foreach ($notification->getFrom() as $from) {
             $email->addFrom($from);
         }
-
     }
 
     /**
-     * Add body parts to the message
+     * Adds body parts to the message.
      *
      * @param Email $notification
      * @param \Swift_Message $email
@@ -97,7 +106,8 @@ class SwiftMailerHandler extends NotifyEventSubscriber
         if (1 === count($parts)) {
             $part = reset($parts);
             $email->setBody($part->getContent())
-                ->setContentType($part->getContentType());
+                ->setContentType($part->getContentType())
+            ;
 
             return;
         }
@@ -108,7 +118,7 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     }
 
     /**
-     * Add the attachments to the message
+     * Adds the attachments to the message.
      *
      * @param Email $notification
      * @param \Swift_Message $email
@@ -116,15 +126,27 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     protected function addAttachments(Email $notification, \Swift_Message $email)
     {
         foreach ($notification->getAttachments() as $attachment) {
-            $email->attach(\Swift_Attachment::newInstance($attachment->getContent(), $attachment->getName(), $attachment->getContentType()));
+            $email->attach(
+                \Swift_Attachment::newInstance(
+                    $attachment->getContent(),
+                    $attachment->getName(),
+                    $attachment->getContentType()
+                )
+            );
         }
     }
 
+    /**
+     * Adds the {@see Email::additionalHeaders} to the message.
+     *
+     * @param Email $notification
+     * @param \Swift_Message $email
+     */
     protected function addHeaders(Email $notification, \Swift_Message $email)
     {
         $headers = $email->getHeaders();
-        foreach ($notification->getAdditionalHeaders() as $key => $value) {
 
+        foreach ($notification->getAdditionalHeaders() as $key => $value) {
             if ($value instanceof \DateTime) {
                 $headers->addDateHeader($key, $value);
             } else {

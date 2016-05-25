@@ -306,7 +306,7 @@ class Email implements NotificationInterface
     }
 
     /**
-     * @return array[string]string
+     * @return string[]
      */
     public function getAdditionalHeaders()
     {

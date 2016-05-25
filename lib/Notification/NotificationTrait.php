@@ -32,7 +32,7 @@ trait NotificationTrait
     }
 
     /**
-     * @inheritdoc
+     * {@inheritdoc}
      */
     public function send()
     {

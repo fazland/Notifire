@@ -7,11 +7,17 @@ use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
+/**
+ * Main EventSubscriber abstract class.
+ * Exposes the notification event listener.
+ *
+ * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ */
 abstract class NotifyEventSubscriber implements EventSubscriberInterface
 {
     /**
-     * Main notification event listener
-     * Throws a {@see NotificationFailedException} if the notification fails
+     * Main notification event listener.
+     * Throws a {@see NotificationFailedException} if the notification fails.
      *
      * @param NotifyEvent $event
      * @throws NotificationFailedException
@@ -29,7 +35,7 @@ abstract class NotifyEventSubscriber implements EventSubscriberInterface
     }
 
     /**
-     * Check if this instance supports the $notification object (eg: check class, providers, etc)
+     * Checks if this instance supports the $notification object (eg: check class, providers, etc).
      *
      * @param NotificationInterface $notification
      *
@@ -38,7 +44,7 @@ abstract class NotifyEventSubscriber implements EventSubscriberInterface
     abstract protected function supports(NotificationInterface $notification);
 
     /**
-     * Send the notification
+     * Sends the notification.
      *
      * @param NotificationInterface $notification
      */

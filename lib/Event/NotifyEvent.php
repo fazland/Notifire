@@ -5,6 +5,11 @@ namespace Fazland\Notifire\Event;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
+/**
+ * Notifire standard notification event.
+ *
+ * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ */
 class NotifyEvent extends Event
 {
     const NOTIFY = 'notifire.notify';
@@ -21,6 +26,9 @@ class NotifyEvent extends Event
      */
     private $notified;
 
+    /**
+     * @param NotificationInterface $notification
+     */
     public function __construct(NotificationInterface $notification)
     {
         $this->notification = $notification;
@@ -28,7 +36,7 @@ class NotifyEvent extends Event
     }
 
     /**
-     * Get the notification object
+     * Get the notification object.
      *
      * @return NotificationInterface
      */
@@ -37,11 +45,21 @@ class NotifyEvent extends Event
         return $this->notification;
     }
 
+    /**
+     * @param bool $notified
+     *
+     * @return $this
+     */
     public function setNotified($notified = true)
     {
         $this->notified = $notified;
+
+        return $this;
     }
 
+    /**
+     * @return bool
+     */
     public function isNotified()
     {
         return $this->notified;
