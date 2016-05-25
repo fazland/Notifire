@@ -6,6 +6,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
+ *
+ * Notifire's standard representation of an Sms as an implementation
+ * of {@see NotificationInterface}.
  */
 class Sms implements NotificationInterface
 {
@@ -162,7 +165,7 @@ class Sms implements NotificationInterface
      */
     public function removeTo($to)
     {
-        $itemPosition = array_search($to,$this->to);
+        $itemPosition = array_search($to, $this->to);
 
         if ($itemPosition) {
             unset($this->to[$itemPosition]);

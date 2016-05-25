@@ -12,10 +12,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * Notifire class is a factory of {@see NotificationInterface}.
+ *
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
  *
  * @method static NotificationInterface email(array $options = [])
+ * @method static NotificationInterface sms(array $options = [])
  */
 class Notifire
 {
@@ -38,7 +41,7 @@ class Notifire
     }
 
     /**
-     * Removes all registered notifications.
+     * Removes all registered notifications and current {@see EventDispatcherInterface}.
      */
     public static function reset()
     {
@@ -75,6 +78,9 @@ class Notifire
     }
 
     /**
+     * Creates new instances of the registered {@see NotificationInterface}
+     * with the current instance of {@see EventDispatcherInterface}.
+     *
      * @param string $notificationName
      * @param array $options
      *
@@ -117,6 +123,9 @@ class Notifire
         return static::factory($name, $arguments[0]);
     }
 
+    /**
+     * Configuration shortcut to a base library initialization.
+     */
     public static function create()
     {
         $dispatcher = new EventDispatcher();

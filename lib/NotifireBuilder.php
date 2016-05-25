@@ -6,6 +6,8 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * A configurable builder for {@see Notifire}.
+ *
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  */
 class NotifireBuilder
@@ -20,13 +22,17 @@ class NotifireBuilder
      */
     protected $notifications;
 
-
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static();
     }
 
     /**
+     * Add a {@see NotificationInterface} that will be registered in {@see Notifire}
+     *
      * @param string $notificationName
      * @param string $notificationClass
      *
@@ -51,6 +57,13 @@ class NotifireBuilder
         return $this;
     }
 
+    /**
+     * Initializes {@see Notifire} class with the current {@see NotificationInterface}
+     * and instance of {@see EventDispatcherInterface}
+     *
+     * @throws Exception\NotificationAlreadyRegisteredException
+     * @throws Exception\UnsupportedClassException
+     */
     public function initialize()
     {
         Notifire::reset();

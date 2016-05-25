@@ -7,6 +7,9 @@ use Fazland\Notifire\Notification\Email\Part;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
+ * Notifire's standard representation of an Email as an implementation
+ * of {@see NotificationInterface}.
+ *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Email implements NotificationInterface

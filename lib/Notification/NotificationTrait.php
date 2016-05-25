@@ -7,6 +7,9 @@ use Fazland\Notifire\Exception\NotificationFailedException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
+ * NotificationTrait adds a standard way to set an instance of {@see EventDispatcherInterface}
+ * and to implement the {@see NotificationInterface::send()} method.
+ *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 trait NotificationTrait

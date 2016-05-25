@@ -3,6 +3,8 @@
 namespace Fazland\Notifire\Notification\Email;
 
 /**
+ * Part class for adding email's parts to {@see Email}
+ * 
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Part
@@ -17,6 +19,11 @@ class Part
      */
     private $contentType;
 
+    /**
+     * @param string|null $content
+     * @param string|null $contentType
+     * @return static
+     */
     public static function create($content = null, $contentType = null)
     {
         $instance = new static();
@@ -64,6 +71,4 @@ class Part
 
         return $this;
     }
-
-
 }

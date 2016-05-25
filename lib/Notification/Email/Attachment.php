@@ -3,6 +3,8 @@
 namespace Fazland\Notifire\Notification\Email;
 
 /**
+ * Attachment class for attaching files to a {@see Email}.
+ *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Attachment
@@ -22,17 +24,30 @@ class Attachment
      */
     private $contentType;
 
+    /**
+     * Attachment constructor.
+     */
     public function __construct()
     {
         $this->name = 'attachment';
         $this->contentType = 'application/octet-stream';
     }
 
+    /**
+     * @return static
+     */
     public static function create()
     {
         return new static();
     }
 
+    /**
+     * Creates an instance of {@see Attachment} from an existing file.
+     *
+     * @param string $filename
+     * @param string|null $contentType
+     * @return static
+     */
     public static function createFromFile($filename, $contentType = null)
     {
         $instance = new static();
@@ -105,6 +120,4 @@ class Attachment
 
         return $this;
     }
-
-
 }
