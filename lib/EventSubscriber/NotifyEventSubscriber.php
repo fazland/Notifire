@@ -25,6 +25,7 @@ abstract class NotifyEventSubscriber implements EventSubscriberInterface
         }
 
         $this->doNotify($notification);
+        $event->setNotified();
     }
 
     /**

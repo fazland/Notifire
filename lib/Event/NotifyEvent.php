@@ -14,9 +14,17 @@ class NotifyEvent extends Event
      */
     private $notification;
 
+    /**
+     * Indicates whether the event has been handled
+     *
+     * @var bool
+     */
+    private $notified;
+
     public function __construct(NotificationInterface $notification)
     {
         $this->notification = $notification;
+        $this->notified = false;
     }
 
     /**
@@ -27,5 +35,15 @@ class NotifyEvent extends Event
     public function getNotification()
     {
         return $this->notification;
+    }
+
+    public function setNotified($notified = true)
+    {
+        $this->notified = $notified;
+    }
+
+    public function isNotified()
+    {
+        return $this->notified;
     }
 }

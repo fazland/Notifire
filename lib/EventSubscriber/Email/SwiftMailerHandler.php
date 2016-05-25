@@ -130,7 +130,6 @@ class SwiftMailerHandler extends NotifyEventSubscriber
             } else {
                 $headers->addTextHeader($key, $value);
             }
-
         }
     }
 }
