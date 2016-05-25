@@ -1,12 +1,13 @@
 <?php
 
-namespace Fazland\Notifire\EventSubscriber;
+namespace Fazland\Notifire\EventSubscriber\Email;
 
+use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 
-class EmailNotificator extends NotifyEventSubscriber
+class SwiftMailerHandler extends NotifyEventSubscriber
 {
     /**
      * @var \Swift_Mailer

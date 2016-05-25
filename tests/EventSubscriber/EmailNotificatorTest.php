@@ -3,7 +3,7 @@
 namespace Fazland\Notifire\Tests\EventSubscriber;
 
 use Fazland\Notifire\Event\NotifyEvent;
-use Fazland\Notifire\EventSubscriber\EmailNotificator;
+use Fazland\Notifire\EventSubscriber\Email\SwiftMailerHandler;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
@@ -17,7 +17,7 @@ class EmailNotificatorTest extends \PHPUnit_Framework_TestCase
     private $mailer;
 
     /**
-     * @var EmailNotificator
+     * @var SwiftMailerHandler
      */
     private $notificator;
 
@@ -25,7 +25,7 @@ class EmailNotificatorTest extends \PHPUnit_Framework_TestCase
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
         
-        $this->notificator = new EmailNotificator($this->mailer->reveal());
+        $this->notificator = new SwiftMailerHandler($this->mailer->reveal());
     }
 
     /**

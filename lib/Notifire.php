@@ -2,7 +2,7 @@
 
 namespace Fazland\Notifire;
 
-use Fazland\Notifire\EventSubscriber\EmailNotificator;
+use Fazland\Notifire\EventSubscriber\Email\SwiftMailerHandler;
 use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
 use Fazland\Notifire\Exception\UnregisteredNotificationException;
 use Fazland\Notifire\Exception\UnsupportedClassException;
@@ -127,7 +127,7 @@ class Notifire
         if (class_exists('Swift_Mailer')) {
             $transport = \Swift_SmtpTransport::newInstance('localhost', 25);
             $mailer = \Swift_Mailer::newInstance($transport);
-            $dispatcher->addSubscriber(new EmailNotificator($mailer));
+            $dispatcher->addSubscriber(new SwiftMailerHandler($mailer));
             $builder->addNotification('email', Email::class);
         }
 

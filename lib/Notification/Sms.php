@@ -191,6 +191,6 @@ class Sms implements NotificationInterface
 
         $resolver->setAllowedValues('provider', 'twilio');
 
-        $this->config = $resolver->remove($options);
+        $this->config = $resolver->resolve($options);
     }
 }

@@ -1,7 +1,8 @@
 <?php
 
-namespace Fazland\Notifire\EventSubscriber;
+namespace Fazland\Notifire\EventSubscriber\Sms;
 
+use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
@@ -9,7 +10,7 @@ use Fazland\Notifire\Notification\Sms;
 /**
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
-class SmsNotificator extends NotifyEventSubscriber
+class TwilioHandler extends NotifyEventSubscriber
 {
     /**
      * @var \Services_Twilio
