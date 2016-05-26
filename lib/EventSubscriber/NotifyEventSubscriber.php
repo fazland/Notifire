@@ -33,9 +33,10 @@ abstract class NotifyEventSubscriber implements EventSubscriberInterface
 
         try {
             $this->doNotify($notification);
-        }catch (IncompleteNotificationException $e) {
+        } catch (IncompleteNotificationException $e) {
             $event->setException($e);
         }
+
         $event->setNotified();
     }
 

@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire;
 
+use Fazland\Notifire\EventSubscriber\NotNotifiedEventSubscriber;
 use Fazland\Notifire\EventSubscriber\Email\SwiftMailerHandler;
 use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
 use Fazland\Notifire\Exception\UnregisteredNotificationException;
@@ -129,6 +130,7 @@ class Notifire
     public static function create()
     {
         $dispatcher = new EventDispatcher();
+        $dispatcher->addSubscriber(new NotNotifiedEventSubscriber());
 
         $builder = NotifireBuilder::create()
             ->setDispatcher($dispatcher);

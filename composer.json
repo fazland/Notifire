@@ -9,7 +9,8 @@
         "phpunit/phpunit": "*",
         "swiftmailer/swiftmailer": "^5.4",
         "mikey179/vfsStream": "^1.6",
-        "twilio/sdk": "^4.10"
+        "twilio/sdk": "^4.10",
+        "mailgun/mailgun-php": "^2.0"
     },
     "autoload": {
         "psr-4": {

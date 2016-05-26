@@ -39,14 +39,5 @@ trait NotificationTrait
         $event = new NotifyEvent($this);
 
         $this->eventDispatcher->dispatch(NotifyEvent::NOTIFY, $event);
-
-        if (! $event->isNotified()) {
-            $message = "No handler has been defined for ".get_class($this);
-            if (isset($this->config)) {
-                $message .= " (".json_encode($this->config).")";
-            }
-
-            throw new NotificationFailedException($message);
-        }
     }
 }

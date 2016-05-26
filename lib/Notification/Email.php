@@ -277,22 +277,48 @@ class Email implements NotificationInterface
         return $this;
     }
 
+    /**
+     * Add or replace the HTML part of the mail
+     *
+     * @param $html
+     *
+     * @return Email
+     */
     public function setHtml($html)
     {
         return $this->addPart(Part::create($html, 'text/html'), true);
     }
 
+    /**
+     * Add or replace the plain text part of the mail
+     *
+     * @param $text
+     *
+     * @return Email
+     */
     public function setText($text)
     {
         return $this->addPart(Part::create($text, 'text/plain'), true);
     }
 
+    /**
+     * Get the html body of the mail if set
+     * Returns NULL if no html part is present
+     *
+     * @return null|string
+     */
     public function getHtml()
     {
         $part = $this->getPart('text/html');
         return null !== $part ? $part->getContent() : null;
     }
 
+    /**
+     * Get the plain text body of the mail if set
+     * Returns NULL if no text part is present
+     *
+     * @return null|string
+     */
     public function getText()
     {
         $part = $this->getPart('text/plain');
@@ -408,8 +434,6 @@ class Email implements NotificationInterface
             'provider' => 'swiftmailer',
             'mailer' => 'default'
         ]);
-
-        $resolver->setAllowedValues('provider', 'swiftmailer');
 
         $this->config = $resolver->resolve($options);
     }
