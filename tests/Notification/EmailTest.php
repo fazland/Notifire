@@ -1,6 +1,6 @@
 <?php
 
-namespace Fazland\Tests\Notification;
+namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Notification\Email;

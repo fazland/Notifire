@@ -1,6 +1,6 @@
 <?php
 
-namespace Fazland\EventSubscriber\Email;
+namespace Fazland\Notifire\EventSubscriber\Email;
 
 use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\IncompleteNotificationException;
