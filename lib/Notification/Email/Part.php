@@ -24,7 +24,7 @@ class Part
      * @param string|null $contentType
      * @return static
      */
-    public static function create($content = null, $contentType = null)
+    public static function create($content = null, $contentType = 'text/plain')
     {
         $instance = new static();
 

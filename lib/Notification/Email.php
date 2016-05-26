@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Notification;
 
+use Fazland\Notifire\Exception\PartContentTypeMismatchException;
 use Fazland\Notifire\Notification\Email\Attachment;
 use Fazland\Notifire\Notification\Email\Part;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -230,6 +231,23 @@ class Email implements NotificationInterface
     }
 
     /**
+     * Get a Part object for the specified content type
+     * Returns NULL if not set
+     *
+     * @param $contentType
+     *
+     * @return Part|null
+     */
+    public function getPart($contentType)
+    {
+        if (! isset($this->parts[$contentType])) {
+            return;
+        }
+
+        return $this->parts[$contentType];
+    }
+
+    /**
      * @param Part[] $parts
      *
      * @return $this
@@ -243,14 +261,42 @@ class Email implements NotificationInterface
 
     /**
      * @param Part $part
+     * @param bool $overwrite
      *
      * @return $this
      */
-    public function addPart(Part $part)
+    public function addPart(Part $part, $overwrite = false)
     {
-        $this->parts[] = $part;
+        $contentType = $part->getContentType();
+        if (isset ($this->parts[$contentType]) && ! $overwrite) {
+            throw new PartContentTypeMismatchException("A part with content type $contentType has been already added");
+        }
+
+        $this->parts[$contentType] = $part;
 
         return $this;
+    }
+
+    public function setHtml($html)
+    {
+        return $this->addPart(Part::create($html, 'text/html'), true);
+    }
+
+    public function setText($text)
+    {
+        return $this->addPart(Part::create($text, 'text/plain'), true);
+    }
+
+    public function getHtml()
+    {
+        $part = $this->getPart('text/html');
+        return null !== $part ? $part->getContent() : null;
+    }
+
+    public function getText()
+    {
+        $part = $this->getPart('text/plain');
+        return null !== $part ? $part->getContent() : null;
     }
 
     /**

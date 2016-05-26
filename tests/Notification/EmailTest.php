@@ -26,4 +26,15 @@ class EmailTest extends \PHPUnit_Framework_TestCase
 
         $email->send();
     }
+
+    /**
+     * @expectedException \Fazland\Notifire\Exception\PartContentTypeMismatchException
+     */
+    public function testAddPartShouldThrowIfTwoPartsWithSameContentTypeHasAdded()
+    {
+        Email::create()
+            ->addPart(Email\Part::create("BlaBla", 'text/html'))
+            ->addPart(Email\Part::create('Foo bar', 'text/html'))
+            ;
+    }
 }
