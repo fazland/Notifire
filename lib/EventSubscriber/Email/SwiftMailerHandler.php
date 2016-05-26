@@ -78,20 +78,32 @@ class SwiftMailerHandler extends NotifyEventSubscriber
     protected function addAddresses(Email $notification, \Swift_Message $email)
     {
         foreach ($notification->getTo() as $to) {
-            $email->addTo($to);
+            $this->addAddress($email, 'to', $to);
         }
 
         foreach ($notification->getCc() as $cc) {
-            $email->addCc($cc);
+            $this->addAddress($email, 'cc', $cc);
         }
 
         foreach ($notification->getBcc() as $bcc) {
-            $email->addBcc($bcc);
+            $this->addAddress($email, 'bcc', $bcc);
         }
 
         foreach ($notification->getFrom() as $from) {
-            $email->addFrom($from);
+            $this->addAddress($email, 'from', $from);
         }
+    }
+
+    public function addAddress(\Swift_Message $email, $type, $address)
+    {
+        $method = 'add'.$type;
+
+        if (preg_match('/(.+?)\s*<(.+)>/', $address, $match)) {
+            $email->$method($match[2], $match[1]);
+            return;
+        }
+
+        $email->$method($address);
     }
 
     /**
