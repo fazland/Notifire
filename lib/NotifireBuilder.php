@@ -72,6 +72,10 @@ class NotifireBuilder
             $this->dispatcher = new EventDispatcher();
         }
 
+        if (null === $this->notifications) {
+            $this->notifications = [];
+        }
+
         foreach ($this->notifications as $notificationName => $notificationClass) {
             Notifire::addNotification($notificationName, $notificationClass);
         }
