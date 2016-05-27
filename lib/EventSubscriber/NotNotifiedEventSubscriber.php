@@ -35,7 +35,7 @@ class NotNotifiedEventSubscriber implements EventSubscriberInterface
     public static function getSubscribedEvents()
     {
         return [
-            NotifyEvent::NOTIFY => ['postNotify', 255]
+            NotifyEvent::NOTIFY => ['postNotify', -255]
         ];
     }
 }
