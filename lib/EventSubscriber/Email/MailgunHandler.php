@@ -16,7 +16,7 @@ use Mailgun\Mailgun;
  *
  * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
  */
-class MailgunHandler extends NotifyEventSubscriber
+class MailgunHandler extends AbstractMailHandler
 {
     /**
      * @var Mailgun
@@ -64,7 +64,7 @@ class MailgunHandler extends NotifyEventSubscriber
             ->setFrom($notification->getFrom());
 
         foreach ($notification->getParts() as $part) {
-            $message->attach(\Swift_MimePart::newInstance($part->getContent(), $part->getContentType()));
+            $message->attach(\Swift_MimePart::newInstance($this->getContent($part), $part->getContentType()));
         }
 
         foreach ($notification->getAttachments() as $attachment) {

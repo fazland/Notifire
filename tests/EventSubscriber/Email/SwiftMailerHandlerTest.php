@@ -184,4 +184,19 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->notificator->notify(new NotifyEvent($notification));
     }
+
+    public function testShouldRenderTwigTemplateParts()
+    {
+        $twig = $this->prophesize(\Twig_Environment::class);
+        $twig->render('template.twig.html', [])->shouldBeCalled();
+
+        $this->notificator->setTwig($twig->reveal());
+
+        $email = new Email;
+        $email
+            ->addPart(Email\TwigTemplatePart::create('template.twig.html'), 'text/html');
+
+        $this->mailer->send(Argument::any())->willReturn();
+        $this->notificator->notify(new NotifyEvent($email));
+    }
 }

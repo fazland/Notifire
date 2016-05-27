@@ -13,7 +13,7 @@ use Fazland\Notifire\Util\Email\AddressParser;
  *
  * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
  */
-class SwiftMailerHandler extends NotifyEventSubscriber
+class SwiftMailerHandler extends AbstractMailHandler
 {
     /**
      * @var \Swift_Mailer
@@ -114,7 +114,7 @@ class SwiftMailerHandler extends NotifyEventSubscriber
         $parts = $notification->getParts();
         if (1 === count($parts)) {
             $part = reset($parts);
-            $email->setBody($part->getContent())
+            $email->setBody($this->getContent($part))
                 ->setContentType($part->getContentType())
             ;
 
@@ -122,7 +122,7 @@ class SwiftMailerHandler extends NotifyEventSubscriber
         }
 
         foreach ($notification->getParts() as $part) {
-            $email->addPart($part->getContent(), $part->getContentType());
+            $email->addPart($this->getContent($part), $part->getContentType());
         }
     }
 
