@@ -11,7 +11,7 @@ trait TwigPartProcessingTrait
      */
     private $twig;
 
-    public function setTwig(\Twig_Environment $twig)
+    public function setTwig(\Twig_Environment $twig = null)
     {
         $this->twig = $twig;
     }
