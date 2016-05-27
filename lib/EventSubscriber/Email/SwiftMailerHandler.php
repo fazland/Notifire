@@ -6,6 +6,7 @@ use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Util\Email\AddressParser;
 
 /**
  * SwiftMailer event subscriber. 
@@ -94,16 +95,12 @@ class SwiftMailerHandler extends NotifyEventSubscriber
         }
     }
 
-    public function addAddress(\Swift_Message $email, $type, $address)
+    protected function addAddress(\Swift_Message $email, $type, $address)
     {
         $method = 'add'.$type;
 
-        if (preg_match('/(.+?)\s*<(.+)>/', $address, $match)) {
-            $email->$method($match[2], $match[1]);
-            return;
-        }
-
-        $email->$method($address);
+        $parsed = AddressParser::parse($address);
+        $email->$method($parsed['address'], $parsed['personal']);
     }
 
     /**
