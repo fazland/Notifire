@@ -9,6 +9,7 @@ use Fazland\Notifire\Exception\UnregisteredNotificationException;
 use Fazland\Notifire\Exception\UnsupportedClassException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Notification\Sms;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,8 +19,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
  *
- * @method static NotificationInterface email(array $options = [])
- * @method static NotificationInterface sms(array $options = [])
+ * @method static Email email(array $options = [])
+ * @method static Sms sms(array $options = [])
  */
 class Notifire
 {
