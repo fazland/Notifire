@@ -102,7 +102,11 @@ class NotificationManager implements NotificationManagerInterface
         }
 
         $notification = clone $notification;
-        $this->dispatch(Events::NOTIFY, NotifyEvent::class, $notification);
+
+        if (null !== $this->eventDispatcher) {
+            $event = new NotifyEvent($notification, $handler);
+            $this->eventDispatcher->dispatch(Events::NOTIFY, $event);
+        }
 
         $handler->notify($notification);
         return true;

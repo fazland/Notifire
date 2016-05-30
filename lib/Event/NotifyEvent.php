@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Event;
 
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
@@ -18,11 +19,18 @@ class NotifyEvent extends Event
     private $notification;
 
     /**
-     * @param NotificationInterface $notification
+     * @var NotificationHandlerInterface
      */
-    public function __construct(NotificationInterface $notification)
+    private $handler;
+
+    /**
+     * @param NotificationInterface $notification
+     * @param NotificationHandlerInterface $handler
+     */
+    public function __construct(NotificationInterface $notification, NotificationHandlerInterface $handler)
     {
         $this->notification = $notification;
+        $this->handler = $handler;
     }
 
     /**
@@ -33,5 +41,13 @@ class NotifyEvent extends Event
     public function getNotification()
     {
         return $this->notification;
+    }
+
+    /**
+     * @return NotificationHandlerInterface
+     */
+    public function getHandler()
+    {
+        return $this->handler;
     }
 }
