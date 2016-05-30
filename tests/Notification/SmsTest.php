@@ -3,6 +3,7 @@
 namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Event\NotifyEvent;
+use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Sms;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -14,12 +15,11 @@ class SmsTest extends \PHPUnit_Framework_TestCase
 {
     public function testShouldDispatchNotifyEvent()
     {
-        $dispatcher = $this->prophesize(EventDispatcher::class);
-        $dispatcher->dispatch(NotifyEvent::NOTIFY, Argument::type(NotifyEvent::class))
-            ->shouldBeCalled();
+        $manager = $this->prophesize(NotificationManagerInterface::class);
+        $manager->notify(Argument::type(Sms::class))->shouldBeCalled();
 
         $sms = new Sms();
-        $sms->setEventDispatcher($dispatcher->reveal());
+        $sms->setManager($manager->reveal());
 
         $sms->send();
     }

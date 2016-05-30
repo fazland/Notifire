@@ -1,16 +1,14 @@
 <?php
 
-namespace Fazland\Notifire\EventSubscriber\Email;
+namespace Fazland\Notifire\Handler\Email;
 
-use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
-use Fazland\Notifire\Exception\IncompleteNotificationException;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Mailgun\Mailgun;
 
 /**
- * Mailgun event subscriber
+ * Mailgun handler
  * It uses swift mailer to build a mime message that will be sent
  * through the Mailgun APIs
  *
@@ -40,7 +38,7 @@ class MailgunHandler extends AbstractMailHandler
     /**
      * {@inheritDoc}
      */
-    protected function supports(NotificationInterface $notification)
+    public function supports(NotificationInterface $notification)
     {
         if (! $notification instanceof Email) {
             return false;
@@ -53,7 +51,7 @@ class MailgunHandler extends AbstractMailHandler
     /**
      * {@inheritDoc}
      */
-    protected function doNotify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification)
     {
         if (! class_exists('Swift_Message')) {
             throw new \RuntimeException("You need to install swift mailer to use mailgun transport");
@@ -92,8 +90,6 @@ class MailgunHandler extends AbstractMailHandler
 
         if (count($success) === 0) {
             throw new NotificationFailedException("Sending failed for message {$notification->getSubject()}", $failed);
-        } elseif (count($failed) > 0) {
-            throw new IncompleteNotificationException("Sending partially failed for message {$notification->getSubject()}", $failed);
         }
     }
 }

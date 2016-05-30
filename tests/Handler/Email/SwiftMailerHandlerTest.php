@@ -1,9 +1,9 @@
 <?php
 
-namespace Fazland\Notifire\Tests\EventSubscriber\Email;
+namespace Fazland\Notifire\Tests\Handler\Email;
 
 use Fazland\Notifire\Event\NotifyEvent;
-use Fazland\Notifire\EventSubscriber\Email\SwiftMailerHandler;
+use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
@@ -37,7 +37,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(Argument::type(\Swift_Message::class))
             ->willReturn(0);
 
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldAddToAddresses()
@@ -54,7 +54,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldAddCcAddresses()
@@ -71,7 +71,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldAddBccAddresses()
@@ -88,7 +88,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldAddFromAddresses()
@@ -105,7 +105,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldAddAttachments()
@@ -125,7 +125,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldSetFirstPartAsMessageBody()
@@ -144,7 +144,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function testShouldSetMultipartAlternativeIfEmailIsMultipart()
@@ -164,7 +164,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 
     public function unsupportedNotificationsDataProvider()
@@ -178,11 +178,11 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider unsupportedNotificationsDataProvider
      */
-    public function testShouldNotSendOnUnsupportedNotifications($notification)
+    public function testSupportsShouldReturnFalseOnUnsupportedNotifications($notification)
     {
         $this->mailer->send(Argument::cetera())->shouldNotBeCalled();
 
-        $this->notificator->notify(new NotifyEvent($notification));
+        $this->assertFalse($this->notificator->supports($notification));
     }
 
     public function testShouldRenderTwigTemplateParts()
@@ -197,6 +197,6 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             ->addPart(Email\TwigTemplatePart::create('template.twig.html'), 'text/html');
 
         $this->mailer->send(Argument::any())->willReturn();
-        $this->notificator->notify(new NotifyEvent($email));
+        $this->notificator->notify($email);
     }
 }

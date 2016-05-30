@@ -6,11 +6,12 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is triggered just before an handler is notified
+ * This event is called before the handlers are checked
+ * and notified about this notification
  *
  * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
  */
-class NotifyEvent extends Event
+class PreNotifyEvent extends Event
 {
     /**
      * @var NotificationInterface

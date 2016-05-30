@@ -41,7 +41,9 @@ class Sms implements NotificationInterface
 
     public function __construct(array $options = [])
     {
-        $this->config = $this->configureOptions($options);
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $this->config = $resolver->resolve($options);
     }
 
     /**
@@ -188,18 +190,13 @@ class Sms implements NotificationInterface
     }
 
     /**
-     * @return array
+     * @param OptionsResolver $resolver
      */
-    protected function configureOptions(array $options)
+    protected function configureOptions(OptionsResolver $resolver)
     {
-        $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'provider' => 'twilio',
             'account_name' => 'default'
         ]);
-
-        $resolver->setAllowedValues('provider', 'twilio');
-
-        return $resolver->resolve($options);
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Fazland\Notifire\EventSubscriber\Email;
+namespace Fazland\Notifire\Handler\Email;
 
 use Fazland\Notifire\Notification\Email\TwigTemplatePart;
 

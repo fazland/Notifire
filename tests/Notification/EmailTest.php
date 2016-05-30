@@ -3,6 +3,7 @@
 namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Event\NotifyEvent;
+use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Prophecy\Argument;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -12,14 +13,13 @@ use Symfony\Component\EventDispatcher\EventDispatcher;
  */
 class EmailTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSendShouldDispatchEvent()
+    public function testSendShouldCallNotificationManager()
     {
-        $dispatcher = $this->prophesize(EventDispatcher::class);
-        $dispatcher->dispatch(NotifyEvent::NOTIFY, Argument::type(NotifyEvent::class))
-            ->shouldBeCalled();
+        $manager = $this->prophesize(NotificationManagerInterface::class);
+        $manager->notify(Argument::type(Email::class))->shouldBeCalled();
 
         $email = new Email();
-        $email->setEventDispatcher($dispatcher->reveal());
+        $email->setManager($manager->reveal());
 
         $email->send();
     }

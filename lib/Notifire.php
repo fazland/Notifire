@@ -2,8 +2,9 @@
 
 namespace Fazland\Notifire;
 
-use Fazland\Notifire\EventSubscriber\NotNotifiedEventSubscriber;
-use Fazland\Notifire\EventSubscriber\Email\SwiftMailerHandler;
+use Fazland\Notifire\Manager\NotificationManagerInterface;
+use Fazland\Notifire\Handler\NotNotifiedEventSubscriber;
+use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
 use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
 use Fazland\Notifire\Exception\UnregisteredNotificationException;
 use Fazland\Notifire\Exception\UnsupportedClassException;
@@ -25,9 +26,9 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 class Notifire
 {
     /**
-     * @var EventDispatcherInterface
+     * @var NotificationManagerInterface
      */
-    protected static $dispatcher;
+    protected static $manager;
 
     /**
      * @var string[]
@@ -37,9 +38,9 @@ class Notifire
     /**
      * @param EventDispatcherInterface $dispatcher
      */
-    public static function setEventDispatcher(EventDispatcherInterface $dispatcher)
+    public static function setManager(NotificationManagerInterface $dispatcher)
     {
-        static::$dispatcher = $dispatcher;
+        static::$manager = $dispatcher;
     }
 
     /**
@@ -48,7 +49,7 @@ class Notifire
     public static function reset()
     {
         static::$notifications = [];
-        static::$dispatcher = null;
+        static::$manager = null;
     }
 
     /**
@@ -99,7 +100,7 @@ class Notifire
         $class = static::$notifications[$notificationName];
 
         $instance = new $class($options);
-        $instance->setEventDispatcher(static::$dispatcher);
+        $instance->setManager(static::$manager);
 
         return $instance;
     }
@@ -130,9 +131,6 @@ class Notifire
      */
     public static function create()
     {
-        $dispatcher = new EventDispatcher();
-        $dispatcher->addSubscriber(new NotNotifiedEventSubscriber());
-
         $builder = NotifireBuilder::create()
             ->setDispatcher($dispatcher);
 

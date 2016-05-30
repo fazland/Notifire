@@ -2,6 +2,8 @@
 
 namespace Fazland\Notifire;
 
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
+use Fazland\Notifire\Manager\NotificationManager;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -18,9 +20,20 @@ class NotifireBuilder
     protected $dispatcher;
 
     /**
+     * @var \SplObjectStorage|NotificationHandlerInterface[]
+     */
+    protected $handlers;
+
+    /**
      * @var string[]
      */
     protected $notifications;
+
+    public function __construct()
+    {
+        $this->notifications = [];
+        $this->handlers = new \SplObjectStorage();
+    }
 
     /**
      * @return static
@@ -41,6 +54,20 @@ class NotifireBuilder
     public function addNotification($notificationName, $notificationClass)
     {
         $this->notifications[$notificationName] = $notificationClass;
+
+        return $this;
+    }
+
+    /**
+     * Add a notification handler to the manager
+     *
+     * @param NotificationHandlerInterface $handler
+     *
+     * @return $this
+     */
+    public function addHandler(NotificationHandlerInterface $handler)
+    {
+        $this->handlers->attach($handler);
 
         return $this;
     }
@@ -68,18 +95,19 @@ class NotifireBuilder
     {
         Notifire::reset();
 
-        if (null === $this->dispatcher) {
-            $this->dispatcher = new EventDispatcher();
+        $manager = new NotificationManager();
+        foreach ($this->handlers as $handler) {
+            $manager->addHandler($handler);
         }
 
-        if (null === $this->notifications) {
-            $this->notifications = [];
+        if (null !== $this->dispatcher) {
+            $manager->setEventDispatcher($this->dispatcher);
         }
 
         foreach ($this->notifications as $notificationName => $notificationClass) {
             Notifire::addNotification($notificationName, $notificationClass);
         }
 
-        Notifire::setEventDispatcher($this->dispatcher);
+        Notifire::setManager($manager);
     }
 }

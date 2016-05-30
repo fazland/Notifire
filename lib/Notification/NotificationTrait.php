@@ -4,6 +4,7 @@ namespace Fazland\Notifire\Notification;
 
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Exception\NotificationFailedException;
+use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -15,18 +16,16 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 trait NotificationTrait
 {
     /**
-     * @var EventDispatcherInterface
+     * @var NotificationManagerInterface
      */
-    private $eventDispatcher;
+    private $notificationManager = null;
 
     /**
-     * @param EventDispatcherInterface $eventDispatcher
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    public function setManager(NotificationManagerInterface $notificationManager)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->notificationManager = $notificationManager;
 
         return $this;
     }
@@ -36,8 +35,6 @@ trait NotificationTrait
      */
     public function send()
     {
-        $event = new NotifyEvent($this);
-
-        $this->eventDispatcher->dispatch(NotifyEvent::NOTIFY, $event);
+        $this->notificationManager->notify($this);
     }
 }

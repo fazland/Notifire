@@ -1,9 +1,8 @@
 <?php
 
-namespace Fazland\Notifire\Tests\EventSubscriber\Sms;
+namespace Fazland\Notifire\Tests\Handler\Sms;
 
-use Fazland\Notifire\Event\NotifyEvent;
-use Fazland\Notifire\EventSubscriber\Sms\TwilioHandler;
+use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\Sms;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -68,8 +67,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
      */
     public function testShouldThrowExceptionWithoutToField($sms)
     {
-        $event = new NotifyEvent($sms);
-        $this->notificator->notify($event);
+        $this->notificator->notify($sms);
     }
 
     public function testShouldCallSendMessage()
@@ -89,48 +87,6 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
         $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
 
-        $this->notificator->notify(new NotifyEvent($sms));
-    }
-
-    /**
-     * @dataProvider right
-     */
-    public function testShouldSetEventAsNotified($sms)
-    {
-        $twilio = $this->twilio->reveal();
-        $twilio->account = new \stdClass();
-        $twilio->account->messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
-
-        $event = new NotifyEvent($sms);
-        $this->notificator->notify($event);
-
-        $this->assertTrue($event->isNotified());
-    }
-
-    public function testShouldSetExceptionOnEventIfNotifyPartiallyFail()
-    {
-        $twilio = $this->twilio->reveal();
-        $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
-        $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
-
-        $twilio->account = $account->reveal();
-        $twilio->account->messages = $messages->reveal();
-
-        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
-        $messages->sendMessage('+393333333333', 'pappagallo', 'Foo Bar')->willThrow(new \Exception())->shouldBeCalled();
-
-        $sms = new Sms;
-        $sms->setTo([
-                '+393333333333',
-                'pappagallo'
-            ])
-            ->setFrom('+393333333333')
-            ->setContent('Foo Bar')
-        ;
-
-        $event = new NotifyEvent($sms);
-
-        $this->notificator->notify($event);
-        $this->assertNotNull($event->getException());
+        $this->notificator->notify($sms);
     }
 }

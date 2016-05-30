@@ -1,15 +1,15 @@
 <?php
 
-namespace Fazland\Notifire\EventSubscriber\Email;
+namespace Fazland\Notifire\Handler\Email;
 
-use Fazland\Notifire\EventSubscriber\NotifyEventSubscriber;
+use Fazland\Notifire\Handler\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Util\Email\AddressParser;
 
 /**
- * SwiftMailer event subscriber. 
+ * SwiftMailer handler
  *
  * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
  */
@@ -38,7 +38,7 @@ class SwiftMailerHandler extends AbstractMailHandler
     /**
      * {@inheritDoc}
      */
-    protected function supports(NotificationInterface $notification)
+    public function supports(NotificationInterface $notification)
     {
         if (! $notification instanceof Email) {
             return false;
@@ -51,7 +51,7 @@ class SwiftMailerHandler extends AbstractMailHandler
     /**
      * {@inheritDoc}
      */
-    protected function doNotify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification)
     {
         /** @var Email $notification */
         /** @var \Swift_Message $email */

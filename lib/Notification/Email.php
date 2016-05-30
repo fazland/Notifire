@@ -78,7 +78,9 @@ class Email implements NotificationInterface
         $this->parts = [];
         $this->additionalHeaders = [];
 
-        $this->configureOptions($options);
+        $resolver = new OptionsResolver();
+        $this->configureOptions($resolver);
+        $this->config = $resolver->resolve($options);
     }
 
     public static function create(array $options = [])
@@ -425,16 +427,13 @@ class Email implements NotificationInterface
     }
 
     /**
-     * @param array $options
+     * @param OptionsResolver $resolver
      */
-    protected function configureOptions(array $options)
+    protected function configureOptions(OptionsResolver $resolver)
     {
-        $resolver = new OptionsResolver();
         $resolver->setDefaults([
             'provider' => 'swiftmailer',
             'mailer' => 'default'
         ]);
-
-        $this->config = $resolver->resolve($options);
     }
 }

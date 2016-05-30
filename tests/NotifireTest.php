@@ -2,9 +2,9 @@
 
 namespace Fazland\Notifire\Tests;
 
+use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notifire;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 
 /**
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
@@ -18,8 +18,8 @@ class NotifireTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $dispatcher = $this->prophesize(EventDispatcher::class);
-        Notifire::setEventDispatcher($dispatcher->reveal());
+        $manager = $this->prophesize(NotificationManagerInterface::class);
+        Notifire::setManager($manager->reveal());
     }
 
     /**
