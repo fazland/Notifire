@@ -131,8 +131,7 @@ class Notifire
      */
     public static function create()
     {
-        $builder = NotifireBuilder::create()
-            ->setDispatcher($dispatcher);
+        $builder = NotifireBuilder::create();
 
         if (class_exists('Swift_Mailer')) {
             $transport = \Swift_SmtpTransport::newInstance('localhost', 25);
@@ -144,8 +143,7 @@ class Notifire
                 $handler->setTwig($env);
             }
 
-            $dispatcher->addSubscriber($handler);
-
+            $builder->addHandler($handler);
             $builder->addNotification('email', Email::class);
         }
 
