@@ -71,11 +71,18 @@ class MailgunHandler extends AbstractMailHandler
             ));
         }
 
-        $postData = [];
+        $postData = [
+            'o:tag' => $notification->getTags()
+        ];
+
+        foreach ($notification->getMetadata() as $key => $value) {
+            $postData['v:'.$key] = $value;
+        }
+
         $failed = [];
         $success = [];
 
-        $to = array_merge(array_values($message->getTo()), array_values($message->getCc()), array_values($message->getBcc()));
+        $to = array_merge(array_values($notification->getTo()), array_values($notification->getCc()), array_values($notification->getBcc()));
         foreach (array_chunk($to, 1000) as $to_chunk) {
             $data = $postData;
             $data['to'] = $to_chunk;

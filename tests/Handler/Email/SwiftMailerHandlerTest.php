@@ -9,24 +9,19 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
+class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 {
     /**
      * @var \Swift_Mailer|ObjectProphecy
      */
     private $mailer;
 
-    /**
-     * @var SwiftMailerHandler
-     */
-    private $notificator;
-
-    public function setUp()
+    protected function getHandler()
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
-        
-        $this->notificator = new SwiftMailerHandler($this->mailer->reveal());
+        return new SwiftMailerHandler($this->mailer->reveal());
     }
+
 
     /**
      * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
@@ -37,7 +32,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
         $this->mailer->send(Argument::type(\Swift_Message::class))
             ->willReturn(0);
 
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldAddToAddresses()
@@ -54,7 +49,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldAddCcAddresses()
@@ -71,7 +66,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldAddBccAddresses()
@@ -88,7 +83,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldAddFromAddresses()
@@ -105,7 +100,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldAddAttachments()
@@ -125,7 +120,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldSetFirstPartAsMessageBody()
@@ -144,7 +139,7 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 
     public function testShouldSetMultipartAlternativeIfEmailIsMultipart()
@@ -164,39 +159,6 @@ class SwiftMailerHandlerTest extends \PHPUnit_Framework_TestCase
             return true;
         }))
             ->willReturn(1);
-        $this->notificator->notify($email);
-    }
-
-    public function unsupportedNotificationsDataProvider()
-    {
-        return [
-            [$this->prophesize(NotificationInterface::class)->reveal()],
-            [Email::create(['mailer' => 'no_default'])]
-        ];
-    }
-
-    /**
-     * @dataProvider unsupportedNotificationsDataProvider
-     */
-    public function testSupportsShouldReturnFalseOnUnsupportedNotifications($notification)
-    {
-        $this->mailer->send(Argument::cetera())->shouldNotBeCalled();
-
-        $this->assertFalse($this->notificator->supports($notification));
-    }
-
-    public function testShouldRenderTwigTemplateParts()
-    {
-        $twig = $this->prophesize(\Twig_Environment::class);
-        $twig->render('template.twig.html', [])->shouldBeCalled();
-
-        $this->notificator->setTwig($twig->reveal());
-
-        $email = new Email;
-        $email
-            ->addPart(Email\TwigTemplatePart::create('template.twig.html'), 'text/html');
-
-        $this->mailer->send(Argument::any())->willReturn();
-        $this->notificator->notify($email);
+        $this->handler->notify($email);
     }
 }

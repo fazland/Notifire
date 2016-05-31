@@ -60,6 +60,16 @@ class Email implements NotificationInterface
     /**
      * @var string[]
      */
+    private $tags;
+
+    /**
+     * @var string[]
+     */
+    private $metadata;
+
+    /**
+     * @var string[]
+     */
     private $config;
 
     /**
@@ -77,6 +87,9 @@ class Email implements NotificationInterface
         $this->attachments = [];
         $this->parts = [];
         $this->additionalHeaders = [];
+
+        $this->tags = [];
+        $this->metadata = [];
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -422,6 +435,111 @@ class Email implements NotificationInterface
         if (isset($this->additionalHeaders[$key])) {
             unset($this->additionalHeaders[$key]);
         }
+
+        return $this;
+    }
+
+    /**
+     * Get tags. Only values are returned.
+     *
+     * @return string[]
+     */
+    public function getTags()
+    {
+        return array_values($this->tags);
+    }
+
+    /**
+     * Replace the tags array. Keys are dropped
+     *
+     * @param string[] $tags
+     *
+     * @return $this
+     */
+    public function setTags(array $tags)
+    {
+        $this->tags = array_combine($tags, $tags);
+
+        return $this;
+    }
+
+    /**
+     * Add a tag
+     *
+     * @param string $tag
+     *
+     * @return $this
+     */
+    public function addTag($tag)
+    {
+        $this->tags[$tag] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove a tag if set
+     *
+     * @param string $tag
+     *
+     * @return $this
+     */
+    public function removeTag($tag)
+    {
+        unset($this->tags[$tag]);
+
+        return $this;
+    }
+
+    /**
+     * Get metadata array
+     *
+     * @return string[]
+     */
+    public function getMetadata()
+    {
+        return $this->metadata;
+    }
+
+    /**
+     * Replace metadata array
+     *
+     * @param string[] $metadata
+     *
+     * @return $this
+     */
+    public function setMetadata(array $metadata)
+    {
+        $this->metadata = $metadata;
+
+        return $this;
+    }
+
+    /**
+     * Set a metadata value
+     *
+     * @param string $key
+     * @param mixed $value
+     *
+     * @return $this
+     */
+    public function addMetadata($key, $value)
+    {
+        $this->metadata[$key] = $value;
+
+        return $this;
+    }
+
+    /**
+     * Remove a metadata if set
+     *
+     * @param string $key
+     *
+     * @return $this
+     */
+    public function removeMetadata($key)
+    {
+        unset($this->metadata[$key]);
 
         return $this;
     }
