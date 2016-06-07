@@ -13,10 +13,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
-class Email implements NotificationInterface
+class Email extends AbstractNotification
 {
-    use NotificationTrait;
-
     /**
      * @var string[]
      */

@@ -6,6 +6,7 @@ use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
+use Fazland\Notifire\Result\Result;
 
 /**
  * Twilio handler
@@ -52,14 +53,22 @@ class TwilioHandler implements NotificationHandlerInterface
         $tos = $notification->getTo();
 
         foreach ($tos as $to) {
+            $result = new Result('twilio', $this->accountName, Result::OK);
+
             try {
-                $this->twilio->account->messages->sendMessage($from, $to, $content);
+                $response = $this->twilio->account->messages->sendMessage($from, $to, $content);
+                $result->setResponse($response);
             } catch (\Exception $e) {
+                $result->setResult(Result::FAIL)
+                    ->setResponse($e);
+
                 $failedSms[] = [
                     'to' => $to,
                     'error_message' => $e->getMessage(),
                 ];
             }
+
+            $notification->addResult($result);
         }
 
         if (count($tos) === count($failedSms)) {

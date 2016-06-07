@@ -3,6 +3,8 @@
 namespace Fazland\Notifire\Notification;
 
 use Fazland\Notifire\Manager\NotificationManagerInterface;
+use Fazland\Notifire\Result\Result;
+use Fazland\Notifire\Result\ResultSet;
 
 /**
  * Core interface of Notifire notification system. This Interface
@@ -25,4 +27,18 @@ interface NotificationInterface
      * @param NotificationManagerInterface $manager
      */
     public function setManager(NotificationManagerInterface $manager);
+
+    /**
+     * Add a result for this notification
+     * 
+     * @param Result $result
+     */
+    public function addResult(Result $result);
+
+    /**
+     * Get the ResultSet
+     * 
+     * @return ResultSet
+     */
+    public function getResultSet();
 }

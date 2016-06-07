@@ -5,6 +5,7 @@ namespace Fazland\Notifire\Handler\Email;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Result\Result;
 use Mailgun\Mailgun;
 
 /**
@@ -85,6 +86,8 @@ class MailgunHandler extends AbstractMailHandler
 
         $to = array_merge(array_values($notification->getTo()), array_values($notification->getCc()), array_values($notification->getBcc()));
         foreach (array_chunk($to, 1000) as $to_chunk) {
+            $result = new Result('mailgun', $this->domain);
+
             $data = $postData;
             $data['to'] = $to_chunk;
 
@@ -92,8 +95,12 @@ class MailgunHandler extends AbstractMailHandler
             if ($res->http_response_code == 200) {
                 $success[] = $res;
             } else {
+                $result->setResult(Result::FAIL);
                 $failed[] = $res;
             }
+
+            $result->setResponse($res);
+            $notification->addResult($result);
         }
 
         if (count($success) === 0) {

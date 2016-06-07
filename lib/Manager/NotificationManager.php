@@ -95,7 +95,7 @@ class NotificationManager implements NotificationManagerInterface
      * Set the manager to throw an exception if no handler
      * has matched the notification
      *
-     * @param boolean $throwIfNotNotified
+     * @param bool $throwIfNotNotified
      *
      * @return $this
      */

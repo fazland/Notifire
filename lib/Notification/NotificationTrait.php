@@ -3,6 +3,8 @@
 namespace Fazland\Notifire\Notification;
 
 use Fazland\Notifire\Manager\NotificationManagerInterface;
+use Fazland\Notifire\Result\Result;
+use Fazland\Notifire\Result\ResultSet;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -17,6 +19,8 @@ trait NotificationTrait
      * @var NotificationManagerInterface
      */
     private $notificationManager = null;
+
+    private $resultSet = null;
 
     /**
      * {@inheritdoc}
@@ -34,5 +38,25 @@ trait NotificationTrait
     public function send()
     {
         $this->notificationManager->notify($this);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getResultSet()
+    {
+        if (null === $this->resultSet) {
+            $this->resultSet = new ResultSet();
+        }
+
+        return $this->resultSet;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function addResult(Result $result)
+    {
+        $this->getResultSet()->addResult($result);
     }
 }

@@ -10,10 +10,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  * Notifire's standard representation of an Sms as an implementation
  * of {@see NotificationInterface}.
  */
-class Sms implements NotificationInterface
+class Sms extends AbstractNotification
 {
-    use NotificationTrait;
-
     /**
      * @var string
      */
