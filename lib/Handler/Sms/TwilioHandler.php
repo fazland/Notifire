@@ -25,6 +25,11 @@ class TwilioHandler implements NotificationHandlerInterface
     private $accountName;
 
     /**
+     * @var string
+     */
+    private $defaultFrom;
+
+    /**
      * @param \Services_Twilio $twilio
      * @param string $name
      */
@@ -42,7 +47,7 @@ class TwilioHandler implements NotificationHandlerInterface
         $failedSms = [];
 
         /** @var Sms $notification */
-        $from = $notification->getFrom();
+        $from = $notification->getFrom() ?: $this->defaultFrom;
         $content = $notification->getContent();
         $tos = $notification->getTo();
 
@@ -74,5 +79,15 @@ class TwilioHandler implements NotificationHandlerInterface
         $config = $notification->getConfig();
 
         return $config['provider'] === 'twilio' && $config['account_name'] === $this->accountName;
+    }
+
+    /**
+     * Set the 'from' default. Used if no from is configured in the Sms object
+     *
+     * @param string $defaultFrom
+     */
+    public function setDefaultFrom($defaultFrom)
+    {
+        $this->defaultFrom = $defaultFrom;
     }
 }

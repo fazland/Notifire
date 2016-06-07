@@ -87,4 +87,24 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->notificator->notify($sms);
     }
+
+    public function testShouldUseDefaultFromNumber()
+    {
+        $sms = new Sms();
+        $sms->setTo(['+393333333333'])
+            ->setContent('Foo Bar')
+        ;
+
+        $twilio = $this->twilio->reveal();
+        $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
+        $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
+
+        $twilio->account = $account->reveal();
+        $twilio->account->messages = $messages->reveal();
+
+        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
+
+        $this->notificator->setDefaultFrom('+393333333333');
+        $this->notificator->notify($sms);
+    }
 }
