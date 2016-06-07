@@ -15,7 +15,7 @@ trait TwigPartProcessingTrait
     {
         $this->twig = $twig;
     }
-    
+
     protected function renderTwigPartContent(TwigTemplatePart $part)
     {
         return $this->twig->render($part->getTemplateName(), $part->getVars());

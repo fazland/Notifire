@@ -283,7 +283,7 @@ class Email implements NotificationInterface
     public function addPart(Part $part, $overwrite = false)
     {
         $contentType = $part->getContentType();
-        if (isset ($this->parts[$contentType]) && ! $overwrite) {
+        if (isset($this->parts[$contentType]) && ! $overwrite) {
             throw new PartContentTypeMismatchException("A part with content type $contentType has been already added");
         }
 
@@ -325,6 +325,7 @@ class Email implements NotificationInterface
     public function getHtml()
     {
         $part = $this->getPart('text/html');
+
         return null !== $part ? $part->getContent() : null;
     }
 
@@ -337,6 +338,7 @@ class Email implements NotificationInterface
     public function getText()
     {
         $part = $this->getPart('text/plain');
+
         return null !== $part ? $part->getContent() : null;
     }
 
@@ -551,7 +553,7 @@ class Email implements NotificationInterface
     {
         $resolver->setDefaults([
             'provider' => 'swiftmailer',
-            'mailer' => 'default'
+            'mailer' => 'default',
         ]);
     }
 }

@@ -2,8 +2,6 @@
 
 namespace Fazland\Notifire\Notification;
 
-use Fazland\Notifire\Event\NotifyEvent;
-use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

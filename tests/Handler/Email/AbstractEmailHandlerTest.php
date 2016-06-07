@@ -2,11 +2,9 @@
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
-
 use Fazland\Notifire\Handler\Email\AbstractMailHandler;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
-use Prophecy\Argument;
 
 abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -24,7 +22,7 @@ abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [$this->prophesize(NotificationInterface::class)->reveal()],
-            [Email::create(['mailer' => 'no_default'])]
+            [Email::create(['mailer' => 'no_default'])],
         ];
     }
 
@@ -43,7 +41,7 @@ abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
 
         $this->handler->setTwig($twig->reveal());
 
-        $email = new Email;
+        $email = new Email();
         $email
             ->addTo('unused@example.org')
             ->addPart(Email\TwigTemplatePart::create('template.twig.html'), 'text/html');

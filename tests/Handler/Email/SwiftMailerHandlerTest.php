@@ -2,10 +2,8 @@
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
-use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
 use Fazland\Notifire\Notification\Email;
-use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
@@ -19,9 +17,9 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
     protected function getHandler()
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
+
         return new SwiftMailerHandler($this->mailer->reveal());
     }
-
 
     /**
      * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
@@ -37,7 +35,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldAddToAddresses()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addTo('info@example.org');
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -46,6 +44,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             }
 
             $this->assertCount(1, $argument->getTo());
+
             return true;
         }))
             ->willReturn(1);
@@ -54,7 +53,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldAddCcAddresses()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addCc('info@example.org');
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -63,6 +62,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             }
 
             $this->assertCount(1, $argument->getCc());
+
             return true;
         }))
             ->willReturn(1);
@@ -71,7 +71,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldAddBccAddresses()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addBcc('info@example.org');
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -80,6 +80,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             }
 
             $this->assertCount(1, $argument->getBcc());
+
             return true;
         }))
             ->willReturn(1);
@@ -88,7 +89,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldAddFromAddresses()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addFrom('info@example.org');
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -97,6 +98,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             }
 
             $this->assertCount(1, $argument->getFrom());
+
             return true;
         }))
             ->willReturn(1);
@@ -105,7 +107,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldAddAttachments()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addAttachment(Email\Attachment::create()->setContent('ATTACHMENT'));
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -117,6 +119,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             $this->assertCount(1, $children);
             $this->assertEquals('ATTACHMENT', $children[0]->getBody());
             $this->assertEquals('application/octet-stream', $children[0]->getContentType());
+
             return true;
         }))
             ->willReturn(1);
@@ -125,7 +128,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldSetFirstPartAsMessageBody()
     {
-        $email = new Email;
+        $email = new Email();
         $email->addPart(Email\Part::create('BODY PART', 'text/plain'));
 
         $this->mailer->send(Argument::that(function ($argument) {
@@ -136,6 +139,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             $this->assertCount(0, $argument->getChildren());
             $this->assertEquals('text/plain', $argument->getContentType());
             $this->assertEquals('BODY PART', $argument->getBody());
+
             return true;
         }))
             ->willReturn(1);
@@ -144,7 +148,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldSetMultipartAlternativeIfEmailIsMultipart()
     {
-        $email = new Email;
+        $email = new Email();
         $email
             ->addPart(Email\Part::create('BODY PART', 'text/plain'))
             ->addPart(Email\Part::create('PART 2', 'text/html'));
@@ -156,6 +160,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
             $this->assertCount(2, $argument->getChildren());
             $this->assertEquals('multipart/alternative', $argument->getContentType());
+
             return true;
         }))
             ->willReturn(1);

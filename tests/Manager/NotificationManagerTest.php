@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\Tests\Manager;
 
-use Fazland\Notifire\Event\Events;
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Event\PostNotifyEvent;
 use Fazland\Notifire\Event\PreNotifyEvent;
@@ -28,8 +27,8 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
     public function notificationsDataProvider()
     {
         return [
-            [ $this->prophesize(NotificationInterface::class)->reveal() ],
-            [ Email::create([]) ]
+            [$this->prophesize(NotificationInterface::class)->reveal()],
+            [Email::create([])],
         ];
     }
 
@@ -65,6 +64,7 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
             }
 
             $not = $arg->getNotification();
+
             return $not !== $notification;
         }))
             ->shouldBeCalledTimes(2);

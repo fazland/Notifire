@@ -1,6 +1,7 @@
 <?php
 
 namespace Fazland\Notifire\Notification;
+
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 
 /**

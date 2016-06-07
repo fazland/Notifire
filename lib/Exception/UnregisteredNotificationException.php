@@ -11,5 +11,4 @@ namespace Fazland\Notifire\Exception;
  */
 class UnregisteredNotificationException extends \Exception
 {
-
 }

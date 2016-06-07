@@ -196,7 +196,7 @@ class Sms implements NotificationInterface
     {
         $resolver->setDefaults([
             'provider' => 'twilio',
-            'account_name' => 'default'
+            'account_name' => 'default',
         ]);
     }
 }

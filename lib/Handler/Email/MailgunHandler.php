@@ -27,7 +27,7 @@ class MailgunHandler extends AbstractMailHandler
     private $domain;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function __construct(Mailgun $mailgun, $domain)
     {
@@ -36,25 +36,26 @@ class MailgunHandler extends AbstractMailHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports(NotificationInterface $notification)
     {
         if (! $notification instanceof Email) {
             return false;
         }
-        
+
         $config = $notification->getConfig();
+
         return 'mailgun' === $config['provider'] && $this->domain === $config['mailer'];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function notify(NotificationInterface $notification)
     {
         if (! class_exists('Swift_Message')) {
-            throw new \RuntimeException("You need to install swift mailer to use mailgun transport");
+            throw new \RuntimeException('You need to install swift mailer to use mailgun transport');
         }
 
         /** @var Email $notification */
@@ -72,7 +73,7 @@ class MailgunHandler extends AbstractMailHandler
         }
 
         $postData = [
-            'o:tag' => $notification->getTags()
+            'o:tag' => $notification->getTags(),
         ];
 
         foreach ($notification->getMetadata() as $key => $value) {

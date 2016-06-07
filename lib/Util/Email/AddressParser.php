@@ -37,7 +37,7 @@ class AddressParser
 
         return [
             'address' => $addr,
-            'personal' => $name
+            'personal' => $name,
         ];
     }
 }

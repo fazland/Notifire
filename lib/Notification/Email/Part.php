@@ -30,6 +30,7 @@ class Part
 
         $instance->content = $content;
         $instance->contentType = $contentType;
+
         return $instance;
     }
 
@@ -49,6 +50,7 @@ class Part
     public function setContent($content)
     {
         $this->content = $content;
+
         return $this;
     }
 

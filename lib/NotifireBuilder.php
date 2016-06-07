@@ -4,7 +4,6 @@ namespace Fazland\Notifire;
 
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Manager\NotificationManager;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

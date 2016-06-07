@@ -12,7 +12,7 @@ class AttachmentTest extends \PHPUnit_Framework_TestCase
     {
         vfsStreamWrapper::unregister();
     }
-    
+
     public function testCreateFromFileShouldLoadContentFromFile()
     {
         $root = vfsStream::setup();

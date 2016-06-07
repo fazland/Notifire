@@ -4,7 +4,6 @@ namespace Fazland\Notifire\Tests\Handler\Sms;
 
 use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\Sms;
-use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**
@@ -22,7 +21,6 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
      */
     private $notificator;
 
-
     public function setUp()
     {
         $this->twilio = $this->prophesize(\Services_Twilio::class);
@@ -32,7 +30,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function withoutTo()
     {
-        $s1 = new Sms;
+        $s1 = new Sms();
         $s1->setTo([]);
 
         $s2 = clone $s1;
@@ -44,20 +42,20 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         return [
             [$s1],
             [$s2],
-            [$s3]
+            [$s3],
         ];
     }
 
     public function right()
     {
-        $sms = new Sms;
+        $sms = new Sms();
         $sms->setTo(['+393333333333'])
             ->setFrom('+393333333333')
             ->setContent('Foo Bar')
         ;
 
         return [
-            [$sms]
+            [$sms],
         ];
     }
 
@@ -72,7 +70,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testShouldCallSendMessage()
     {
-        $sms = new Sms;
+        $sms = new Sms();
         $sms->setTo(['+393333333333'])
             ->setFrom('+393333333333')
             ->setContent('Foo Bar')

@@ -69,15 +69,15 @@ class NotificationManager implements NotificationManagerInterface
     {
         $notified = false;
         $this->dispatch(Events::PRE_NOTIFY, PreNotifyEvent::class, $notification);
-        
+
         foreach ($this->handlers as $handler) {
             $notified = $this->handle($notification, $handler) || $notified;
         }
-        
+
         if (! $notified) {
-            $message = "No handler has been defined for ".get_class($notification);
+            $message = 'No handler has been defined for '.get_class($notification);
             if (method_exists($notification, 'getConfig')) {
-                $message .= " (".json_encode($notification->getConfig()).")";
+                $message .= ' ('.json_encode($notification->getConfig()).')';
             }
 
             throw new NotificationFailedException($message);
@@ -109,6 +109,7 @@ class NotificationManager implements NotificationManagerInterface
         }
 
         $handler->notify($notification);
+
         return true;
     }
 

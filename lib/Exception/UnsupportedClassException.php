@@ -10,5 +10,4 @@ namespace Fazland\Notifire\Exception;
  */
 class UnsupportedClassException extends \Exception
 {
-
 }

@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\Handler\Email;
 
-use Fazland\Notifire\Handler\NotifyEventSubscriber;
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
@@ -36,7 +35,7 @@ class SwiftMailerHandler extends AbstractMailHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function supports(NotificationInterface $notification)
     {
@@ -45,11 +44,12 @@ class SwiftMailerHandler extends AbstractMailHandler
         }
 
         $config = $notification->getConfig();
+
         return $config['provider'] === 'swiftmailer' && $config['mailer'] === $this->mailerName;
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function notify(NotificationInterface $notification)
     {
@@ -64,9 +64,9 @@ class SwiftMailerHandler extends AbstractMailHandler
         $this->addAttachments($notification, $email);
 
         $result = $this->mailer->send($email);
-        
+
         if (0 === $result) {
-            throw new NotificationFailedException("Mailer reported all recipient failed");
+            throw new NotificationFailedException('Mailer reported all recipient failed');
         }
     }
 

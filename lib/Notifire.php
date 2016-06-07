@@ -2,16 +2,14 @@
 
 namespace Fazland\Notifire;
 
-use Fazland\Notifire\Manager\NotificationManagerInterface;
-use Fazland\Notifire\Handler\NotNotifiedEventSubscriber;
-use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
 use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
 use Fazland\Notifire\Exception\UnregisteredNotificationException;
 use Fazland\Notifire\Exception\UnsupportedClassException;
+use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
+use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -76,7 +74,7 @@ class Notifire
 
             throw new UnsupportedClassException($message);
         }
-        
+
         static::$notifications[$notificationName] = $notificationClass;
     }
 

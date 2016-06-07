@@ -16,7 +16,7 @@ class NotificationFailedException extends \Exception
      */
     private $details;
 
-    public function __construct($message = "", $details = [], $code = 0, \Exception $previous = null)
+    public function __construct($message = '', $details = [], $code = 0, \Exception $previous = null)
     {
         $this->details = $details;
 

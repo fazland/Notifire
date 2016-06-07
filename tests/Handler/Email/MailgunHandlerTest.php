@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
-
 use Fazland\Notifire\Handler\Email\MailgunHandler;
 use Fazland\Notifire\Notification\Email;
 use Mailgun\Mailgun;
@@ -38,6 +37,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
 
                 $resp = new \stdClass();
                 $resp->http_response_code = 200;
+
                 return $resp;
             });
 
@@ -56,6 +56,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
 
                 $resp = new \stdClass();
                 $resp->http_response_code = 200;
+
                 return $resp;
             });
 
