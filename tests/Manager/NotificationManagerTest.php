@@ -38,6 +38,7 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testNotifyShouldThrowIfNoHandlerIsConfiguredForNotification($notification)
     {
+        $this->manager->setThrowIfNotNotified(true);
         $this->manager->notify($notification);
     }
 

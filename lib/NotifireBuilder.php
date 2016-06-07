@@ -95,6 +95,7 @@ class NotifireBuilder
         Notifire::reset();
 
         $manager = new NotificationManager();
+        $manager->setThrowIfNotNotified(true);
         foreach ($this->handlers as $handler) {
             $manager->addHandler($handler);
         }

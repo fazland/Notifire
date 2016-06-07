@@ -30,6 +30,11 @@ class NotificationManager implements NotificationManagerInterface
     private $eventDispatcher = null;
 
     /**
+     * @var bool
+     */
+    private $throwIfNotNotified = false;
+
+    /**
      * Add an handler definition
      *
      * @param NotificationHandlerInterface $handler
@@ -74,7 +79,7 @@ class NotificationManager implements NotificationManagerInterface
             $notified = $this->handle($notification, $handler) || $notified;
         }
 
-        if (! $notified) {
+        if ($this->throwIfNotNotified && ! $notified) {
             $message = 'No handler has been defined for '.get_class($notification);
             if (method_exists($notification, 'getConfig')) {
                 $message .= ' ('.json_encode($notification->getConfig()).')';
@@ -84,6 +89,21 @@ class NotificationManager implements NotificationManagerInterface
         }
 
         $this->dispatch(Events::POST_NOTIFY, PostNotifyEvent::class, $notification);
+    }
+
+    /**
+     * Set the manager to throw an exception if no handler
+     * has matched the notification
+     *
+     * @param boolean $throwIfNotNotified
+     *
+     * @return $this
+     */
+    public function setThrowIfNotNotified($throwIfNotNotified)
+    {
+        $this->throwIfNotNotified = $throwIfNotNotified;
+
+        return $this;
     }
 
     /**
