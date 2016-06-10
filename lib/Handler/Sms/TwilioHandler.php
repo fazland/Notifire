@@ -48,15 +48,16 @@ class TwilioHandler implements NotificationHandlerInterface
         $failedSms = [];
 
         /** @var Sms $notification */
-        $from = $notification->getFrom() ?: $this->defaultFrom;
-        $content = $notification->getContent();
+        $data = $this->getData($notification);
         $tos = $notification->getTo();
 
         foreach ($tos as $to) {
             $result = new Result('twilio', $this->accountName, Result::OK);
+            $params = $data;
+            $params['To'] = $to;
 
             try {
-                $response = $this->twilio->account->messages->sendMessage($from, $to, $content);
+                $response = $this->twilio->account->messages->create($params);
                 $result->setResponse($response);
             } catch (\Exception $e) {
                 $result->setResult(Result::FAIL)
@@ -98,5 +99,20 @@ class TwilioHandler implements NotificationHandlerInterface
     public function setDefaultFrom($defaultFrom)
     {
         $this->defaultFrom = $defaultFrom;
+    }
+
+    /**
+     * Get the parameters for the messages->create call
+     *
+     * @param Sms $notification
+     *
+     * @return array
+     */
+    protected function getData(Sms $notification)
+    {
+        return [
+            'From' => $notification->getFrom() ?: $this->defaultFrom,
+            'Body' => $notification->getContent()
+        ];
     }
 }
