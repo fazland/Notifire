@@ -27,6 +27,8 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
     public function testShouldThrowExceptionIfNotificationFails()
     {
         $email = new Email();
+        $email->addTo('info@example.org');
+
         $this->mailer->send(Argument::type(\Swift_Message::class))
             ->willReturn(0);
 

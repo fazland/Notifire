@@ -60,18 +60,20 @@ class SwiftMailerHandler extends AbstractMailHandler
             ->setSubject($notification->getSubject())
         ;
 
-        $this->addAddresses($notification, $email);
-        $this->addParts($notification, $email);
-        $this->addAttachments($notification, $email);
+        if (! empty($notification->getTo()) || ! empty($notification->getCc()) || ! empty($notification->getBcc())) {
+            $this->addAddresses($notification, $email);
+            $this->addParts($notification, $email);
+            $this->addAttachments($notification, $email);
 
-        $result = $this->mailer->send($email);
+            $result = $this->mailer->send($email);
 
-        $res = new Result('swiftmailer', $this->mailerName, $result > 0);
-        $res->setResponse($result);
-        $notification->addResult($res);
+            $res = new Result('swiftmailer', $this->mailerName, $result > 0);
+            $res->setResponse($result);
+            $notification->addResult($res);
 
-        if (0 === $result) {
-            throw new NotificationFailedException('Mailer reported all recipient failed');
+            if (0 === $result) {
+                throw new NotificationFailedException('Mailer reported all recipient failed');
+            }
         }
     }
 

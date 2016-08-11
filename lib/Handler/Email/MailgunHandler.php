@@ -85,26 +85,28 @@ class MailgunHandler extends AbstractMailHandler
         $success = [];
 
         $to = array_merge(array_values($notification->getTo()), array_values($notification->getCc()), array_values($notification->getBcc()));
-        foreach (array_chunk($to, 1000) as $to_chunk) {
-            $result = new Result('mailgun', $this->domain);
+        if (! empty($to)) {
+            foreach (array_chunk($to, 1000) as $to_chunk) {
+                $result = new Result('mailgun', $this->domain);
 
-            $data = $postData;
-            $data['to'] = $to_chunk;
+                $data = $postData;
+                $data['to'] = $to_chunk;
 
-            $res = $this->mailgun->sendMessage($this->domain, $data, $message->toString());
-            if ($res->http_response_code == 200) {
-                $success[] = $res;
-            } else {
-                $result->setResult(Result::FAIL);
-                $failed[] = $res;
+                $res = $this->mailgun->sendMessage($this->domain, $data, $message->toString());
+                if ($res->http_response_code == 200) {
+                    $success[] = $res;
+                } else {
+                    $result->setResult(Result::FAIL);
+                    $failed[] = $res;
+                }
+
+                $result->setResponse($res);
+                $notification->addResult($result);
             }
 
-            $result->setResponse($res);
-            $notification->addResult($result);
-        }
-
-        if (count($success) === 0) {
-            throw new NotificationFailedException("Sending failed for message {$notification->getSubject()}", $failed);
+            if (count($success) === 0) {
+                throw new NotificationFailedException("Sending failed for message {$notification->getSubject()}", $failed);
+            }
         }
     }
 }
