@@ -63,6 +63,7 @@ class SwiftMailerHandler extends AbstractMailHandler
         if (! empty($notification->getTo()) || ! empty($notification->getCc()) || ! empty($notification->getBcc())) {
             $this->addAddresses($notification, $email);
             $this->addParts($notification, $email);
+            $this->addHeaders($notification, $email);
             $this->addAttachments($notification, $email);
 
             $result = $this->mailer->send($email);

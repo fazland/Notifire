@@ -107,6 +107,28 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
         $this->handler->notify($email);
     }
 
+    public function testShouldAddHeaders()
+    {
+        $email = new Email();
+        $email
+            ->addBcc('info@example.org')
+            ->addAdditionalHeader('X-Additional-Header', 'header_value')
+        ;
+
+        $this->mailer->send(Argument::that(function ($argument) {
+            if (! $argument instanceof \Swift_Message) {
+                return false;
+            }
+
+            $this->assertTrue($argument->getHeaders()->has('X-Additional-Header'));
+            $this->assertEquals("header_value", $argument->getHeaders()->get('X-Additional-Header')->getFieldBody());
+
+            return true;
+        }))
+            ->willReturn(1);
+        $this->handler->notify($email);
+    }
+
     public function testShouldAddAttachments()
     {
         $email = new Email();
