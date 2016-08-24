@@ -49,7 +49,8 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
     public function right()
     {
         $sms = new Sms();
-        $sms->setTo(['+393333333333'])
+        $sms
+            ->setTo(['+393333333333'])
             ->setFrom('+393333333333')
             ->setContent('Foo Bar')
         ;
@@ -68,14 +69,11 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $this->notificator->notify($sms);
     }
 
-    public function testShouldCallSendMessage()
+    /**
+     * @dataProvider right
+     */
+    public function testShouldCallMessagesCreate($sms)
     {
-        $sms = new Sms();
-        $sms->setTo(['+393333333333'])
-            ->setFrom('+393333333333')
-            ->setContent('Foo Bar')
-            ;
-
         $twilio = $this->twilio->reveal();
         $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
         $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
@@ -83,18 +81,16 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $twilio->account = $account->reveal();
         $twilio->account->messages = $messages->reveal();
 
-        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
+        $messages->create(["From" => "+393333333333", "To" => "+393333333333", "Body" => "Foo Bar"])->shouldBeCalled();
 
         $this->notificator->notify($sms);
     }
 
-    public function testShouldUseDefaultFromNumber()
+    /**
+     * @dataProvider right
+     */
+    public function testShouldUseDefaultFromNumber($sms)
     {
-        $sms = new Sms();
-        $sms->setTo(['+393333333333'])
-            ->setContent('Foo Bar')
-        ;
-
         $twilio = $this->twilio->reveal();
         $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
         $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
@@ -102,7 +98,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $twilio->account = $account->reveal();
         $twilio->account->messages = $messages->reveal();
 
-        $messages->sendMessage('+393333333333', '+393333333333', 'Foo Bar')->shouldBeCalled();
+        $messages->create(["From" => "+393333333333", "To" => "+393333333333", "Body" => "Foo Bar"])->shouldBeCalled();
 
         $this->notificator->setDefaultFrom('+393333333333');
         $this->notificator->notify($sms);
