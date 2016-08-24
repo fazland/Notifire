@@ -81,6 +81,11 @@ class MailgunHandler extends AbstractMailHandler
             $postData['v:'.$key] = $value;
         }
 
+        $additionalHeaders = $notification->getAdditionalHeaders();
+        if (isset($additionalHeaders['X-Mailgun-Recipient-Variables'])) {
+            $postData['recipient-variables'] = $additionalHeaders['X-Mailgun-Recipient-Variables'];
+        }
+
         $failed = [];
         $success = [];
 

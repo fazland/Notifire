@@ -62,4 +62,29 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
 
         $this->handler->notify(Email::create()->addMetadata('meta_foo', 'bar')->addTo('unused'));
     }
+
+    public function testShouldAddRecipientVariables()
+    {
+        $that = $this;
+        $this->mailgun->sendMessage('default', Argument::type('array'), Argument::cetera())
+            ->will(function ($args) use ($that) {
+                $postData = $args[1];
+
+                $that->assertArrayHasKey('recipient-variables', $postData);
+                $that->assertJson($postData['recipient-variables']);
+
+                $resp = new \stdClass();
+                $resp->http_response_code = 200;
+
+                return $resp;
+            });
+
+        $this->handler->notify(
+            Email::create()
+                ->addAdditionalHeader('X-Mailgun-Recipient-Variables', json_encode([
+                    'test@example.com' => ['key' => 'value']
+                ]))
+                ->addTo('test@example.com')
+        );
+    }
 }
