@@ -1,88 +1,28 @@
 <?php
 
-namespace Fazland\Notifire\Handler\Email;
+namespace Fazland\Notifire\Converter;
 
-use Fazland\Notifire\Converter\SwiftMailerConverter;
-use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
-use Fazland\Notifire\Notification\NotificationInterface;
-use Fazland\Notifire\Result\Result;
 use Fazland\Notifire\Util\Email\AddressParser;
 
 /**
- * SwiftMailer handler
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * This class is responsible of converting an Email object to
+ * a Swift_Message instance
  */
-class SwiftMailerHandler extends AbstractMailHandler
+class SwiftMailerConverter
 {
-    /**
-     * @var \Swift_Mailer
-     */
-    private $mailer;
-
-    /**
-     * @var string
-     */
-    private $mailerName;
-
-    /**
-     * @var SwiftMailerConverter
-     */
-    private $converter;
-
-    /**
-     * @param \Swift_Mailer $mailer
-     * @param string $mailerName
-     */
-    public function __construct(\Swift_Mailer $mailer, $mailerName)
+    public function convert(Email $email)
     {
-        $this->mailer = $mailer;
-        $this->mailerName = $mailerName;
-    }
+        $message = $this->createInstance()
+            ->setSubject($email->getSubject())
+        ;
 
-    public function setConverter(SwiftMailerConverter $converter)
-    {
-        $this->converter = $converter;
-    }
+        $this->addAddresses($email, $message);
+        $this->addParts($email, $message);
+        $this->addHeaders($email, $message);
+        $this->addAttachments($email, $message);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(NotificationInterface $notification)
-    {
-        if (! $notification instanceof Email) {
-            return false;
-        }
-
-        $config = $notification->getConfig();
-
-        return $config['mailer'] === $this->mailerName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function notify(NotificationInterface $notification)
-    {
-        /** @var Email $notification */
-        if (null === $this->converter) {
-            $this->converter = new SwiftMailerConverter();
-        }
-
-        if (! empty($notification->getTo()) || ! empty($notification->getCc()) || ! empty($notification->getBcc())) {
-            $email = $this->converter->convert($notification);
-
-            $result = $this->mailer->send($email);
-
-            $res = new Result('swiftmailer', $this->mailerName, $result > 0);
-            $res->setResponse($result);
-            $notification->addResult($res);
-
-            if (0 === $result) {
-                throw new NotificationFailedException('Mailer reported all recipient failed');
-            }
-        }
+        return $message;
     }
 
     /**
@@ -167,5 +107,15 @@ class SwiftMailerHandler extends AbstractMailHandler
                 $headers->addTextHeader($key, $value);
             }
         }
+    }
+
+    /**
+     * Create a new instance of Swift_Message
+     *
+     * @return \Swift_Message
+     */
+    protected function createInstance()
+    {
+        return \Swift_Message::newInstance();
     }
 }
