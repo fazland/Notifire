@@ -438,11 +438,21 @@ class Email extends AbstractNotification
      */
     public function removeAdditionalHeader($key)
     {
-        if (isset($this->additionalHeaders[$key])) {
-            unset($this->additionalHeaders[$key]);
-        }
+        unset($this->additionalHeaders[$key]);
 
         return $this;
+    }
+
+    /**
+     * Check if header $header is set
+     *
+     * @param $header
+     *
+     * @return bool
+     */
+    public function hasAdditionalHeader($header)
+    {
+        return isset($this->additionalHeaders[$header]);
     }
 
     /**
