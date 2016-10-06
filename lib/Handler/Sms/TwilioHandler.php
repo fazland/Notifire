@@ -112,7 +112,7 @@ class TwilioHandler implements NotificationHandlerInterface
     {
         return [
             'From' => $notification->getFrom() ?: $this->defaultFrom,
-            'Body' => $notification->getContent()
+            'Body' => $notification->getContent(),
         ];
     }
 }

@@ -121,7 +121,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
             }
 
             $this->assertTrue($argument->getHeaders()->has('X-Additional-Header'));
-            $this->assertEquals("header_value", $argument->getHeaders()->get('X-Additional-Header')->getFieldBody());
+            $this->assertEquals('header_value', $argument->getHeaders()->get('X-Additional-Header')->getFieldBody());
 
             return true;
         }))

@@ -4,7 +4,7 @@ namespace Fazland\Notifire\Notification\Email;
 
 /**
  * Part class for adding email's parts to {@see Email}
- * 
+ *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Part

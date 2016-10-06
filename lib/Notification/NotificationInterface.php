@@ -30,14 +30,14 @@ interface NotificationInterface
 
     /**
      * Add a result for this notification
-     * 
+     *
      * @param Result $result
      */
     public function addResult(Result $result);
 
     /**
      * Get the ResultSet
-     * 
+     *
      * @return ResultSet
      */
     public function getResultSet();

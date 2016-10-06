@@ -81,7 +81,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $twilio->account = $account->reveal();
         $twilio->account->messages = $messages->reveal();
 
-        $messages->create(["From" => "+393333333333", "To" => "+393333333333", "Body" => "Foo Bar"])->shouldBeCalled();
+        $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
         $this->notificator->notify($sms);
     }
@@ -98,7 +98,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
         $twilio->account = $account->reveal();
         $twilio->account->messages = $messages->reveal();
 
-        $messages->create(["From" => "+393333333333", "To" => "+393333333333", "Body" => "Foo Bar"])->shouldBeCalled();
+        $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
         $this->notificator->setDefaultFrom('+393333333333');
         $this->notificator->notify($sms);

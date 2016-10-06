@@ -109,7 +109,7 @@ class NotificationManager implements NotificationManagerInterface
     /**
      * Checks if handler supports this notification and eventually
      * send the notification
-     * 
+     *
      * @param NotificationInterface $notification
      * @param NotificationHandlerInterface $handler
      *

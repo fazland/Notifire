@@ -45,7 +45,9 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
     public function testShouldDispatchEvents()
     {
         $notification = Email::create();
-        $notifyArg = Argument::allOf(Argument::type(Email::class), Argument::that(function ($arg) use ($notification) { return $arg !== $notification; }));
+        $notifyArg = Argument::allOf(Argument::type(Email::class), Argument::that(function ($arg) use ($notification) {
+            return $arg !== $notification;
+        }));
 
         $handler = $this->prophesize(NotificationHandlerInterface::class);
         $handler->supports(Argument::any())->willReturn(true);
