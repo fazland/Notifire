@@ -20,6 +20,11 @@ class Part
     private $contentType;
 
     /**
+     * @var bool
+     */
+    private $needsB64Encoding = false;
+
+    /**
      * @param string|null $content
      * @param string|null $contentType
      * @return static
@@ -72,5 +77,29 @@ class Part
         $this->contentType = $contentType;
 
         return $this;
+    }
+
+    /**
+     * Sets if this part needs to be base64 encoded
+     *
+     * @param $needs_encoding
+     *
+     * @return $this
+     */
+    public function setNeedsBase64Encoding($needs_encoding)
+    {
+        $this->needsB64Encoding = $needs_encoding;
+
+        return $this;
+    }
+
+    /**
+     * Should this part be base64-encoded?
+     *
+     * @return bool
+     */
+    public function needsBase64Encoding()
+    {
+        return $this->needsB64Encoding;
     }
 }

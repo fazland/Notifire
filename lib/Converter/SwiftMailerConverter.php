@@ -71,7 +71,12 @@ class SwiftMailerConverter
     protected function addParts(Email $notification, \Swift_Message $email)
     {
         foreach ($notification->getParts() as $part) {
-            $email->addPart($part->getContent(), $part->getContentType());
+            $mimePart = \Swift_MimePart::newInstance($part->getContent(), $part->getContentType());
+            if ($part->needsBase64Encoding()) {
+                $mimePart->setEncoder(\Swift_Encoding::getBase64Encoding());
+            }
+
+            $email->attach($mimePart);
         }
     }
 
