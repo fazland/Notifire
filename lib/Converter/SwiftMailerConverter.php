@@ -22,6 +22,10 @@ class SwiftMailerConverter
         $this->addHeaders($email, $message);
         $this->addAttachments($email, $message);
 
+        if ($contentType = $email->getContentType()) {
+            $message->setContentType($contentType);
+        }
+
         return $message;
     }
 

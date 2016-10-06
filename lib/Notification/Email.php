@@ -21,6 +21,11 @@ class Email extends AbstractNotification
     private $additionalHeaders;
 
     /**
+     * @var string
+     */
+    private $contentType;
+
+    /**
      * @var string[]
      */
     private $to;
@@ -90,6 +95,7 @@ class Email extends AbstractNotification
         $this->attachments = [];
         $this->parts = [];
         $this->additionalHeaders = [];
+        $this->contentType = null;
 
         $this->tags = [];
         $this->metadata = [];
@@ -431,6 +437,15 @@ class Email extends AbstractNotification
         return $this;
     }
 
+    public function getAdditionalHeader($key)
+    {
+        if (! $this->hasAdditionalHeader($key)) {
+            return null;
+        }
+
+        return $this->additionalHeaders[$key];
+    }
+
     /**
      * @param string $key
      *
@@ -453,6 +468,26 @@ class Email extends AbstractNotification
     public function hasAdditionalHeader($header)
     {
         return isset($this->additionalHeaders[$header]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getContentType()
+    {
+        return $this->contentType;
+    }
+
+    /**
+     * @param string $contentType
+     *
+     * @return $this
+     */
+    public function setContentType($contentType)
+    {
+        $this->contentType = $contentType;
+
+        return $this;
     }
 
     /**
