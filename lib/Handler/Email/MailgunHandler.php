@@ -70,7 +70,7 @@ class MailgunHandler extends AbstractMailHandler
             ->setFrom($notification->getFrom());
 
         foreach ($notification->getParts() as $part) {
-            $message->attach(\Swift_MimePart::newInstance($this->getContent($part), $part->getContentType()));
+            $message->attach(\Swift_MimePart::newInstance($part->getContent(), $part->getContentType()));
         }
 
         foreach ($notification->getAttachments() as $attachment) {

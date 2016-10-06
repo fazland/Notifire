@@ -10,6 +10,7 @@ use Fazland\Notifire\Manager\NotificationManager;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Prophecy\Argument;
+use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class NotificationManagerTest extends \PHPUnit_Framework_TestCase
@@ -19,9 +20,17 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
      */
     private $manager;
 
+    /**
+     * @var EventDispatcherInterface|ObjectProphecy
+     */
+    private $dispatcher;
+
     public function setUp()
     {
+        $this->dispatcher = $this->prophesize(EventDispatcherInterface::class);
+
         $this->manager = new NotificationManager();
+        $this->manager->setEventDispatcher($this->dispatcher->reveal());
     }
 
     public function notificationsDataProvider()
@@ -57,11 +66,9 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
         $handler2->supports(Argument::any())->willReturn(true);
         $handler2->notify($notifyArg)->willReturn();
 
-        $dispatcher = $this->prophesize(EventDispatcherInterface::class);
-
-        $dispatcher->dispatch('notifire.pre_notify', Argument::type(PreNotifyEvent::class))
+        $this->dispatcher->dispatch('notifire.pre_notify', Argument::type(PreNotifyEvent::class))
             ->shouldBeCalled();
-        $dispatcher->dispatch('notifire.notify', Argument::that(function ($arg) use ($notification) {
+        $this->dispatcher->dispatch('notifire.notify', Argument::that(function ($arg) use ($notification) {
             if (! $arg instanceof NotifyEvent) {
                 return false;
             }
@@ -71,12 +78,11 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
             return $not !== $notification;
         }))
             ->shouldBeCalledTimes(2);
-        $dispatcher->dispatch('notifire.post_notify', Argument::type(PostNotifyEvent::class))
+        $this->dispatcher->dispatch('notifire.post_notify', Argument::type(PostNotifyEvent::class))
             ->shouldBeCalled();
 
         $this->manager->addHandler($handler->reveal());
         $this->manager->addHandler($handler2->reveal());
-        $this->manager->setEventDispatcher($dispatcher->reveal());
 
         $this->manager->notify($notification);
     }

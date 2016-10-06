@@ -34,20 +34,5 @@ abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->handler->supports($notification));
     }
 
-    public function testShouldRenderTwigTemplateParts()
-    {
-        $twig = $this->prophesize(\Twig_Environment::class);
-        $twig->render('template.twig.html', [])->shouldBeCalled();
-
-        $this->handler->setTwig($twig->reveal());
-
-        $email = new Email();
-        $email
-            ->addTo('unused@example.org')
-            ->addPart(Email\TwigTemplatePart::create('template.twig.html'), 'text/html');
-
-        $this->handler->notify($email);
-    }
-
     abstract protected function getHandler();
 }

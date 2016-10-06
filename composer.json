@@ -6,12 +6,12 @@
         "symfony/options-resolver": "^2.7|^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "*",
-        "swiftmailer/swiftmailer": "^5.4",
-        "mikey179/vfsStream": "^1.6",
-        "twilio/sdk": "^4.10",
         "mailgun/mailgun-php": "^2.0",
-        "twig/twig": "^1.24"
+        "mikey179/vfsStream": "^1.6",
+        "phpunit/phpunit": "^4.8|^5.0",
+        "swiftmailer/swiftmailer": "^5.4",
+        "twig/twig": "^1.24",
+        "twilio/sdk": "^4.10"
     },
     "autoload": {
         "psr-4": {

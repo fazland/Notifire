@@ -73,7 +73,7 @@ class NotificationManager implements NotificationManagerInterface
     public function notify(NotificationInterface $notification)
     {
         $notified = false;
-        $this->dispatch(Events::PRE_NOTIFY, PreNotifyEvent::class, $notification);
+        $this->eventDispatcher->dispatch(Events::PRE_NOTIFY, new PreNotifyEvent($notification));
 
         foreach ($this->handlers as $handler) {
             $notified = $this->handle($notification, $handler) || $notified;
@@ -88,7 +88,7 @@ class NotificationManager implements NotificationManagerInterface
             throw new NotificationFailedException($message);
         }
 
-        $this->dispatch(Events::POST_NOTIFY, PostNotifyEvent::class, $notification);
+        $this->eventDispatcher->dispatch(Events::POST_NOTIFY, new PostNotifyEvent($notification));
     }
 
     /**
@@ -123,10 +123,8 @@ class NotificationManager implements NotificationManagerInterface
 
         $cloned = clone $notification;
 
-        if (null !== $this->eventDispatcher) {
-            $event = new NotifyEvent($cloned, $handler);
-            $this->eventDispatcher->dispatch(Events::NOTIFY, $event);
-        }
+        $event = new NotifyEvent($cloned, $handler);
+        $this->eventDispatcher->dispatch(Events::NOTIFY, $event);
 
         $handler->notify($cloned);
 
@@ -135,22 +133,5 @@ class NotificationManager implements NotificationManagerInterface
         }
 
         return true;
-    }
-
-    /**
-     * Create a new Event object and trigger it if eventDispatcher is set
-     *
-     * @param string $event
-     * @param string $class
-     * @param NotificationInterface $notification
-     */
-    protected function dispatch($event, $class, NotificationInterface $notification)
-    {
-        if (null === $this->eventDispatcher) {
-            return;
-        }
-
-        $e = new $class($notification);
-        $this->eventDispatcher->dispatch($event, $e);
     }
 }

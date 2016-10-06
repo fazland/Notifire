@@ -4,6 +4,7 @@ namespace Fazland\Notifire;
 
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Manager\NotificationManager;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -100,10 +101,11 @@ class NotifireBuilder
             $manager->addHandler($handler);
         }
 
-        if (null !== $this->dispatcher) {
-            $manager->setEventDispatcher($this->dispatcher);
+        if (null === $this->dispatcher) {
+            $this->dispatcher = new EventDispatcher();
         }
 
+        $manager->setEventDispatcher($this->dispatcher);
         foreach ($this->notifications as $notificationName => $notificationClass) {
             Notifire::addNotification($notificationName, $notificationClass);
         }

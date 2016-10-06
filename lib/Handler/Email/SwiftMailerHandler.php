@@ -119,18 +119,8 @@ class SwiftMailerHandler extends AbstractMailHandler
      */
     protected function addParts(Email $notification, \Swift_Message $email)
     {
-        $parts = $notification->getParts();
-        if (1 === count($parts)) {
-            $part = reset($parts);
-            $email->setBody($this->getContent($part))
-                ->setContentType($part->getContentType())
-            ;
-
-            return;
-        }
-
         foreach ($notification->getParts() as $part) {
-            $email->addPart($this->getContent($part), $part->getContentType());
+            $email->addPart($part->getContent(), $part->getContentType());
         }
     }
 
