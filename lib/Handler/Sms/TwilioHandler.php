@@ -23,7 +23,7 @@ class TwilioHandler implements NotificationHandlerInterface
     /**
      * @var string
      */
-    private $accountName;
+    private $serviceName;
 
     /**
      * @var string
@@ -37,7 +37,7 @@ class TwilioHandler implements NotificationHandlerInterface
     public function __construct(\Services_Twilio $twilio, $name = 'default')
     {
         $this->twilio = $twilio;
-        $this->accountName = $name;
+        $this->serviceName = $name;
     }
 
     /**
@@ -52,7 +52,7 @@ class TwilioHandler implements NotificationHandlerInterface
         $tos = $notification->getTo();
 
         foreach ($tos as $to) {
-            $result = new Result('twilio', $this->accountName, Result::OK);
+            $result = new Result('twilio', $this->serviceName, Result::OK);
             $params = $data;
             $params['To'] = $to;
 
@@ -88,7 +88,7 @@ class TwilioHandler implements NotificationHandlerInterface
 
         $config = $notification->getConfig();
 
-        return $config['provider'] === 'twilio' && $config['account_name'] === $this->accountName;
+        return $config['service'] === $this->serviceName;
     }
 
     /**

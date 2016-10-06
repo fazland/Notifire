@@ -71,6 +71,11 @@ class Email extends AbstractNotification
     private $config;
 
     /**
+     * @var array
+     */
+    private $recipientVariables;
+
+    /**
      * Email constructor.
      *
      * @param array $options
@@ -88,6 +93,7 @@ class Email extends AbstractNotification
 
         $this->tags = [];
         $this->metadata = [];
+        $this->recipientVariables = [];
 
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
@@ -545,12 +551,64 @@ class Email extends AbstractNotification
     }
 
     /**
+     * Get the recipient variables set
+     *
+     * @return array
+     */
+    public function getRecipientVariables()
+    {
+        return $this->recipientVariables;
+    }
+
+    /**
+     * Replace the recipient variables set
+     *
+     * @param array $recipientVariables
+     *
+     * @return $this
+     */
+    public function setRecipientVariables(array $recipientVariables)
+    {
+        $this->recipientVariables = $recipientVariables;
+
+        return $this;
+    }
+
+    /**
+     * Set variables for recipient
+     *
+     * @param string $recipient
+     * @param array $variables
+     *
+     * @return $this
+     */
+    public function addVariablesForRecipient($recipient, array $variables)
+    {
+        $this->recipientVariables[$recipient] = $variables;
+
+        return $this;
+    }
+
+    /**
+     * Remove variables set for recipient
+     *
+     * @param $recipient
+     *
+     * @return $this
+     */
+    public function removeVariablesForRecipient($recipient)
+    {
+        unset($this->recipientVariables[$recipient]);
+
+        return $this;
+    }
+
+    /**
      * @param OptionsResolver $resolver
      */
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'provider' => 'swiftmailer',
             'mailer' => 'default',
         ]);
     }

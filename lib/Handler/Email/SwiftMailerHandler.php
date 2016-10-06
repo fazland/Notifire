@@ -29,7 +29,7 @@ class SwiftMailerHandler extends AbstractMailHandler
      * @param \Swift_Mailer $mailer
      * @param string $mailerName
      */
-    public function __construct(\Swift_Mailer $mailer, $mailerName = 'default')
+    public function __construct(\Swift_Mailer $mailer, $mailerName)
     {
         $this->mailer = $mailer;
         $this->mailerName = $mailerName;
@@ -46,7 +46,7 @@ class SwiftMailerHandler extends AbstractMailHandler
 
         $config = $notification->getConfig();
 
-        return $config['provider'] === 'swiftmailer' && $config['mailer'] === $this->mailerName;
+        return $config['mailer'] === $this->mailerName;
     }
 
     /**

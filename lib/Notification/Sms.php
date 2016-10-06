@@ -193,8 +193,7 @@ class Sms extends AbstractNotification
     protected function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'provider' => 'twilio',
-            'account_name' => 'default',
+            'service' => 'default',
         ]);
     }
 }

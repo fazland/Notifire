@@ -28,12 +28,18 @@ class MailgunHandler extends AbstractMailHandler
     private $domain;
 
     /**
+     * @var string
+     */
+    private $mailerName;
+
+    /**
      * {@inheritdoc}
      */
-    public function __construct(Mailgun $mailgun, $domain)
+    public function __construct(Mailgun $mailgun, $domain, $mailerName)
     {
         $this->mailgun = $mailgun;
         $this->domain = $domain;
+        $this->mailerName = $mailerName;
     }
 
     /**
@@ -47,7 +53,7 @@ class MailgunHandler extends AbstractMailHandler
 
         $config = $notification->getConfig();
 
-        return 'mailgun' === $config['provider'] && $this->domain === $config['mailer'];
+        return $this->mailerName === $config['mailer'];
     }
 
     /**
@@ -81,9 +87,8 @@ class MailgunHandler extends AbstractMailHandler
             $postData['v:'.$key] = $value;
         }
 
-        $additionalHeaders = $notification->getAdditionalHeaders();
-        if (isset($additionalHeaders['X-Mailgun-Recipient-Variables'])) {
-            $postData['recipient-variables'] = $additionalHeaders['X-Mailgun-Recipient-Variables'];
+        if ($recipientVariables = $notification->getRecipientVariables()) {
+            $postData['recipient-variables'] = json_encode($recipientVariables);
         }
 
         $failed = [];

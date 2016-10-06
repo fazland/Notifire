@@ -23,13 +23,14 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
         $this->mailgun = $this->prophesize(Mailgun::class);
         $this->mailgun->sendMessage(Argument::cetera())->willReturn($resp);
 
-        return new MailgunHandler($this->mailgun->reveal(), 'default');
+        return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default');
     }
 
     public function testShouldAddTags()
     {
         $that = $this;
-        $this->mailgun->sendMessage('default', Argument::type('array'), Argument::cetera())
+        $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
+            ->shouldBeCalled()
             ->will(function ($args) use ($that) {
                 $postData = $args[1];
 
@@ -47,7 +48,8 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
     public function testShouldAddMetadata()
     {
         $that = $this;
-        $this->mailgun->sendMessage('default', Argument::type('array'), Argument::cetera())
+        $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
+            ->shouldBeCalled()
             ->will(function ($args) use ($that) {
                 $postData = $args[1];
 
@@ -66,7 +68,8 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
     public function testShouldAddRecipientVariables()
     {
         $that = $this;
-        $this->mailgun->sendMessage('default', Argument::type('array'), Argument::cetera())
+        $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
+            ->shouldBeCalled()
             ->will(function ($args) use ($that) {
                 $postData = $args[1];
 
@@ -81,9 +84,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
 
         $this->handler->notify(
             Email::create()
-                ->addAdditionalHeader('X-Mailgun-Recipient-Variables', json_encode([
-                    'test@example.com' => ['key' => 'value']
-                ]))
+                ->addVariablesForRecipient('test@example.com', ['key' => 'value'])
                 ->addTo('test@example.com')
         );
     }
