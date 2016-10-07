@@ -72,7 +72,6 @@ class SwiftMailerHandler extends AbstractMailHandler
 
         if (! empty($notification->getTo()) || ! empty($notification->getCc()) || ! empty($notification->getBcc())) {
             $email = $this->converter->convert($notification);
-
             $result = $this->mailer->send($email);
 
             $res = new Result('swiftmailer', $this->mailerName, $result > 0);

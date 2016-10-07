@@ -22,7 +22,7 @@ class Part
     /**
      * @var bool
      */
-    private $needsB64Encoding = false;
+    private $encoding = null;
 
     /**
      * @param string|null $content
@@ -80,26 +80,26 @@ class Part
     }
 
     /**
-     * Sets if this part needs to be base64 encoded
+     * Sets encoding for this part
      *
-     * @param $needs_encoding
+     * @param $encoding
      *
      * @return $this
      */
-    public function setNeedsBase64Encoding($needs_encoding)
+    public function setEncoding($encoding)
     {
-        $this->needsB64Encoding = $needs_encoding;
+        $this->encoding = $encoding;
 
         return $this;
     }
 
     /**
-     * Should this part be base64-encoded?
+     * Get encoding name
      *
      * @return bool
      */
-    public function needsBase64Encoding()
+    public function getEncoding()
     {
-        return $this->needsB64Encoding;
+        return $this->encoding;
     }
 }

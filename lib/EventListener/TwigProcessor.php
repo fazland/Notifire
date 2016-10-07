@@ -32,12 +32,12 @@ class TwigProcessor implements EventSubscriberInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritdoc}
      */
     public static function getSubscribedEvents()
     {
         return [
-            Events::PRE_NOTIFY => ['onPreNotify', 75]
+            Events::PRE_NOTIFY => ['onPreNotify', 75],
         ];
     }
 

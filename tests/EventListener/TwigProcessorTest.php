@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\Tests\EventListener;
 
-
 use Fazland\Notifire\Event\PreNotifyEvent;
 use Fazland\Notifire\EventListener\TwigProcessor;
 use Fazland\Notifire\Notification\Email;

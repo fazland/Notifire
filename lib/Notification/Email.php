@@ -15,6 +15,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Email extends AbstractNotification
 {
+    const ENCODING_RAW = 'raw';
+    const ENCODING_BASE64 = 'b64';
+    const ENCODING_8BIT = '8bit';
+    const ENCODING_7BIT = '7bit';
+    const ENCODING_QUOTED_PRINTABLE = 'qp';
+
     /**
      * @var string[]
      */

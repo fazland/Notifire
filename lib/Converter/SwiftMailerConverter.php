@@ -13,12 +13,11 @@ class SwiftMailerConverter
 {
     public function convert(Email $email)
     {
-        $message = $this->createInstance()
-            ->setSubject($email->getSubject())
-        ;
+        $message = $this->createInstance()->setSubject($email->getSubject());
+        $message->setBoundary($boundary = md5(uniqid()));
 
         $this->addAddresses($email, $message);
-        $this->addParts($email, $message);
+        $this->addParts($email, $message, $boundary);
         $this->addHeaders($email, $message);
         $this->addAttachments($email, $message);
 
@@ -67,13 +66,16 @@ class SwiftMailerConverter
      *
      * @param Email $notification
      * @param \Swift_Message $email
+     * @param string $boundary
      */
-    protected function addParts(Email $notification, \Swift_Message $email)
+    protected function addParts(Email $notification, \Swift_Message $email, $boundary)
     {
         foreach ($notification->getParts() as $part) {
             $mimePart = \Swift_MimePart::newInstance($part->getContent(), $part->getContentType());
-            if ($part->needsBase64Encoding()) {
-                $mimePart->setEncoder(\Swift_Encoding::getBase64Encoding());
+            $mimePart->setBoundary($boundary);
+
+            if ($encoder = $this->getEncoder($part)) {
+                $mimePart->setEncoder($encoder);
             }
 
             $email->attach($mimePart);
@@ -126,5 +128,33 @@ class SwiftMailerConverter
     protected function createInstance()
     {
         return \Swift_Message::newInstance();
+    }
+
+    private function getEncoder(Email\Part $part)
+    {
+        $encoding = $part->getEncoding();
+        if (null === $encoding) {
+            return null;
+        }
+
+        switch ($encoding) {
+            case Email::ENCODING_BASE64:
+                return \Swift_Encoding::getBase64Encoding();
+
+            case Email::ENCODING_QUOTED_PRINTABLE:
+                return \Swift_Encoding::getQpEncoding();
+
+            case Email::ENCODING_8BIT:
+                return \Swift_Encoding::get8BitEncoding();
+
+            case Email::ENCODING_7BIT:
+                return \Swift_Encoding::get7BitEncoding();
+
+            case Email::ENCODING_RAW:
+                return new \Swift_Mime_ContentEncoder_RawContentEncoder();
+
+            default:
+                throw new \InvalidArgumentException('Unknown encoding "'.$encoding.'"');
+        }
     }
 }
