@@ -626,6 +626,22 @@ class Email extends AbstractNotification
     }
 
     /**
+     * Set variable for recipient
+     *
+     * @param string $recipient
+     * @param string $name
+     * @param string $value
+     *
+     * @return $this
+     */
+    public function addVariableForRecipient($recipient, $name, $value)
+    {
+        $this->recipientVariables[$recipient][$name] = $value;
+
+        return $this;
+    }
+
+    /**
      * Set variables for recipient
      *
      * @param string $recipient
@@ -636,6 +652,21 @@ class Email extends AbstractNotification
     public function addVariablesForRecipient($recipient, array $variables)
     {
         $this->recipientVariables[$recipient] = $variables;
+
+        return $this;
+    }
+
+    /**
+     * Remove variable for recipient
+     *
+     * @param string $recipient
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function removeVariableForRecipient($recipient, $name)
+    {
+        unset($this->recipientVariables[$recipient][$name]);
 
         return $this;
     }
