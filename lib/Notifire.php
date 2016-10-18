@@ -18,8 +18,8 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
  *
- * @method static Email email(array $options = [])
- * @method static Sms sms(array $options = [])
+ * @method static Email email(string $handler = 'default', array $options = [])
+ * @method static Sms sms(string $handler = 'default', array $options = [])
  */
 class Notifire
 {
@@ -34,7 +34,7 @@ class Notifire
     public static $notifications;
 
     /**
-     * @param EventDispatcherInterface $dispatcher
+     * @param NotificationManagerInterface $dispatcher
      */
     public static function setManager(NotificationManagerInterface $dispatcher)
     {
@@ -83,13 +83,14 @@ class Notifire
      * with the current instance of {@see EventDispatcherInterface}.
      *
      * @param string $notificationName
+     * @param string $handler
      * @param array $options
      *
      * @return NotificationInterface
      *
      * @throws UnregisteredNotificationException
      */
-    public static function factory($notificationName, array $options = [])
+    public static function factory($notificationName, $handler = 'default', array $options = [])
     {
         if (! isset(static::$notifications[$notificationName])) {
             throw new UnregisteredNotificationException();
@@ -97,7 +98,7 @@ class Notifire
 
         $class = static::$notifications[$notificationName];
 
-        $instance = new $class($options);
+        $instance = new $class($handler, $options);
         $instance->setManager(static::$manager);
 
         return $instance;
@@ -114,14 +115,22 @@ class Notifire
     public static function __callStatic($name, $arguments)
     {
         if (! isset($arguments[0])) {
-            $arguments[0] = [];
+            $arguments[0] = 'default';
         }
 
-        if (! is_array($arguments[0])) {
-            throw new \InvalidArgumentException('Argument 1 should be an array or null');
+        if (! isset($arguments[1])) {
+            $arguments[1] = [];
         }
 
-        return static::factory($name, $arguments[0]);
+        if (! is_string($arguments[0])) {
+            throw new \InvalidArgumentException('Argument 1 should be a string or null');
+        }
+
+        if (! is_array($arguments[1])) {
+            throw new \InvalidArgumentException('Argument 2 should be an array or null');
+        }
+
+        return static::factory($name, $arguments[0], $arguments[1]);
     }
 
     /**

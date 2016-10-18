@@ -37,7 +37,13 @@ class Sms extends AbstractNotification
      */
     private $config;
 
-    public function __construct(array $options = [])
+    /**
+     * Sms constructor.
+     *
+     * @param $handler
+     * @param array $options
+     */
+    public function __construct($handler = 'default', array $options = [])
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);

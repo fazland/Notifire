@@ -22,7 +22,7 @@ abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [$this->prophesize(NotificationInterface::class)->reveal()],
-            [Email::create(['mailer' => 'no_default'])],
+            [Email::create('default', ['mailer' => 'no_default'])],
         ];
     }
 

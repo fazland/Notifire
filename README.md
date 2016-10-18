@@ -49,7 +49,7 @@ $builder->initialize();
 Now you're ready!
 To create an `Email` just use `Notifire::email()`, fill the fields like `from`, `to`, `parts` etc. and then use `Email::send()`:
 ```php
-$email = Notifire::email(['mailer' => 'default']);
+$email = Notifire::email('default', ['mailer' => 'default']);
 
 $email
     ->addFrom('test@fazland.com')

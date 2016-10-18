@@ -89,9 +89,10 @@ class Email extends AbstractNotification
     /**
      * Email constructor.
      *
+     * @param $handler
      * @param array $options
      */
-    public function __construct(array $options = [])
+    public function __construct($handler = 'default', array $options = [])
     {
         $this->to = [];
         $this->cc = [];
@@ -112,9 +113,9 @@ class Email extends AbstractNotification
         $this->config = $resolver->resolve($options);
     }
 
-    public static function create(array $options = [])
+    public static function create($handler = 'default', array $options = [])
     {
-        return new static($options);
+        return new static($handler, $options);
     }
 
     /**
