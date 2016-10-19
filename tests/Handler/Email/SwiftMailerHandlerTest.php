@@ -18,7 +18,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
 
-        return new SwiftMailerHandler($this->mailer->reveal(), 'default');
+        return new SwiftMailerHandler($this->mailer->reveal(), 'default', 'swiftmailer');
     }
 
     /**

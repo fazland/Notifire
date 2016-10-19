@@ -82,13 +82,7 @@ class TwilioHandler implements NotificationHandlerInterface
      */
     public function supports(NotificationInterface $notification)
     {
-        if (! $notification instanceof Sms) {
-            return false;
-        }
-
-        $config = $notification->getConfig();
-
-        return $config['service'] === $this->serviceName;
+        return $notification instanceof Sms;
     }
 
     /**
@@ -99,6 +93,14 @@ class TwilioHandler implements NotificationHandlerInterface
     public function setDefaultFrom($defaultFrom)
     {
         $this->defaultFrom = $defaultFrom;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return $this->getName();
     }
 
     /**

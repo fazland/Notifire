@@ -33,27 +33,20 @@ class MailgunHandler extends AbstractMailHandler
     private $mailerName;
 
     /**
-     * {@inheritdoc}
+     * MailgunHandler constructor.
+     *
+     * @param Mailgun $mailgun
+     * @param $domain
+     * @param $mailerName
+     * @param $name
      */
-    public function __construct(Mailgun $mailgun, $domain, $mailerName)
+    public function __construct(Mailgun $mailgun, $domain, $mailerName, $name)
     {
         $this->mailgun = $mailgun;
         $this->domain = $domain;
         $this->mailerName = $mailerName;
-    }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(NotificationInterface $notification)
-    {
-        if (! $notification instanceof Email) {
-            return false;
-        }
-
-        $config = $notification->getConfig();
-
-        return $this->mailerName === $config['mailer'];
+        parent::__construct($name);
     }
 
     /**

@@ -33,11 +33,6 @@ class Sms extends AbstractNotification
     private $additionalFields;
 
     /**
-     * @var string[]
-     */
-    private $config;
-
-    /**
      * Sms constructor.
      *
      * @param $handler
@@ -45,9 +40,10 @@ class Sms extends AbstractNotification
      */
     public function __construct($handler = 'default', array $options = [])
     {
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $this->config = $resolver->resolve($options);
+        $this->to = [];
+        $this->additionalFields = [];
+
+        parent::__construct($handler, $options);
     }
 
     /**

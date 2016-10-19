@@ -34,30 +34,19 @@ class SwiftMailerHandler extends AbstractMailHandler
     /**
      * @param \Swift_Mailer $mailer
      * @param string $mailerName
+     * @param $name
      */
-    public function __construct(\Swift_Mailer $mailer, $mailerName)
+    public function __construct(\Swift_Mailer $mailer, $mailerName, $name)
     {
         $this->mailer = $mailer;
         $this->mailerName = $mailerName;
+
+        parent::__construct($name);
     }
 
     public function setConverter(SwiftMailerConverter $converter)
     {
         $this->converter = $converter;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function supports(NotificationInterface $notification)
-    {
-        if (! $notification instanceof Email) {
-            return false;
-        }
-
-        $config = $notification->getConfig();
-
-        return $config['mailer'] === $this->mailerName;
     }
 
     /**

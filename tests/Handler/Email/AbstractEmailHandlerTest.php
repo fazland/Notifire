@@ -3,8 +3,8 @@
 namespace Fazland\Notifire\Tests\Handler\Email;
 
 use Fazland\Notifire\Handler\Email\AbstractMailHandler;
-use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Notification\Sms;
 
 abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
 {
@@ -20,9 +20,11 @@ abstract class AbstractEmailHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function unsupportedNotificationsDataProvider()
     {
+        $sms = new Sms();
+
         return [
             [$this->prophesize(NotificationInterface::class)->reveal()],
-            [Email::create('default', ['mailer' => 'no_default'])],
+            [$sms],
         ];
     }
 

@@ -22,6 +22,8 @@ trait NotificationTrait
 
     private $resultSet = null;
 
+    private $handlerName;
+
     /**
      * {@inheritdoc}
      */
@@ -58,5 +60,25 @@ trait NotificationTrait
     public function addResult(Result $result)
     {
         $this->getResultSet()->addResult($result);
+    }
+
+    /**
+     * @param $handlerName
+     *
+     * @return $this
+     */
+    public function setHandlerName($handlerName)
+    {
+        $this->handlerName = $handlerName;
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getHandlerName()
+    {
+        return $this->handlerName;
     }
 }

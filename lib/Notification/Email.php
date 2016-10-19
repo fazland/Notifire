@@ -77,11 +77,6 @@ class Email extends AbstractNotification
     private $metadata;
 
     /**
-     * @var string[]
-     */
-    private $config;
-
-    /**
      * @var array
      */
     private $recipientVariables;
@@ -108,9 +103,7 @@ class Email extends AbstractNotification
         $this->metadata = [];
         $this->recipientVariables = [];
 
-        $resolver = new OptionsResolver();
-        $this->configureOptions($resolver);
-        $this->config = $resolver->resolve($options);
+        parent::__construct($handler, $options);
     }
 
     public static function create($handler = 'default', array $options = [])

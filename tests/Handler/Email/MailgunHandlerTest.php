@@ -23,7 +23,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
         $this->mailgun = $this->prophesize(Mailgun::class);
         $this->mailgun->sendMessage(Argument::cetera())->willReturn($resp);
 
-        return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default');
+        return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default', 'mailgun');
     }
 
     public function testShouldAddTags()

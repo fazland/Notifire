@@ -76,6 +76,9 @@ class NotificationManager implements NotificationManagerInterface
         $this->eventDispatcher->dispatch(Events::PRE_NOTIFY, new PreNotifyEvent($notification));
 
         foreach ($this->handlers as $handler) {
+            if ($notification->getHandlerName() !== $handler->getName()) {
+                continue;
+            }
             $notified = $this->handle($notification, $handler) || $notified;
         }
 

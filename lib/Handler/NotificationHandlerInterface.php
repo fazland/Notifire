@@ -26,4 +26,11 @@ interface NotificationHandlerInterface
      * @param NotificationInterface $notification
      */
     public function notify(NotificationInterface $notification);
+
+    /**
+     * Return handler name
+     *
+     * @return string
+     */
+    public function getName();
 }

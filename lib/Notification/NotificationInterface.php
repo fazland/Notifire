@@ -41,4 +41,11 @@ interface NotificationInterface
      * @return ResultSet
      */
     public function getResultSet();
+
+    /**
+     * Get handler name
+     *
+     * @return string
+     */
+    public function getHandlerName();
 }

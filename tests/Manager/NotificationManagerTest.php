@@ -59,10 +59,12 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
         }));
 
         $handler = $this->prophesize(NotificationHandlerInterface::class);
+        $handler->getName()->willReturn('default');
         $handler->supports(Argument::any())->willReturn(true);
         $handler->notify($notifyArg)->willReturn();
 
         $handler2 = $this->prophesize(NotificationHandlerInterface::class);
+        $handler2->getName()->willReturn('default');
         $handler2->supports(Argument::any())->willReturn(true);
         $handler2->notify($notifyArg)->willReturn();
 
@@ -92,10 +94,12 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
         $notification = Email::create();
 
         $handler = $this->prophesize(NotificationHandlerInterface::class);
+        $handler->getName()->willReturn('swiftmailer');
         $handler->supports(Argument::any())->willReturn(false);
         $handler->notify(Argument::any())->shouldNotBeCalled();
 
         $handler2 = $this->prophesize(NotificationHandlerInterface::class);
+        $handler2->getName()->willReturn('default');
         $handler2->supports(Argument::any())->willReturn(true);
         $handler2->notify(Argument::any())->shouldBeCalled();
 
