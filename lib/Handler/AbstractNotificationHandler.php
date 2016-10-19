@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Fazland\Notifire\Handler;
 
 /**

@@ -3,6 +3,12 @@
 namespace Fazland\Notifire\RestClient\Skebby;
 
 use Fazland\Notifire\Exception\NoRecipientsSpecifiedException;
+use Fazland\Notifire\RestClient\Skebby\Constant\Charsets;
+use Fazland\Notifire\RestClient\Skebby\Constant\EncodingSchemas;
+use Fazland\Notifire\RestClient\Skebby\Constant\Endpoints;
+use Fazland\Notifire\RestClient\Skebby\Constant\Recipients;
+use Fazland\Notifire\RestClient\Skebby\Constant\SendMethods;
+use Fazland\Notifire\RestClient\Skebby\Constant\ValidityPeriods;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
@@ -10,27 +16,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class RestClient
 {
-    const REST_ENDPOINT_HTTP = 'http://gateway.skebby.it/api/send/smseasy/advanced/rest.php';
-    const REST_ENDPOINT_HTTPS = 'https://gateway.skebby.it/api/send/smseasy/advanced/rest.php';
-
-    const METHOD_CLASSIC = 'send_sms_classic';
-    const METHOD_CLASSIC_PLUS = 'send_sms_classic_report';
-    const METHOD_BASIC = 'send_sms_basic';
-    const METHOD_TEST_CLASSIC = 'test_send_sms_classic';
-    const METHOD_TEST_CLASSIC_PLUS = 'test_send_sms_classic_report';
-    const METHOD_TEST_BASIC = 'test_send_sms_basic';
-
-    const CHARSET_UTF8 = "UTF-8";
-    const CHARSET_ISO_8859_1 = "ISO-8859-1";
-
-    const ENCODING_SCHEMA_NORMAL = 'normal';
-    const ENCODING_SCHEMA_UCS2 = 'UCS2';
-
-    const VALIDITY_PERIOD_DEFAULT = 2880;
-    const VALIDITY_PERIOD_MIN = 5;
-
-    const MAX_RECIPIENTS = 50000;
-
     /**
      * @param array $options
      */
@@ -51,8 +36,8 @@ class RestClient
         $messages = [];
 
         $recipients = $sms->getRecipients();
-        if (count($recipients) > self::MAX_RECIPIENTS) {
-            foreach (array_chunk($recipients, self::MAX_RECIPIENTS) as $chunk) {
+        if (count($recipients) > Recipients::MAX) {
+            foreach (array_chunk($recipients, Recipients::MAX) as $chunk) {
                 $message = clone $sms;
                 $message
                     ->setRecipients($chunk)
@@ -110,32 +95,32 @@ class RestClient
             ->setAllowedTypes('encoding_scheme', 'string')
             ->setAllowedTypes('https_enabled', 'bool')
             ->setAllowedValues('method', [
-                self::METHOD_CLASSIC,
-                self::METHOD_CLASSIC_PLUS,
-                self::METHOD_BASIC,
-                self::METHOD_TEST_CLASSIC,
-                self::METHOD_TEST_CLASSIC_PLUS,
-                self::METHOD_TEST_BASIC
+                SendMethods::CLASSIC,
+                SendMethods::CLASSIC_PLUS,
+                SendMethods::BASIC,
+                SendMethods::TEST_CLASSIC,
+                SendMethods::TEST_CLASSIC_PLUS,
+                SendMethods::TEST_BASIC
             ])
             ->setAllowedValues('delivery_start', function ($value) {
                 $d = \DateTime::createFromFormat(\DateTime::RFC2822, $value);
                 return $d && $d->format('Y-m-d') === $value;
             })
             ->setAllowedValues('validity_period', function ($value) {
-                return $value >= self::VALIDITY_PERIOD_MIN;
+                return $value >= ValidityPeriods::MIN && $value <= ValidityPeriods::MAX;
             })
             ->setAllowedValues('encoding_scheme', [
-                self::ENCODING_SCHEMA_NORMAL,
-                self::ENCODING_SCHEMA_UCS2
+                EncodingSchemas::NORMAL,
+                EncodingSchemas::UCS2
             ])
             ->setAllowedValues('charset', [
-                self::CHARSET_ISO_8859_1,
-                self::CHARSET_UTF8
+                Charsets::ISO_8859_1,
+                Charsets::UTF8
             ])
             ->setDefaults([
-                'charset' => self::CHARSET_UTF8,
-                'validity_period' => self::VALIDITY_PERIOD_DEFAULT,
-                'encoding_schema' => self::ENCODING_SCHEMA_NORMAL,
+                'charset' => Charsets::UTF8,
+                'validity_period' => ValidityPeriods::MAX,
+                'encoding_schema' => EncodingSchemas::NORMAL,
                 'https_enabled' => true
             ])
         ;
@@ -217,7 +202,7 @@ class RestClient
         curl_setopt(
             $curl,
             CURLOPT_URL,
-            $this->config['https_enabled'] ? self::REST_ENDPOINT_HTTPS : self::REST_ENDPOINT_HTTP
+            $this->config['https_enabled'] ? Endpoints::REST_HTTPS : Endpoints::REST_HTTP
         );
 
         $response = curl_exec($curl);

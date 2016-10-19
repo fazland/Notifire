@@ -2,6 +2,8 @@
 
 namespace Fazland\Notifire\Tests\RestClient\Skebby;
 
+use Fazland\Notifire\RestClient\Skebby\Constant\Charsets;
+use Fazland\Notifire\RestClient\Skebby\Constant\SendMethods;
 use Fazland\Notifire\RestClient\Skebby\Response;
 use Fazland\Notifire\RestClient\Skebby\RestClient as SkebbyRestClient;
 use Fazland\Notifire\RestClient\Skebby\Sms;
@@ -27,8 +29,8 @@ class RestClientTest extends \PHPUnit_Framework_TestCase
             'password' => 'test',
             'user_reference' => 'test',
             'sender_number' => '+393333333333',
-            'charset' => 'UTF-8',
-            'method' => SkebbyRestClient::METHOD_CLASSIC
+            'charset' => Charsets::UTF8,
+            'method' => SendMethods::CLASSIC
         ]);
     }
 
