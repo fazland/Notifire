@@ -26,7 +26,7 @@ abstract class AbstractSmsHandlerTest extends \PHPUnit_Framework_TestCase
     /**
      * @return NotificationHandlerInterface
      */
-    public abstract function getHandler();
+    abstract public function getHandler();
 
     public function withoutTo()
     {

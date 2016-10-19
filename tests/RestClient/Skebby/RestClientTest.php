@@ -30,7 +30,7 @@ class RestClientTest extends \PHPUnit_Framework_TestCase
             'user_reference' => 'test',
             'sender_number' => '+393333333333',
             'charset' => Charsets::UTF8,
-            'method' => SendMethods::CLASSIC
+            'method' => SendMethods::CLASSIC,
         ]);
     }
 
@@ -40,7 +40,7 @@ class RestClientTest extends \PHPUnit_Framework_TestCase
     public function noRecipients()
     {
         return [
-            [Sms::create()->setText('some text')]
+            [Sms::create()->setText('some text')],
         ];
     }
 
@@ -54,10 +54,10 @@ class RestClientTest extends \PHPUnit_Framework_TestCase
                 Sms::create()
                     ->setRecipients([
                         '+393473322444',
-                        '+393910000000'
+                        '+393910000000',
                     ])
-                    ->setText('Some text')
-            ]
+                    ->setText('Some text'),
+            ],
         ];
     }
 
@@ -71,20 +71,20 @@ class RestClientTest extends \PHPUnit_Framework_TestCase
                 Sms::create()
                     ->setRecipients([
                         '+393473322444',
-                        '+393910000000'
+                        '+393910000000',
                     ])
                     ->setRecipientVariables('+393473322444', [
                         'FirstName' => 'This is a first name',
                         'LastName' => 'This is a last name',
-                        'Infos' => 'These are infos'
+                        'Infos' => 'These are infos',
                     ])
                     ->setRecipientVariables('+393910000000', [
                         'FirstName' => 'This is another first name',
                         'LastName' => 'This is another last name',
-                        'Infos' => 'These are other infos'
+                        'Infos' => 'These are other infos',
                     ])
-                    ->setText('Some text')
-            ]
+                    ->setText('Some text'),
+            ],
         ];
     }
 
@@ -166,7 +166,6 @@ EOT
      */
     public function testSendShouldReturnResponses(Sms $sms)
     {
-
         eval(<<<'EOT'
 ?><?php
 

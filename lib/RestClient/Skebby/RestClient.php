@@ -77,14 +77,14 @@ class RestClient
                 'password',
                 'user_reference',
                 'sender_number',
-                'method'
+                'method',
             ])
             ->setDefined([
                 'delivery_start',
                 'validity_period',
                 'encoding_scheme',
                 'charset',
-                'https_enabled'
+                'endpoint_uri',
             ])
             ->setAllowedTypes('username', 'string')
             ->setAllowedTypes('password', 'string')
@@ -93,17 +93,18 @@ class RestClient
             ->setAllowedTypes('method', 'string')
             ->setAllowedTypes('validity_period', 'int')
             ->setAllowedTypes('encoding_scheme', 'string')
-            ->setAllowedTypes('https_enabled', 'bool')
+            ->setAllowedTypes('endpoint_uri', 'string')
             ->setAllowedValues('method', [
                 SendMethods::CLASSIC,
                 SendMethods::CLASSIC_PLUS,
                 SendMethods::BASIC,
                 SendMethods::TEST_CLASSIC,
                 SendMethods::TEST_CLASSIC_PLUS,
-                SendMethods::TEST_BASIC
+                SendMethods::TEST_BASIC,
             ])
             ->setAllowedValues('delivery_start', function ($value) {
                 $d = \DateTime::createFromFormat(\DateTime::RFC2822, $value);
+
                 return $d && $d->format('Y-m-d') === $value;
             })
             ->setAllowedValues('validity_period', function ($value) {
@@ -111,17 +112,17 @@ class RestClient
             })
             ->setAllowedValues('encoding_scheme', [
                 EncodingSchemas::NORMAL,
-                EncodingSchemas::UCS2
+                EncodingSchemas::UCS2,
             ])
             ->setAllowedValues('charset', [
                 Charsets::ISO_8859_1,
-                Charsets::UTF8
+                Charsets::UTF8,
             ])
             ->setDefaults([
                 'charset' => Charsets::UTF8,
                 'validity_period' => ValidityPeriods::MAX,
                 'encoding_schema' => EncodingSchemas::NORMAL,
-                'https_enabled' => true
+                'endpoint_uri' => Endpoints::REST_HTTPS,
             ])
         ;
     }
@@ -147,7 +148,7 @@ class RestClient
             'method' => $this->config['method'],
             'sender_number' => $this->config['sender_number'],
             'recipients' => $this->prepareRecipients($sms),
-            'text' => $sms->getText()
+            'text' => $sms->getText(),
         ];
 
         return $request;
@@ -163,9 +164,9 @@ class RestClient
         $recipients = $sms->getRecipients();
 
         $recipients = array_map(function ($recipient) {
-            if ("+" === $recipient[0]) {
+            if ('+' === $recipient[0]) {
                 $recipient = substr($recipient, 1);
-            } elseif ("00" === substr($recipient, 0, 2)) {
+            } elseif ('00' === substr($recipient, 0, 2)) {
                 $recipient = substr($recipient, 2);
             }
 
@@ -199,11 +200,7 @@ class RestClient
         curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($request));
-        curl_setopt(
-            $curl,
-            CURLOPT_URL,
-            $this->config['https_enabled'] ? Endpoints::REST_HTTPS : Endpoints::REST_HTTP
-        );
+        curl_setopt($curl, CURLOPT_URL, $this->config['endpoint_uri']);
 
         $response = curl_exec($curl);
 

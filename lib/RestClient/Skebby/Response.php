@@ -45,12 +45,12 @@ class Response
         parse_str($rawResponse, $response);
 
         if (! isset($response['status'])) {
-            throw new UnknownErrorResponseException("Missing response status value from Skebby");
+            throw new UnknownErrorResponseException('Missing response status value from Skebby');
         }
 
         $this->status = $response['status'];
         $this->code = isset($response['code']) ? $response['code'] : null;
-        $this->errorMessage = isset($response['message']) ? $response['message'] : "Unknown error";
+        $this->errorMessage = isset($response['message']) ? $response['message'] : 'Unknown error';
         $this->messageId = isset($response['id']) ? $response['id'] : null;
     }
 
@@ -64,7 +64,7 @@ class Response
 
     public function isSuccessful()
     {
-        return "success" === $this->status;
+        return 'success' === $this->status;
     }
 
     /**

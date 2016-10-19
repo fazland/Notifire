@@ -7,5 +7,4 @@ namespace Fazland\Notifire\Exception;
  */
 class UnknownErrorResponseException extends \Exception
 {
-
 }

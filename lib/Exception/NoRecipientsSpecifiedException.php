@@ -7,5 +7,4 @@ namespace Fazland\Notifire\Exception;
  */
 class NoRecipientsSpecifiedException extends \Exception
 {
-
 }
