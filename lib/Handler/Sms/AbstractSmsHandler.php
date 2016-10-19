@@ -2,41 +2,20 @@
 
 namespace Fazland\Notifire\Handler\Sms;
 
-use Fazland\Notifire\Handler\NotificationHandlerInterface;
+use Fazland\Notifire\Handler\AbstractNotificationHandler;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 
 /**
  * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
  */
-abstract class AbstractSmsHandler implements NotificationHandlerInterface
+abstract class AbstractSmsHandler extends AbstractNotificationHandler
 {
-    /**
-     * @var string
-     */
-    protected $name;
-
-    /**
-     * @param string $name
-     */
-    public function __construct($name = 'default')
-    {
-        $this->name = $name;
-    }
-
     /**
      * {@inheritdoc}
      */
     public function supports(NotificationInterface $notification)
     {
         return $notification instanceof Sms;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->name;
     }
 }
