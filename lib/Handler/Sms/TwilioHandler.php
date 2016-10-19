@@ -3,7 +3,6 @@
 namespace Fazland\Notifire\Handler\Sms;
 
 use Fazland\Notifire\Exception\NotificationFailedException;
-use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 use Fazland\Notifire\Result\Result;
@@ -13,17 +12,12 @@ use Fazland\Notifire\Result\Result;
  *
  * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
-class TwilioHandler implements NotificationHandlerInterface
+class TwilioHandler extends AbstractSmsHandler
 {
     /**
      * @var \Services_Twilio
      */
     private $twilio;
-
-    /**
-     * @var string
-     */
-    private $serviceName;
 
     /**
      * @var string
@@ -37,7 +31,8 @@ class TwilioHandler implements NotificationHandlerInterface
     public function __construct(\Services_Twilio $twilio, $name = 'default')
     {
         $this->twilio = $twilio;
-        $this->serviceName = $name;
+
+        parent::__construct($name);
     }
 
     /**
@@ -52,7 +47,7 @@ class TwilioHandler implements NotificationHandlerInterface
         $tos = $notification->getTo();
 
         foreach ($tos as $to) {
-            $result = new Result('twilio', $this->serviceName, Result::OK);
+            $result = new Result('twilio', $this->name, Result::OK);
             $params = $data;
             $params['To'] = $to;
 
@@ -78,14 +73,6 @@ class TwilioHandler implements NotificationHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function supports(NotificationInterface $notification)
-    {
-        return $notification instanceof Sms;
-    }
-
-    /**
      * Set the 'from' default. Used if no from is configured in the Sms object
      *
      * @param string $defaultFrom
@@ -93,14 +80,6 @@ class TwilioHandler implements NotificationHandlerInterface
     public function setDefaultFrom($defaultFrom)
     {
         $this->defaultFrom = $defaultFrom;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return $this->getName();
     }
 
     /**

@@ -10,7 +10,6 @@ use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Notifire class is a factory of {@see NotificationInterface}.

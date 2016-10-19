@@ -9,70 +9,29 @@ use Prophecy\Prophecy\ObjectProphecy;
 /**
  * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  */
-class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
+class TwilioHandlerTest extends AbstractSmsHandlerTest
 {
     /**
-     * @var ObjectProphecy
+     * @var \Services_Twilio|ObjectProphecy
      */
     private $twilio;
 
     /**
-     * @var TwilioHandler
+     * {@inheritdoc}
      */
-    private $notificator;
-
-    public function setUp()
+    public function getHandler()
     {
         $this->twilio = $this->prophesize(\Services_Twilio::class);
 
-        $this->notificator = new TwilioHandler($this->twilio->reveal());
-    }
-
-    public function withoutTo()
-    {
-        $s1 = new Sms();
-        $s1->setTo([]);
-
-        $s2 = clone $s1;
-        $s2->setFrom('+393333333333');
-
-        $s3 = clone $s2;
-        $s3->setContent('Foo Bar');
-
-        return [
-            [$s1],
-            [$s2],
-            [$s3],
-        ];
-    }
-
-    public function right()
-    {
-        $sms = new Sms();
-        $sms
-            ->setTo(['+393333333333'])
-            ->setFrom('+393333333333')
-            ->setContent('Foo Bar')
-        ;
-
-        return [
-            [$sms],
-        ];
-    }
-
-    /**
-     * @dataProvider withoutTo
-     * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
-     */
-    public function testShouldThrowExceptionWithoutToField($sms)
-    {
-        $this->notificator->notify($sms);
+        return new TwilioHandler($this->twilio->reveal());
     }
 
     /**
      * @dataProvider right
+     *
+     * @param Sms $sms
      */
-    public function testShouldCallMessagesCreate($sms)
+    public function testShouldCallMessagesCreate(Sms $sms)
     {
         $twilio = $this->twilio->reveal();
         $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
@@ -83,13 +42,15 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
         $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
-        $this->notificator->notify($sms);
+        $this->handler->notify($sms);
     }
 
     /**
      * @dataProvider right
+     *
+     * @param Sms $sms
      */
-    public function testShouldUseDefaultFromNumber($sms)
+    public function testShouldUseDefaultFromNumber(Sms $sms)
     {
         $twilio = $this->twilio->reveal();
         $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
@@ -100,7 +61,7 @@ class TwilioHandlerTest extends \PHPUnit_Framework_TestCase
 
         $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
-        $this->notificator->setDefaultFrom('+393333333333');
-        $this->notificator->notify($sms);
+        $this->handler->setDefaultFrom('+393333333333');
+        $this->handler->notify($sms);
     }
 }

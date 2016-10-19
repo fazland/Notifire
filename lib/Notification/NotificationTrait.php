@@ -20,6 +20,9 @@ trait NotificationTrait
      */
     private $notificationManager = null;
 
+    /**
+     * @var ResultSet
+     */
     private $resultSet = null;
 
     private $handlerName;
