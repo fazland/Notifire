@@ -11,7 +11,7 @@ interface HandlerSelectorStrategyInterface
      *
      * @param NotificationHandlerInterface[]
      *
-     * @return NotificationHandlerInterface
+     * @return null|NotificationHandlerInterface
      */
     public function select($handlers);
 }
