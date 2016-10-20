@@ -13,6 +13,11 @@
         "twig/twig": "^1.24",
         "twilio/sdk": "^4.10"
     },
+    "suggest": {
+        "twilio/sdk": "Send SMS via Twilio",
+        "fazland/skebby-rest-client": "Send SMS via Skebby",
+        "mailgun/mailgun-php": "Use Mailgun API to send emails"
+    },
     "autoload": {
         "psr-4": {
             "Fazland\\Notifire\\": "lib/"

@@ -22,11 +22,6 @@ class SwiftMailerHandler extends AbstractMailHandler
     private $mailer;
 
     /**
-     * @var string
-     */
-    private $mailerName;
-
-    /**
      * @var SwiftMailerConverter
      */
     private $converter;
@@ -36,12 +31,11 @@ class SwiftMailerHandler extends AbstractMailHandler
      * @param string $mailerName
      * @param $name
      */
-    public function __construct(\Swift_Mailer $mailer, $mailerName, $name)
+    public function __construct(\Swift_Mailer $mailer, $mailerName)
     {
         $this->mailer = $mailer;
-        $this->mailerName = $mailerName;
 
-        parent::__construct($name);
+        parent::__construct($mailerName);
     }
 
     public function setConverter(SwiftMailerConverter $converter)
@@ -63,7 +57,7 @@ class SwiftMailerHandler extends AbstractMailHandler
             $email = $this->converter->convert($notification);
             $result = $this->mailer->send($email);
 
-            $res = new Result('swiftmailer', $this->mailerName, $result > 0);
+            $res = new Result('swiftmailer', $this->getName(), $result > 0);
             $res->setResponse($result);
             $notification->addResult($res);
 

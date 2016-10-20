@@ -28,11 +28,6 @@ class MailgunHandler extends AbstractMailHandler
     private $domain;
 
     /**
-     * @var string
-     */
-    private $mailerName;
-
-    /**
      * MailgunHandler constructor.
      *
      * @param Mailgun $mailgun
@@ -40,13 +35,12 @@ class MailgunHandler extends AbstractMailHandler
      * @param $mailerName
      * @param $name
      */
-    public function __construct(Mailgun $mailgun, $domain, $mailerName, $name)
+    public function __construct(Mailgun $mailgun, $domain, $mailerName)
     {
         $this->mailgun = $mailgun;
         $this->domain = $domain;
-        $this->mailerName = $mailerName;
 
-        parent::__construct($name);
+        parent::__construct($mailerName);
     }
 
     /**
@@ -90,7 +84,7 @@ class MailgunHandler extends AbstractMailHandler
         $to = array_merge(array_values($notification->getTo()), array_values($notification->getCc()), array_values($notification->getBcc()));
         if (! empty($to)) {
             foreach (array_chunk($to, 1000) as $to_chunk) {
-                $result = new Result('mailgun', $this->domain);
+                $result = new Result('mailgun', $this->getName());
 
                 $data = $postData;
                 $data['to'] = $to_chunk;
