@@ -1,10 +1,10 @@
 <?php
 
-namespace Fazland\Notifire\StrategySelectorHandler;
+namespace Fazland\Notifire\HandlerSelectorStrategy;
 
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 
-interface StrategySelectorHandlerInterface
+interface HandlerSelectorStrategyInterface
 {
     /**
      * This method retrieve an handler choosen between handlers passed

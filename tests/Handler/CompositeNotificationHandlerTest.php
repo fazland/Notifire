@@ -7,14 +7,14 @@ use Fazland\Notifire\Handler\Email\AbstractMailHandler;
 use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
-use Fazland\Notifire\StrategySelectorHandler\StrategySelectorHandlerInterface;
+use Fazland\Notifire\HandlerSelectorStrategy\HandlerSelectorStrategyInterface;
 use Prophecy\Argument;
 
 class CompositeNotificationHandlerTest extends \PHPUnit_Framework_TestCase
 {
     public function testSupportMustReturnFalseWithANotSupportedNotification()
     {
-        $strategy = $this->prophesize(StrategySelectorHandlerInterface::class);
+        $strategy = $this->prophesize(HandlerSelectorStrategyInterface::class);
         $compositeNotificationHandler = new CompositeNotificationHandler('default', $strategy->reveal());
 
         $notificationHandler = $this->prophesize(AbstractMailHandler::class);
@@ -31,7 +31,7 @@ class CompositeNotificationHandlerTest extends \PHPUnit_Framework_TestCase
 
     public function testSupportMustReturnTrueWithASupportedNotification()
     {
-        $strategy = $this->prophesize(StrategySelectorHandlerInterface::class);
+        $strategy = $this->prophesize(HandlerSelectorStrategyInterface::class);
         $compositeNotificationHandler = new CompositeNotificationHandler('default', $strategy->reveal());
 
         $notificationHandler = $this->prophesize(TwilioHandler::class);
@@ -53,7 +53,7 @@ class CompositeNotificationHandlerTest extends \PHPUnit_Framework_TestCase
         $notificationHandler->notify(Argument::type(NotificationInterface::class))->shouldBeCalledTimes(1);
         $notificationHandler->supports(Argument::type(NotificationInterface::class))->willReturn(true);
 
-        $strategy = $this->prophesize(StrategySelectorHandlerInterface::class);
+        $strategy = $this->prophesize(HandlerSelectorStrategyInterface::class);
         $strategy->select(Argument::type('array'))->willReturn($notificationHandler->reveal());
 
         $compositeNotificationHandler = new CompositeNotificationHandler('default', $strategy->reveal());

@@ -3,7 +3,7 @@
 namespace Fazland\Notifire\Handler;
 
 use Fazland\Notifire\Notification\NotificationInterface;
-use Fazland\Notifire\StrategySelectorHandler\StrategySelectorHandlerInterface;
+use Fazland\Notifire\HandlerSelectorStrategy\HandlerSelectorStrategyInterface;
 
 class CompositeNotificationHandler implements NotificationHandlerInterface
 {
@@ -15,7 +15,7 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     private $notificationHandlers = [];
 
     /**
-     * @var StrategySelectorHandlerInterface
+     * @var HandlerSelectorStrategyInterface
      */
     private $strategy;
 
@@ -23,9 +23,9 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
      * DefaultNotificationHandler constructor.
      *
      * @param $name
-     * @param StrategySelectorHandlerInterface $strategy
+     * @param HandlerSelectorStrategyInterface $strategy
      */
-    public function __construct($name, StrategySelectorHandlerInterface $strategy)
+    public function __construct($name, HandlerSelectorStrategyInterface $strategy)
     {
         $this->name = $name;
         $this->strategy = $strategy;

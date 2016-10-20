@@ -1,8 +1,8 @@
 <?php
 
-namespace Fazland\Notifire\StrategySelectorHandler;
+namespace Fazland\Notifire\HandlerSelectorStrategy;
 
-class RandStrategy implements StrategySelectorHandlerInterface
+class RandStrategySelectorStrategy implements HandlerSelectorStrategyInterface
 {
     /**
      * {@inheritdoc}
