@@ -4,8 +4,8 @@ namespace Fazland\Notifire\Tests\Handler\Sms;
 
 use Fazland\Notifire\Handler\Sms\SkebbyHandler;
 use Fazland\Notifire\Notification\Sms;
-use Fazland\Notifire\RestClient\Skebby\RestClient as SkebbyRestClient;
-use Fazland\Notifire\RestClient\Skebby\Sms as SkebbySms;
+use Fazland\SkebbyRestClient\Client\Client as SkebbyRestClient;
+use Fazland\SkebbyRestClient\DataStructure\Sms as SkebbySms;
 use Prophecy\Prophecy\ObjectProphecy;
 
 /**

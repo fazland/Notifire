@@ -174,7 +174,7 @@ class Sms extends AbstractNotification
     {
         $itemPosition = array_search($to, $this->to);
 
-        if ($itemPosition) {
+        if (false !== $itemPosition) {
             unset($this->to[$itemPosition]);
         }
 
