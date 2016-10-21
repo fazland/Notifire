@@ -34,6 +34,7 @@ class SkebbyHandler extends AbstractSmsHandler
      */
     public function notify(NotificationInterface $notification)
     {
+        $failedSms = [];
         $tos = $notification->getTo();
         if (empty($tos)) {
             throw new NotificationFailedException('No recipients specified');
@@ -48,8 +49,17 @@ class SkebbyHandler extends AbstractSmsHandler
             $result = new Result('skebby', $this->name, Result::OK);
 
             try {
-                $response = $this->skebby->send($skebbySms);
+                $response = $this->skebby->send($skebbySms)[0];
                 $result->setResponse($response);
+
+                if (! $response->isSuccessful()) {
+                    $result->setResult(Result::FAIL);
+
+                    $failedSms[] = [
+                        'to' => $to,
+                        'error_message' => $response->getErrorMessage(),
+                    ];
+                }
             } catch (\Exception $e) {
                 $result->setResult(Result::FAIL)
                     ->setResponse($e);
@@ -61,6 +71,10 @@ class SkebbyHandler extends AbstractSmsHandler
             }
 
             $notification->addResult($result);
+        }
+
+        if (count($tos) === count($failedSms)) {
+            throw new NotificationFailedException('All the sms failed to be send', ['failed_sms' => $failedSms]);
         }
     }
 }
