@@ -51,7 +51,6 @@ class SkebbyHandler extends AbstractSmsHandler
             try {
                 $response = $this->skebby->send($skebbySms)[0];
                 $result->setResponse($response);
-
                 if (! $response->isSuccessful()) {
                     $result->setResult(Result::FAIL);
 
@@ -61,8 +60,10 @@ class SkebbyHandler extends AbstractSmsHandler
                     ];
                 }
             } catch (\Exception $e) {
-                $result->setResult(Result::FAIL)
-                    ->setResponse($e);
+                $result
+                    ->setResult(Result::FAIL)
+                    ->setResponse($e)
+                ;
 
                 $failedSms[] = [
                     'to' => $to,

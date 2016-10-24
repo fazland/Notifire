@@ -25,6 +25,9 @@ trait NotificationTrait
      */
     private $resultSet = null;
 
+    /**
+     * @var string
+     */
     private $handlerName;
 
     /**

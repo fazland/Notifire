@@ -62,6 +62,7 @@ abstract class AbstractSmsHandlerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider withoutTo
+     *
      * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
      *
      * @param Sms $sms
