@@ -2,8 +2,8 @@
 
 namespace Fazland\Notifire\Handler;
 
-use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\HandlerSelectorStrategy\HandlerSelectorStrategyInterface;
+use Fazland\Notifire\Notification\NotificationInterface;
 
 class CompositeNotificationHandler implements NotificationHandlerInterface
 {

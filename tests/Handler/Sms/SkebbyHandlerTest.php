@@ -23,7 +23,6 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
 '<?xml version="1.0" encoding="UTF-8"?>
 <SkebbyApi_Public_Send_SmsEasy_Advanced generator="zend" version="1.0"><test_send_sms_classic><response><code>11</code><message>Unknown charset, use ISO-8859-1 or UTF-8</message></response><status>failed</status></test_send_sms_classic></SkebbyApi_Public_Send_SmsEasy_Advanced>';
 
-
     /**
      * @var SkebbyRestClient|ObjectProphecy
      */

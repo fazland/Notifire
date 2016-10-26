@@ -38,7 +38,7 @@ EOF
         $handlers = [
             new \stdClass(),
             $this->prophesize(NotificationHandlerInterface::class)->reveal(),
-            new \stdClass()
+            new \stdClass(),
         ];
 
         $chosen = $this->strategy->select($handlers);

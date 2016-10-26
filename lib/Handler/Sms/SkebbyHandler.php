@@ -4,9 +4,9 @@ namespace Fazland\Notifire\Handler\Sms;
 
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Result\Result;
 use Fazland\SkebbyRestClient\Client\Client as SkebbyRestClient;
 use Fazland\SkebbyRestClient\DataStructure\Sms as SkebbySms;
-use Fazland\Notifire\Result\Result;
 
 /**
  * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
