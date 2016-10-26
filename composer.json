@@ -6,7 +6,7 @@
         "symfony/options-resolver": "^2.7|^3.0"
     },
     "require-dev": {
-        "fazland/skebby-rest-client": "dev-master",
+        "fazland/skebby-rest-client": "^0.1",
         "mailgun/mailgun-php": "^2.0",
         "mikey179/vfsStream": "^1.6",
         "phpunit/phpunit": "^4.8|^5.0",

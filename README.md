@@ -40,7 +40,7 @@ $builder = NotifireBuilder::create()
     ->setDispatcher($dispatcher)
 ;
 
-$dispatcher->addSubscriber(new SwiftMailerHandler($mailer));
+$builder->addHandler(new SwiftMailerHandler($mailer, 'mailer_one'));
 $builder->addNotification('email', Email::class);
 
 $builder->initialize();
@@ -49,7 +49,8 @@ $builder->initialize();
 Now you're ready!
 To create an `Email` just use `Notifire::email()`, fill the fields like `from`, `to`, `parts` etc. and then use `Email::send()`:
 ```php
-$email = Notifire::email('default', ['mailer' => 'default']);
+// Use 'mailer_one' handler to send this message
+$email = Notifire::email('mailer_one');
 
 $email
     ->addFrom('test@fazland.com')
