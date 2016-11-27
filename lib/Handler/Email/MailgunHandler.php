@@ -33,7 +33,6 @@ class MailgunHandler extends AbstractMailHandler
      * @param Mailgun $mailgun
      * @param $domain
      * @param $mailerName
-     * @param $name
      */
     public function __construct(Mailgun $mailgun, $domain, $mailerName)
     {
