@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Handler\Email;
 
+use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
 use \SendGrid;
@@ -73,6 +74,11 @@ class SendGridHandler extends AbstractMailHandler
         }
         $mail->addPersonalization($pesonalization);
 
-        $this->sg->client->mail()->send()->post($mail);
+        /** @var \SendGrid\Response $response */
+        $response = $this->sg->client->mail()->send()->post($mail);
+
+        if ($response->statusCode() > 204) {
+            throw new NotificationFailedException("Sending failed via sendgrid with status code " . $response->statusCode() . " and body of response " . $response->body(), [$response]);
+        }
     }
 }
