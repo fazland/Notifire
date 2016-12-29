@@ -29,7 +29,6 @@ class SwiftMailerHandler extends AbstractMailHandler
     /**
      * @param \Swift_Mailer $mailer
      * @param string $mailerName
-     * @param $name
      */
     public function __construct(\Swift_Mailer $mailer, $mailerName)
     {
