@@ -105,4 +105,13 @@ class MailgunHandler extends AbstractMailHandler
             }
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        // TODO: Implement isAvailable() method.
+        return true;
+    }
 }

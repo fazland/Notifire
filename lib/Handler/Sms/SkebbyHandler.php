@@ -78,4 +78,14 @@ class SkebbyHandler extends AbstractSmsHandler
             throw new NotificationFailedException('All the sms failed to be send', ['failed_sms' => $failedSms]);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        $this->skebby->
+        // TODO: Implement isAvailable() method.
+        return true;
+    }
 }

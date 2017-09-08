@@ -44,7 +44,7 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldThrowExceptionIfNotificationFails()
     {
-        $this->expectException(NotificationFailedException::class);
+        $this->setExpectedException(NotificationFailedException::class);
         $email = new Email();
         $email->addTo('info@example.org');
 

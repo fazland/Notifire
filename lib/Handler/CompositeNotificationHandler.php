@@ -49,12 +49,25 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification, $safe = false)
     {
         $handlers = $this->getHandlersFor($notification);
-        $handler = $this->strategy->select($handlers);
 
-        return $handler->notify($notification);
+        if ($safe) {
+            while ($handler = $this->strategy->select($handlers)) {
+                try {
+                    $handler->notify($notification);
+                } catch (\Exception $e) {
+                    unset($handlers[array_search($handler, $handlers)]);
+                    continue;
+                }
+                return true;
+            }
+            throw (new NoAvailableHandlerException());
+        } else {
+            $this->strategy->select($handlers)->notify($notification);
+        }
+
     }
 
     /**
@@ -91,5 +104,17 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
         }
 
         return $handlers;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        if (empty($this->notificationHandlers)) {
+            return false;
+        }
+
+        return true;
     }
 }

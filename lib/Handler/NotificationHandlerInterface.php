@@ -33,4 +33,11 @@ interface NotificationHandlerInterface
      * @return string
      */
     public function getName();
+
+    /**
+     * Return true if service is working, false otherwise
+     *
+     * @return bool
+     */
+    public function isAvailable();
 }

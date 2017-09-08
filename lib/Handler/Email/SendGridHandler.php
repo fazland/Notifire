@@ -81,4 +81,13 @@ class SendGridHandler extends AbstractMailHandler
             throw new NotificationFailedException("Sending failed via sendgrid with status code " . $response->statusCode() . " and body of response " . $response->body(), [$response]);
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isAvailable()
+    {
+        // TODO: Implement isAvailable() method.
+        return true;
+    }
 }
