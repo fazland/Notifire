@@ -13,11 +13,18 @@ abstract class AbstractNotificationHandler implements NotificationHandlerInterfa
     protected $name;
 
     /**
-     * @param string $name
+     * @var int
      */
-    public function __construct($name = 'default')
+    private $priority;
+
+    /**
+     * @param string $name
+     * @param int $priority
+     */
+    public function __construct($name = 'default', $priority = 1)
     {
         $this->name = $name;
+        $this->priority = $priority;
     }
 
     /**
@@ -26,5 +33,13 @@ abstract class AbstractNotificationHandler implements NotificationHandlerInterfa
     public function getName()
     {
         return $this->name;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPriority()
+    {
+        return $this->priority;
     }
 }

@@ -7,7 +7,7 @@ class RandStrategy implements HandlerSelectorStrategyInterface
     /**
      * {@inheritdoc}
      */
-    public function select(&$handlers)
+    public function select($handlers)
     {
         if (empty($handlers)) {
             return null;

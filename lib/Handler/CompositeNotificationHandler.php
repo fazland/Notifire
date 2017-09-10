@@ -2,8 +2,12 @@
 
 namespace Fazland\Notifire\Handler;
 
+use Fazland\Notifire\Exception\NoAvailableHandlerException;
+use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\HandlerSelectorStrategy\HandlerSelectorStrategyInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
+use Fazland\Notifire\Supervisor\Event\HandlerCorruptedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class CompositeNotificationHandler implements NotificationHandlerInterface
 {
@@ -18,6 +22,11 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
      * @var HandlerSelectorStrategyInterface
      */
     private $strategy;
+
+    /**
+     * @var EventDispatcherInterface
+     */
+    private $eventDispatcher;
 
     /**
      * DefaultNotificationHandler constructor.
@@ -57,17 +66,16 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
             while ($handler = $this->strategy->select($handlers)) {
                 try {
                     $handler->notify($notification);
-                } catch (\Exception $e) {
-                    unset($handlers[array_search($handler, $handlers)]);
+                } catch (NotificationFailedException $e) {
+                    $this->eventDispatcher->dispatch(HandlerCorruptedEvent::NAME, new HandlerCorruptedEvent($handler));
                     continue;
                 }
-                return true;
+                return;
             }
             throw (new NoAvailableHandlerException());
         } else {
             $this->strategy->select($handlers)->notify($notification);
         }
-
     }
 
     /**
@@ -107,14 +115,18 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     }
 
     /**
-     * {@inheritdoc}
+     * {@inheritDoc}
      */
-    public function isAvailable()
+    public function getPriority()
     {
-        if (empty($this->notificationHandlers)) {
-            return false;
-        }
+        return 1;
+    }
 
-        return true;
+    /**
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher)
+    {
+        $this->eventDispatcher = $eventDispatcher;
     }
 }

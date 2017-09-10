@@ -35,9 +35,9 @@ interface NotificationHandlerInterface
     public function getName();
 
     /**
-     * Return true if service is working, false otherwise
+     * Return service Priority
      *
-     * @return bool
+     * @return integer
      */
-    public function isAvailable();
+    public function getPriority();
 }

@@ -96,13 +96,4 @@ class TwilioHandler extends AbstractSmsHandler
             'Body' => $notification->getContent(),
         ];
     }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isAvailable()
-    {
-        // TODO: Implement isAvailable() method.
-        return true;
-    }
 }
