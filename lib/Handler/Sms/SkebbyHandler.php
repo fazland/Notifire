@@ -56,6 +56,8 @@ class SkebbyHandler extends AbstractSmsHandler
 
                     $failedSms[] = [
                         'to' => $to,
+                        'response_status' => $response->getStatus(),
+                        'error_code' => $response->getCode(),
                         'error_message' => $response->getErrorMessage(),
                     ];
                 }

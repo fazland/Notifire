@@ -54,6 +54,16 @@ class TwilioHandler extends AbstractSmsHandler
             try {
                 $response = $this->twilio->account->messages->create($params);
                 $result->setResponse($response);
+            } catch (\Services_Twilio_RestException $e) {
+                $result->setResult(Result::FAIL)
+                    ->setResponse($e);
+
+                $failedSms[] = [
+                    'to' => $to,
+                    'response_status' => $e->getStatus(),
+                    'error_info' => $e->getInfo(),
+                    'error_message' => $e->getMessage(),
+                ];
             } catch (\Exception $e) {
                 $result->setResult(Result::FAIL)
                     ->setResponse($e);
