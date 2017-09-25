@@ -53,6 +53,8 @@ class TwilioHandler extends AbstractSmsHandler
 
             try {
                 $response = $this->twilio->account->messages->create($params);
+                $this->logger->debug('Response from Twilio ' . (string) $response);
+
                 $result->setResponse($response);
             } catch (\Services_Twilio_RestException $e) {
                 $result->setResult(Result::FAIL)
@@ -64,6 +66,12 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_info' => $e->getInfo(),
                     'error_message' => $e->getMessage(),
                 ];
+
+                $this->logger->debug('\Services_Twilio_RestException from Twilio: ' . $e->getMessage(), [
+                    'exception' => $e,
+                    'response_status' => $e->getStatus(),
+                    'error_info' => $e->getInfo(),
+                ]);
             } catch (\Exception $e) {
                 $result->setResult(Result::FAIL)
                     ->setResponse($e);
@@ -72,6 +80,8 @@ class TwilioHandler extends AbstractSmsHandler
                     'to' => $to,
                     'error_message' => $e->getMessage(),
                 ];
+
+                $this->logger->debug('Generic Exception from Twilio: ' . $e->getMessage(), ['exception' => $e]);
             }
 
             $notification->addResult($result);

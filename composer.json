@@ -1,12 +1,13 @@
 {
     "name": "fazland/notifire",
     "require": {
-        "php": ">=5.5.0",
+        "php": ">=7.0",
         "symfony/event-dispatcher": "^2.7|^3.0",
-        "symfony/options-resolver": "^2.7|^3.0"
+        "symfony/options-resolver": "^2.7|^3.0",
+        "psr/log": "^1.0"
     },
     "require-dev": {
-        "fazland/skebby-rest-client": "^0.1",
+        "fazland/skebby-rest-client": "^0.2@dev",
         "mailgun/mailgun-php": "^2.0",
         "mikey179/vfsStream": "^1.6",
         "phpunit/phpunit": "^4.8|^5.0",
@@ -14,6 +15,9 @@
         "twig/twig": "^1.24",
         "twilio/sdk": "^4.10",
         "sendgrid/sendgrid": "^5.1"
+    },
+    "conflict": {
+        "fazland/skebby-rest-client": "<0.2"
     },
     "suggest": {
         "twilio/sdk": "Send SMS via Twilio",
@@ -36,7 +40,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.3.x-dev"
+            "dev-master": "0.4.x-dev"
         }
     },
     "license": "MIT"

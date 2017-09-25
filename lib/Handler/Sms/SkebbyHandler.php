@@ -50,6 +50,8 @@ class SkebbyHandler extends AbstractSmsHandler
 
             try {
                 $response = $this->skebby->send($skebbySms)[0];
+                $this->logger->debug('Response from Skebby ' . (string) $response);
+
                 $result->setResponse($response);
                 if (! $response->isSuccessful()) {
                     $result->setResult(Result::FAIL);
@@ -71,6 +73,8 @@ class SkebbyHandler extends AbstractSmsHandler
                     'to' => $to,
                     'error_message' => $e->getMessage(),
                 ];
+
+                $this->logger->debug('Exception from Skebby: ' . $e->getMessage(), ['exception' => $e]);
             }
 
             $notification->addResult($result);
