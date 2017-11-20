@@ -25,6 +25,11 @@ class TwilioHandler extends AbstractSmsHandler
     private $defaultFrom;
 
     /**
+     * @var string
+     */
+    private $messagingServiceSid;
+
+    /**
      * @param \Services_Twilio $twilio
      * @param string $name
      */
@@ -50,6 +55,10 @@ class TwilioHandler extends AbstractSmsHandler
             $result = new Result('twilio', $this->name, Result::OK);
             $params = $data;
             $params['To'] = $to;
+
+            if (null !== $this->messagingServiceSid) {
+                $params['MessagingServiceSid'] = $this->messagingServiceSid;
+            }
 
             try {
                 $response = $this->twilio->account->messages->create($params);
@@ -90,6 +99,11 @@ class TwilioHandler extends AbstractSmsHandler
         if (count($tos) === count($failedSms)) {
             throw new NotificationFailedException('All the sms failed to be send', ['failed_sms' => $failedSms]);
         }
+    }
+
+    public function setMessagingServiceSid($messagingServiceSid)
+    {
+        $this->messagingServiceSid = $messagingServiceSid;
     }
 
     /**

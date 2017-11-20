@@ -64,4 +64,25 @@ class TwilioHandlerTest extends AbstractSmsHandlerTest
         $this->handler->setDefaultFrom('+393333333333');
         $this->handler->notify($sms);
     }
+
+    /**
+     * @dataProvider right
+     *
+     * @param Sms $sms
+     */
+    public function testShouldSetMessagingServiceSid(Sms $sms)
+    {
+        $twilio = $this->twilio->reveal();
+        $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
+        $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
+
+        $twilio->account = $account->reveal();
+        $twilio->account->messages = $messages->reveal();
+
+        $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'MessagingServiceSid' => 'foobar', 'Body' => 'Foo Bar'])->shouldBeCalled();
+
+        $this->handler->setDefaultFrom('+393333333333');
+        $this->handler->setMessagingServiceSid('foobar');
+        $this->handler->notify($sms);
+    }
 }
