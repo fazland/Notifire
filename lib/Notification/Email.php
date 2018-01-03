@@ -307,6 +307,23 @@ class Email extends AbstractNotification
     }
 
     /**
+     * @param Part $part
+     *
+     * @return $this
+     */
+    public function removePart(Part $part)
+    {
+        $contentType = $part->getContentType();
+        if (! isset($this->parts[$contentType])) {
+            return $this;
+        }
+
+        unset($this->parts[$contentType]);
+
+        return $this;
+    }
+
+    /**
      * Add or replace the HTML part of the mail
      *
      * @param $html
