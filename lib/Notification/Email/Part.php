@@ -1,6 +1,7 @@
 <?php
 
 namespace Fazland\Notifire\Notification\Email;
+use Fazland\Notifire\Notification\Email;
 
 /**
  * Part class for adding email's parts to {@see Email}
@@ -23,6 +24,11 @@ class Part
      * @var bool
      */
     private $encoding = null;
+
+    /**
+     * @var Email
+     */
+    private $email;
 
     /**
      * @param string|null $content
@@ -101,5 +107,25 @@ class Part
     public function getEncoding()
     {
         return $this->encoding;
+    }
+
+    /**
+     * @return Email
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param Email $email
+     *
+     * @return $this
+     */
+    public function setEmail(Email $email)
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }

@@ -279,7 +279,10 @@ class Email extends AbstractNotification
      */
     public function setParts(array $parts)
     {
-        $this->parts = $parts;
+        $this->parts = [];
+        foreach ($parts as $part) {
+            $this->addPart($part);
+        }
 
         return $this;
     }
@@ -298,6 +301,7 @@ class Email extends AbstractNotification
         }
 
         $this->parts[$contentType] = $part;
+        $part->setEmail($this);
 
         return $this;
     }

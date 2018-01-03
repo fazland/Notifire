@@ -47,6 +47,13 @@ class TwigProcessor implements EventSubscriberInterface
             return;
         }
 
-        $part->setContent($this->twig->render($part->getTemplateName(), $part->getVars()));
+        $template = $this->twig->load($part->getTemplateName());
+        $email = $part->getEmail();
+
+        if (empty($email->getSubject()) && $template->hasBlock('subject')) {
+            $email->setSubject(trim($template->renderBlock('subject')));
+        }
+
+        $part->setContent($template->render($part->getVars()));
     }
 }
