@@ -122,7 +122,7 @@ class SwiftMailerHandler extends AbstractMailHandler
     {
         foreach ($notification->getAttachments() as $attachment) {
             $email->attach(
-                \Swift_Attachment::newInstance(
+                new \Swift_Attachment(
                     $attachment->getContent(),
                     $attachment->getName(),
                     $attachment->getContentType()

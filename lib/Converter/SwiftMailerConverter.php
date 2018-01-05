@@ -71,7 +71,7 @@ class SwiftMailerConverter
     protected function addParts(Email $notification, \Swift_Message $email, $boundary)
     {
         foreach ($notification->getParts() as $part) {
-            $mimePart = \Swift_MimePart::newInstance($part->getContent(), $part->getContentType());
+            $mimePart = new \Swift_MimePart($part->getContent(), $part->getContentType());
             $mimePart->setBoundary($boundary);
 
             if ($encoder = $this->getEncoder($part)) {
@@ -92,7 +92,7 @@ class SwiftMailerConverter
     {
         foreach ($notification->getAttachments() as $attachment) {
             $email->attach(
-                \Swift_Attachment::newInstance(
+                new \Swift_Attachment(
                     $attachment->getContent(),
                     $attachment->getName(),
                     $attachment->getContentType()
@@ -127,7 +127,7 @@ class SwiftMailerConverter
      */
     protected function createInstance()
     {
-        return \Swift_Message::newInstance();
+        return new \Swift_Message();
     }
 
     private function getEncoder(Email\Part $part)

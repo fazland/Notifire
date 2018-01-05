@@ -140,10 +140,10 @@ class Notifire
         $builder = NotifireBuilder::create();
 
         if (class_exists('Swift_Mailer')) {
-            $transport = \Swift_SmtpTransport::newInstance('localhost', 25);
-            $mailer = \Swift_Mailer::newInstance($transport);
+            $transport = new \Swift_SmtpTransport('localhost', 25);
+            $mailer = new \Swift_Mailer($transport);
 
-            $handler = new SwiftMailerHandler($mailer, 'default', 'swiftmailer');
+            $handler = new SwiftMailerHandler($mailer, 'default');
             if (class_exists('Twig_Environment')) {
                 $env = new \Twig_Environment(new \Twig_Loader_Filesystem());
                 $handler->setTwig($env);
