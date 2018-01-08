@@ -1,12 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification;
 
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
- *
  * Notifire's standard representation of an Sms as an implementation
  * of {@see NotificationInterface}.
  */
@@ -35,13 +33,14 @@ class Sms extends AbstractNotification
     /**
      * Sms constructor.
      *
-     * @param $handler
-     * @param array $options
+     * @param string $handler
+     * @param array  $options
      */
-    public function __construct($handler = 'default', array $options = [])
+    public function __construct(string $handler = 'default', array $options = [])
     {
         $this->to = [];
         $this->additionalFields = [];
+        $this->content = '';
 
         parent::__construct($handler, $options);
     }
@@ -49,7 +48,7 @@ class Sms extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getAdditionalFields()
+    public function getAdditionalFields(): array
     {
         return $this->additionalFields;
     }
@@ -59,7 +58,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function setAdditionalFields($additionalFields)
+    public function setAdditionalFields(array $additionalFields): self
     {
         $this->additionalFields = $additionalFields;
 
@@ -72,7 +71,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function addAdditionalField($key, $value)
+    public function addAdditionalField(string $key, string $value): self
     {
         $this->additionalFields[$key] = $value;
 
@@ -84,7 +83,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function removeAdditionalField($key)
+    public function removeAdditionalField(string $key): self
     {
         if (isset($this->additionalFields[$key])) {
             unset($this->additionalFields[$key]);
@@ -96,7 +95,7 @@ class Sms extends AbstractNotification
     /**
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -106,7 +105,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -116,7 +115,7 @@ class Sms extends AbstractNotification
     /**
      * @return string
      */
-    public function getFrom()
+    public function getFrom(): string
     {
         return $this->from;
     }
@@ -126,7 +125,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function setFrom($from)
+    public function setFrom(string $from): self
     {
         $this->from = $from;
 
@@ -136,7 +135,7 @@ class Sms extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getTo()
+    public function getTo(): array
     {
         return $this->to;
     }
@@ -146,7 +145,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function setTo($to)
+    public function setTo(array $to): self
     {
         $this->to = $to;
 
@@ -158,7 +157,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function addTo($to)
+    public function addTo(string $to): self
     {
         $this->to[] = $to;
 
@@ -170,7 +169,7 @@ class Sms extends AbstractNotification
      *
      * @return $this
      */
-    public function removeTo($to)
+    public function removeTo(string $to): self
     {
         $itemPosition = array_search($to, $this->to);
 
@@ -184,7 +183,7 @@ class Sms extends AbstractNotification
     /**
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }

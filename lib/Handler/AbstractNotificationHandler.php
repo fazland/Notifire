@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler;
 
@@ -6,9 +6,6 @@ use Psr\Log\LoggerAwareInterface;
 use Psr\Log\LoggerAwareTrait;
 use Psr\Log\NullLogger;
 
-/**
- * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
- */
 abstract class AbstractNotificationHandler implements NotificationHandlerInterface, LoggerAwareInterface
 {
     use LoggerAwareTrait;
@@ -21,7 +18,7 @@ abstract class AbstractNotificationHandler implements NotificationHandlerInterfa
     /**
      * @param string $name
      */
-    public function __construct($name = 'default')
+    public function __construct(string $name = 'default')
     {
         $this->name = $name;
         $this->setLogger(new NullLogger());
@@ -30,7 +27,7 @@ abstract class AbstractNotificationHandler implements NotificationHandlerInterfa
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }

@@ -1,17 +1,16 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification\Email;
+
 use Fazland\Notifire\Notification\Email;
 
 /**
- * Part class for adding email's parts to {@see Email}
- *
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
+ * Part class for adding email's parts to {@see Email}.
  */
 class Part
 {
     /**
-     * @var string
+     * @var string|null
      */
     private $content;
 
@@ -21,18 +20,24 @@ class Part
     private $contentType;
 
     /**
-     * @var bool
+     * @var string|null
      */
-    private $encoding = null;
+    private $encoding;
 
     /**
      * @var Email
      */
     private $email;
 
+    public function __construct()
+    {
+        $this->encoding = null;
+    }
+
     /**
      * @param string|null $content
      * @param string|null $contentType
+     *
      * @return static
      */
     public static function create($content = null, $contentType = 'text/plain')
@@ -46,7 +51,7 @@ class Part
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getContent()
     {
@@ -58,7 +63,7 @@ class Part
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent($content): self
     {
         $this->content = $content;
 
@@ -68,7 +73,7 @@ class Part
     /**
      * @return string
      */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType;
     }
@@ -78,7 +83,7 @@ class Part
      *
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
 
@@ -86,23 +91,9 @@ class Part
     }
 
     /**
-     * Sets encoding for this part
+     * Get encoding name.
      *
-     * @param $encoding
-     *
-     * @return $this
-     */
-    public function setEncoding($encoding)
-    {
-        $this->encoding = $encoding;
-
-        return $this;
-    }
-
-    /**
-     * Get encoding name
-     *
-     * @return bool
+     * @return string|null
      */
     public function getEncoding()
     {
@@ -110,9 +101,23 @@ class Part
     }
 
     /**
+     * Sets encoding for this part.
+     *
+     * @param string $encoding
+     *
+     * @return $this
+     */
+    public function setEncoding(string $encoding): self
+    {
+        $this->encoding = $encoding;
+
+        return $this;
+    }
+
+    /**
      * @return Email
      */
-    public function getEmail()
+    public function getEmail(): Email
     {
         return $this->email;
     }
@@ -122,7 +127,7 @@ class Part
      *
      * @return $this
      */
-    public function setEmail(Email $email)
+    public function setEmail(Email $email): self
     {
         $this->email = $email;
 

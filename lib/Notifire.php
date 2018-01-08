@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire;
 
@@ -13,9 +13,6 @@ use Fazland\Notifire\Notification\Sms;
 
 /**
  * Notifire class is a factory of {@see NotificationInterface}.
- *
- * @author Stefano Rainieri <stefano.rainieri@fazland.com>
- * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
  *
  * @method static Email email(string $handler = 'default', array $options = [])
  * @method static Sms sms(string $handler = 'default', array $options = [])
@@ -61,7 +58,7 @@ class Notifire
      * @throws NotificationAlreadyRegisteredException
      * @throws UnsupportedClassException
      */
-    public static function addNotification($notificationName, $notificationClass)
+    public static function addNotification(string $notificationName, string $notificationClass)
     {
         if (isset(static::$notifications[$notificationName])) {
             throw new NotificationAlreadyRegisteredException();
@@ -83,13 +80,13 @@ class Notifire
      *
      * @param string $notificationName
      * @param string $handler
-     * @param array $options
+     * @param array  $options
      *
      * @return NotificationInterface
      *
      * @throws UnregisteredNotificationException
      */
-    public static function factory($notificationName, $handler = 'default', array $options = [])
+    public static function factory(string $notificationName, string $handler = 'default', array $options = [])
     {
         if (! isset(static::$notifications[$notificationName])) {
             throw new UnregisteredNotificationException();
@@ -105,13 +102,13 @@ class Notifire
 
     /**
      * @param string $name
-     * @param array $arguments
+     * @param array  $arguments
      *
      * @return NotificationInterface
      *
      * @throws UnregisteredNotificationException
      */
-    public static function __callStatic($name, $arguments)
+    public static function __callStatic(string $name, array $arguments)
     {
         if (! isset($arguments[0])) {
             $arguments[0] = 'default';

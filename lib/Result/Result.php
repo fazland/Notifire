@@ -1,10 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Result;
 
 /**
  * Represents a notification sending result
- * Holds error details if any
+ * Holds error details if any.
  */
 class Result
 {
@@ -12,7 +12,7 @@ class Result
     const FAIL = 'fail';
 
     /**
-     * The Handler class name
+     * The Handler class name.
      *
      * @var string
      */
@@ -20,41 +20,41 @@ class Result
 
     /**
      * The subservice that handled this request
-     * (mailer, twilio service, etc)
+     * (mailer, twilio service, etc).
      *
      * @var string
      */
     private $service;
 
     /**
-     * Result code
+     * Result code.
      *
      * @var string
      */
     private $result;
 
     /**
-     * The result target
+     * The result target.
      *
      * @var string
      */
     private $target;
 
     /**
-     * External service response, if any
+     * External service response, if any.
      *
      * @var mixed
      */
     private $response;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param string $handlerName
      * @param string $service
      * @param string $result
      */
-    public function __construct($handlerName, $service, $result = self::OK)
+    public function __construct(string $handlerName, string $service, string $result = self::OK)
     {
         $this->handlerName = $handlerName;
         $this->service = $service;
@@ -64,7 +64,7 @@ class Result
     /**
      * @return string
      */
-    public function getHandlerName()
+    public function getHandlerName(): string
     {
         return $this->handlerName;
     }
@@ -72,7 +72,7 @@ class Result
     /**
      * @return string
      */
-    public function getService()
+    public function getService(): string
     {
         return $this->service;
     }
@@ -80,7 +80,7 @@ class Result
     /**
      * @return string
      */
-    public function getResult()
+    public function getResult(): string
     {
         return $this->result;
     }
@@ -90,7 +90,7 @@ class Result
      *
      * @return $this
      */
-    public function setResult($result)
+    public function setResult(string $result): self
     {
         $this->result = $result;
 
@@ -102,39 +102,39 @@ class Result
      *
      * @return bool
      */
-    public function isOk()
+    public function isOk(): bool
     {
-        return $this->result === self::OK;
+        return self::OK === $this->result;
     }
 
     /**
-     * Notification has encountered an error
+     * Notification has encountered an error.
      *
      * @return bool
      */
-    public function hasErrors()
+    public function hasErrors(): bool
     {
         return ! $this->isOk();
     }
 
     /**
-     * Get the result target (could be an email address, a phone number for sms, etc)
+     * Get the result target (could be an email address, a phone number for sms, etc).
      *
      * @return string
      */
-    public function getTarget()
+    public function getTarget(): string
     {
         return $this->target;
     }
 
     /**
-     * Set the result target
+     * Set the result target.
      *
      * @param string $target
      *
      * @return $this
      */
-    public function setTarget($target)
+    public function setTarget(string $target): self
     {
         $this->target = $target;
 
@@ -142,26 +142,26 @@ class Result
     }
 
     /**
-     * Set the error details
-     *
-     * @param mixed $response
-     *
-     * @return $this
-     */
-    public function setResponse($response)
-    {
-        $this->response = $response;
-
-        return $this;
-    }
-
-    /**
-     * Get error details
+     * Get error details.
      *
      * @return mixed
      */
     public function getResponse()
     {
         return $this->response;
+    }
+
+    /**
+     * Set the error details.
+     *
+     * @param mixed $response
+     *
+     * @return $this
+     */
+    public function setResponse($response): self
+    {
+        $this->response = $response;
+
+        return $this;
     }
 }

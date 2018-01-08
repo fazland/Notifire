@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler\Email;
 
@@ -11,7 +11,7 @@ abstract class AbstractMailHandler extends AbstractNotificationHandler
     /**
      * {@inheritdoc}
      */
-    public function supports(NotificationInterface $notification)
+    public function supports(NotificationInterface $notification): bool
     {
         return $notification instanceof Email;
     }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Event;
 
@@ -7,9 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is called before the handlers are checked
- * and notified about this notification
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * and notified about this notification.
  */
 class PreNotifyEvent extends Event
 {
@@ -31,7 +29,7 @@ class PreNotifyEvent extends Event
      *
      * @return NotificationInterface
      */
-    public function getNotification()
+    public function getNotification(): NotificationInterface
     {
         return $this->notification;
     }

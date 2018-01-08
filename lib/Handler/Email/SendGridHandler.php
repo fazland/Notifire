@@ -1,15 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler\Email;
 
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
-use \SendGrid;
+use SendGrid;
 
-/**
- * @author Giovanni Albero <giovanni.albero@fazland.com>
- */
 class SendGridHandler extends AbstractMailHandler
 {
     /**
@@ -24,10 +21,10 @@ class SendGridHandler extends AbstractMailHandler
 
     /**
      * @param SendGrid $sg
-     * @param string $domain
-     * @param string $mailerName
+     * @param string   $domain
+     * @param string   $mailerName
      */
-    public function __construct(SendGrid $sg, $domain, $mailerName)
+    public function __construct(SendGrid $sg, string $domain, string $mailerName)
     {
         parent::__construct($mailerName);
         $this->domain = $domain;
@@ -35,7 +32,7 @@ class SendGridHandler extends AbstractMailHandler
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function notify(NotificationInterface $notification)
     {
@@ -50,35 +47,34 @@ class SendGridHandler extends AbstractMailHandler
         $from = new SendGrid\Email(null, $fromEmail);
         $subject = $notification->getSubject();
         $mail = new SendGrid\Mail();
-        foreach($notification->getParts() as $part) {
+        foreach ($notification->getParts() as $part) {
             $content = new SendGrid\Content($part->getContentType(), $part->getContent());
             $mail->addContent($content);
         }
         $mail->setFrom($from);
         $mail->setSubject($subject);
 
-
         $cc = $notification->getCc();
         $bcc = $notification->getBcc();
         $to = $notification->getTo();
 
-        $pesonalization = new SendGrid\Personalization();
+        $personalization = new SendGrid\Personalization();
         foreach ($to as $email) {
-            $pesonalization->addTo(new SendGrid\Email(null, $email));
+            $personalization->addTo(new SendGrid\Email(null, $email));
         }
         foreach ($cc as $email) {
-            $pesonalization->addCc(new SendGrid\Email(null, $email));
+            $personalization->addCc(new SendGrid\Email(null, $email));
         }
         foreach ($bcc as $email) {
-            $pesonalization->addBcc(new SendGrid\Email(null, $email));
+            $personalization->addBcc(new SendGrid\Email(null, $email));
         }
-        $mail->addPersonalization($pesonalization);
+        $mail->addPersonalization($personalization);
 
         /** @var \SendGrid\Response $response */
         $response = $this->sg->client->mail()->send()->post($mail);
 
         if ($response->statusCode() > 204) {
-            throw new NotificationFailedException("Sending failed via sendgrid with status code " . $response->statusCode() . " and body of response " . $response->body(), [$response]);
+            throw new NotificationFailedException('Sending failed via sendgrid with status code '.$response->statusCode().' and body of response '.$response->body(), [$response]);
         }
     }
 }

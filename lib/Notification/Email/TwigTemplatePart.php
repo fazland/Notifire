@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification\Email;
 
@@ -14,8 +14,10 @@ class TwigTemplatePart extends Part
      */
     private $vars;
 
-    public function __construct($templateName, array $vars = [], $contentType = 'text/plain')
+    public function __construct(string $templateName = null, array $vars = [], string $contentType = 'text/plain')
     {
+        parent::__construct();
+
         $this->templateName = $templateName;
         $this->vars = $vars;
 
@@ -30,7 +32,7 @@ class TwigTemplatePart extends Part
     /**
      * @return string
      */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->templateName;
     }
@@ -40,7 +42,7 @@ class TwigTemplatePart extends Part
      *
      * @return $this
      */
-    public function setTemplateName($templateName)
+    public function setTemplateName(string $templateName): self
     {
         $this->templateName = $templateName;
 
@@ -50,7 +52,7 @@ class TwigTemplatePart extends Part
     /**
      * @return array
      */
-    public function getVars()
+    public function getVars(): array
     {
         return $this->vars;
     }
@@ -60,7 +62,7 @@ class TwigTemplatePart extends Part
      *
      * @return $this
      */
-    public function setVars(array $vars)
+    public function setVars(array $vars): self
     {
         $this->vars = $vars;
 

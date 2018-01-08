@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler\Sms;
 
@@ -8,9 +8,7 @@ use Fazland\Notifire\Notification\Sms;
 use Fazland\Notifire\Result\Result;
 
 /**
- * Twilio handler
- *
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
+ * Twilio handler.
  */
 class TwilioHandler extends AbstractSmsHandler
 {
@@ -31,9 +29,9 @@ class TwilioHandler extends AbstractSmsHandler
 
     /**
      * @param \Services_Twilio $twilio
-     * @param string $name
+     * @param string           $name
      */
-    public function __construct(\Services_Twilio $twilio, $name = 'default')
+    public function __construct(\Services_Twilio $twilio, string $name = 'default')
     {
         $this->twilio = $twilio;
 
@@ -62,7 +60,7 @@ class TwilioHandler extends AbstractSmsHandler
 
             try {
                 $response = $this->twilio->account->messages->create($params);
-                $this->logger->debug('Response from Twilio ' . (string) $response);
+                $this->logger->debug('Response from Twilio '.(string) $response);
 
                 $result->setResponse($response);
             } catch (\Services_Twilio_RestException $e) {
@@ -76,7 +74,7 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug('\Services_Twilio_RestException from Twilio: ' . $e->getMessage(), [
+                $this->logger->debug('\Services_Twilio_RestException from Twilio: '.$e->getMessage(), [
                     'exception' => $e,
                     'response_status' => $e->getStatus(),
                     'error_info' => $e->getInfo(),
@@ -90,7 +88,7 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug('Generic Exception from Twilio: ' . $e->getMessage(), ['exception' => $e]);
+                $this->logger->debug('Generic Exception from Twilio: '.$e->getMessage(), ['exception' => $e]);
             }
 
             $notification->addResult($result);
@@ -101,23 +99,23 @@ class TwilioHandler extends AbstractSmsHandler
         }
     }
 
-    public function setMessagingServiceSid($messagingServiceSid)
+    public function setMessagingServiceSid(string $messagingServiceSid)
     {
         $this->messagingServiceSid = $messagingServiceSid;
     }
 
     /**
-     * Set the 'from' default. Used if no from is configured in the Sms object
+     * Set the 'from' default. Used if no from is configured in the Sms object.
      *
      * @param string $defaultFrom
      */
-    public function setDefaultFrom($defaultFrom)
+    public function setDefaultFrom(string $defaultFrom)
     {
         $this->defaultFrom = $defaultFrom;
     }
 
     /**
-     * Get the parameters for the messages->create call
+     * Get the parameters for the messages->create call.
      *
      * @param Sms $notification
      *

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Result;
 
@@ -10,13 +10,13 @@ class ResultSet
     private $results = [];
 
     /**
-     * Add a result to the array
+     * Add a result to the array.
      *
      * @param Result $result
      *
      * @return $this
      */
-    public function addResult(Result $result)
+    public function addResult(Result $result): self
     {
         $handler = $result->getHandlerName();
         $this->results[$handler][] = $result;
@@ -25,11 +25,11 @@ class ResultSet
     }
 
     /**
-     * Get all Result objects
+     * Get all Result objects.
      *
      * @return Result[]
      */
-    public function all()
+    public function all(): array
     {
         $results = [];
         array_walk_recursive($this->results, function ($v) use (&$results) {

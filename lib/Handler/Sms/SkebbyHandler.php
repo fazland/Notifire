@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler\Sms;
 
@@ -8,9 +8,6 @@ use Fazland\Notifire\Result\Result;
 use Fazland\SkebbyRestClient\Client\Client as SkebbyRestClient;
 use Fazland\SkebbyRestClient\DataStructure\Sms as SkebbySms;
 
-/**
- * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
- */
 class SkebbyHandler extends AbstractSmsHandler
 {
     /**
@@ -20,9 +17,9 @@ class SkebbyHandler extends AbstractSmsHandler
 
     /**
      * @param SkebbyRestClient $skebby
-     * @param string $name
+     * @param string           $name
      */
-    public function __construct(SkebbyRestClient $skebby, $name = 'default')
+    public function __construct(SkebbyRestClient $skebby, string $name = 'default')
     {
         parent::__construct($name);
 
@@ -50,7 +47,7 @@ class SkebbyHandler extends AbstractSmsHandler
 
             try {
                 $response = $this->skebby->send($skebbySms)[0];
-                $this->logger->debug('Response from Skebby ' . (string) $response);
+                $this->logger->debug('Response from Skebby '.(string) $response);
 
                 $result->setResponse($response);
                 if (! $response->isSuccessful()) {
@@ -74,7 +71,7 @@ class SkebbyHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug('Exception from Skebby: ' . $e->getMessage(), ['exception' => $e]);
+                $this->logger->debug('Exception from Skebby: '.$e->getMessage(), ['exception' => $e]);
             }
 
             $notification->addResult($result);

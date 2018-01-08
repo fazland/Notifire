@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Event;
 
@@ -18,7 +18,7 @@ class Events
     /**
      * Represents a NotifyEvent
      * Dispatched just before an handler sends the
-     * notification
+     * notification.
      *
      * Notification is cloned before being passed to
      * the event, so it can be used to modify the
@@ -31,7 +31,7 @@ class Events
     /**
      * Represents a PostNotifyEvent
      * Dispatched after the handlers have been notified
-     * and the notification is sent
+     * and the notification is sent.
      *
      * If no handler matched the notification this event
      * is not triggered, but an exception is thrown instead

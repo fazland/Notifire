@@ -1,15 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-/**
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
- */
-class EmailTest extends \PHPUnit_Framework_TestCase
+class EmailTest extends TestCase
 {
     public function testSendShouldCallNotificationManager()
     {

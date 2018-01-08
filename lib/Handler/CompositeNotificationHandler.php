@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler;
 
@@ -22,10 +22,10 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     /**
      * DefaultNotificationHandler constructor.
      *
-     * @param $name
+     * @param string                           $name
      * @param HandlerSelectorStrategyInterface $strategy
      */
-    public function __construct($name, HandlerSelectorStrategyInterface $strategy)
+    public function __construct(string $name, HandlerSelectorStrategyInterface $strategy)
     {
         $this->name = $name;
         $this->strategy = $strategy;
@@ -34,7 +34,7 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function supports(NotificationInterface $notification)
+    public function supports(NotificationInterface $notification): bool
     {
         /** @var NotificationHandlerInterface $notificationHandler */
         foreach ($this->notificationHandlers as $notificationHandler) {
@@ -54,13 +54,13 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
         $handlers = $this->getHandlersFor($notification);
         $handler = $this->strategy->select($handlers);
 
-        return $handler->notify($notification);
+        $handler->notify($notification);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -70,7 +70,7 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
      *
      * @return $this
      */
-    public function addNotificationHandler(NotificationHandlerInterface $notificationHandler)
+    public function addNotificationHandler(NotificationHandlerInterface $notificationHandler): self
     {
         $this->notificationHandlers[] = $notificationHandler;
 
@@ -79,9 +79,10 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
 
     /**
      * @param NotificationInterface $notification
+     *
      * @return NotificationHandlerInterface[]
      */
-    private function getHandlersFor(NotificationInterface $notification)
+    private function getHandlersFor(NotificationInterface $notification): array
     {
         $handlers = [];
         foreach ($this->notificationHandlers as $notificationHandler) {

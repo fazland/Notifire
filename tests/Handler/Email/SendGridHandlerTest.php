@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
@@ -8,29 +8,21 @@ use Fazland\Notifire\Notification\Email;
 use Prophecy\Argument;
 use SendGrid\Response;
 
-/**
- * @author Giovanni Albero <giovanni.albero@fazland.com>
- */
-if (version_compare(PHP_VERSION, '5.6', '>=')) {
-    class MockSendGridClient extends \SendGrid\Client
+class MockSendGridClient extends \SendGrid\Client
+{
+    public function mail()
     {
-        public function mail()
-        {
-        }
+    }
 
-        public function send()
-        {
-        }
+    public function send()
+    {
+    }
 
-        public function post()
-        {
-        }
+    public function post()
+    {
     }
 }
 
-/**
- * @requires PHP 5.6
- */
 class SendGridHandlerTest extends AbstractEmailHandlerTest
 {
     private $mailer;
@@ -60,7 +52,7 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
         $this->handler->notify($email);
     }
 
-    public function testNoThrowExceptionWithValidResponseBySendGridApi()
+    public function testShouldNotThrowExceptionWithValidResponseBySendGridApi()
     {
         $email = new Email();
         $email->addTo('info@example.org');
@@ -70,9 +62,9 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
         $client = $this->prophesize(MockSendGridClient::class);
 
         $this->mailer->client = $client->reveal();
-        $client->mail()->willReturn($client->reveal());
-        $client->send()->willReturn($client->reveal());
-        $client->post(Argument::type(\Sendgrid\Mail::class))->willReturn($response);
+        $client->mail()->shouldBeCalled()->willReturn($client->reveal());
+        $client->send()->shouldBeCalled()->willReturn($client->reveal());
+        $client->post(Argument::type(\Sendgrid\Mail::class))->shouldBeCalled()->willReturn($response);
 
         $this->handler->notify($email);
     }

@@ -1,14 +1,15 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\HandlerSelectorStrategy;
 
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\HandlerSelectorStrategy\RandStrategy;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @runTestsInSeparateProcesses
  */
-class RandStrategyTest extends \PHPUnit_Framework_TestCase
+class RandStrategyTest extends TestCase
 {
     /**
      * @var RandStrategy

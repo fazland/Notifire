@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler\Email;
 
@@ -11,9 +11,7 @@ use Mailgun\Mailgun;
 /**
  * Mailgun handler
  * It uses swift mailer to build a mime message that will be sent
- * through the Mailgun APIs
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * through the Mailgun APIs.
  */
 class MailgunHandler extends AbstractMailHandler
 {
@@ -31,10 +29,10 @@ class MailgunHandler extends AbstractMailHandler
      * MailgunHandler constructor.
      *
      * @param Mailgun $mailgun
-     * @param $domain
-     * @param $mailerName
+     * @param string  $domain
+     * @param string  $mailerName
      */
-    public function __construct(Mailgun $mailgun, $domain, $mailerName)
+    public function __construct(Mailgun $mailgun, string $domain, string $mailerName)
     {
         $this->mailgun = $mailgun;
         $this->domain = $domain;
@@ -91,7 +89,7 @@ class MailgunHandler extends AbstractMailHandler
                 $data['to'] = $to_chunk;
 
                 $res = $this->mailgun->sendMessage($this->domain, $data, $message->toString());
-                if ($res->http_response_code == 200) {
+                if (200 == $res->http_response_code) {
                     $success[] = $res;
                 } else {
                     $result->setResult(Result::FAIL);
@@ -102,7 +100,7 @@ class MailgunHandler extends AbstractMailHandler
                 $notification->addResult($result);
             }
 
-            if (count($success) === 0) {
+            if (0 === count($success)) {
                 throw new NotificationFailedException("Sending failed for message {$notification->getSubject()}", $failed);
             }
         }

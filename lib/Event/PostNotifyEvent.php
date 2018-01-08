@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Event;
 
@@ -7,9 +7,7 @@ use Symfony\Component\EventDispatcher\Event;
 
 /**
  * This event is dispatched after all the handlers have
- * been notified
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * been notified.
  */
 class PostNotifyEvent extends Event
 {
@@ -31,7 +29,7 @@ class PostNotifyEvent extends Event
      *
      * @return NotificationInterface
      */
-    public function getNotification()
+    public function getNotification(): NotificationInterface
     {
         return $this->notification;
     }

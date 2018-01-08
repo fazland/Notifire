@@ -1,13 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Handler;
 
 use Fazland\Notifire\Notification\NotificationInterface;
 
 /**
- * Represents a notification handler
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * Represents a notification handler.
  */
 interface NotificationHandlerInterface
 {
@@ -18,19 +16,19 @@ interface NotificationHandlerInterface
      *
      * @return bool
      */
-    public function supports(NotificationInterface $notification);
+    public function supports(NotificationInterface $notification): bool;
 
     /**
-     * Send the notification
+     * Send the notification.
      *
      * @param NotificationInterface $notification
      */
     public function notify(NotificationInterface $notification);
 
     /**
-     * Return handler name
+     * Return handler name.
      *
      * @return string
      */
-    public function getName();
+    public function getName(): string;
 }

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
@@ -9,11 +9,7 @@ use Fazland\SkebbyRestClient\Client\Client as SkebbyRestClient;
 use Fazland\SkebbyRestClient\DataStructure\Response;
 use Fazland\SkebbyRestClient\DataStructure\Sms as SkebbySms;
 use Prophecy\Prophecy\ObjectProphecy;
-use Psr\Log\LoggerInterface;
 
-/**
- * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
- */
 class SkebbyHandlerTest extends AbstractSmsHandlerTest
 {
     const RESPONSE_SUCCESS =

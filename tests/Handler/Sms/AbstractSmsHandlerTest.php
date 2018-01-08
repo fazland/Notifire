@@ -1,14 +1,12 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\Sms;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @author Massimiliano Braglia <massimiliano.braglia@fazland.com>
- */
-abstract class AbstractSmsHandlerTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractSmsHandlerTest extends TestCase
 {
     /**
      * @var NotificationHandlerInterface
@@ -16,7 +14,7 @@ abstract class AbstractSmsHandlerTest extends \PHPUnit_Framework_TestCase
     protected $handler;
 
     /**
-     * {@inheritdoc]
+     * {@inheritdoc}
      */
     protected function setUp()
     {
@@ -31,10 +29,10 @@ abstract class AbstractSmsHandlerTest extends \PHPUnit_Framework_TestCase
     public function withoutTo()
     {
         $s1 = new Sms();
-        $s1->setTo([]);
+        $s1->setFrom('+393333333333');
 
         $s2 = clone $s1;
-        $s2->setFrom('+393333333333');
+        $s2->setTo([]);
 
         $s3 = clone $s2;
         $s3->setContent('Foo Bar');

@@ -1,12 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Notification\Email;
 
 use Fazland\Notifire\Notification\Email\Attachment;
 use org\bovigo\vfs\vfsStream;
 use org\bovigo\vfs\vfsStreamWrapper;
+use PHPUnit\Framework\TestCase;
 
-class AttachmentTest extends \PHPUnit_Framework_TestCase
+class AttachmentTest extends TestCase
 {
     public function tearDown()
     {

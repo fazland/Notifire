@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Converter;
 
@@ -7,11 +7,18 @@ use Fazland\Notifire\Util\Email\AddressParser;
 
 /**
  * This class is responsible of converting an Email object to
- * a Swift_Message instance
+ * a Swift_Message instance.
  */
 class SwiftMailerConverter
 {
-    public function convert(Email $email)
+    /**
+     * Converts an Email object into a \Swift_Message object.
+     *
+     * @param Email $email
+     *
+     * @return \Swift_Message
+     */
+    public function convert(Email $email): \Swift_Message
     {
         $message = $this->createInstance()->setSubject($email->getSubject());
         $message->setBoundary($boundary = md5(uniqid()));
@@ -53,7 +60,15 @@ class SwiftMailerConverter
         }
     }
 
-    protected function addAddress(\Swift_Message $email, $type, $address)
+    /**
+     * Adds an email address (to, cc, bcc inferred from $type) to the \Swift_message
+     * instance passed.
+     *
+     * @param \Swift_Message $email
+     * @param string         $type
+     * @param string         $address
+     */
+    protected function addAddress(\Swift_Message $email, string $type, string $address)
     {
         $method = 'add'.$type;
 
@@ -64,28 +79,38 @@ class SwiftMailerConverter
     /**
      * Adds body parts to the message.
      *
-     * @param Email $notification
+     * @param Email          $notification
      * @param \Swift_Message $email
-     * @param string $boundary
+     * @param string         $boundary
      */
-    protected function addParts(Email $notification, \Swift_Message $email, $boundary)
+    protected function addParts(Email $notification, \Swift_Message $email, string $boundary)
     {
-        foreach ($notification->getParts() as $part) {
-            $mimePart = new \Swift_MimePart($part->getContent(), $part->getContentType());
-            $mimePart->setBoundary($boundary);
+        $parts = $notification->getParts();
+        if (1 === count($parts)) {
+            $part = reset($parts);
+            $email->setBody($part->getContent(), $part->getContentType());
 
             if ($encoder = $this->getEncoder($part)) {
-                $mimePart->setEncoder($encoder);
+                $email->setEncoder($encoder);
             }
+        } else {
+            foreach ($notification->getParts() as $part) {
+                $mimePart = new \Swift_MimePart($part->getContent(), $part->getContentType());
+                $mimePart->setBoundary($boundary);
 
-            $email->attach($mimePart);
+                if ($encoder = $this->getEncoder($part)) {
+                    $mimePart->setEncoder($encoder);
+                }
+
+                $email->attach($mimePart);
+            }
         }
     }
 
     /**
      * Adds the attachments to the message.
      *
-     * @param Email $notification
+     * @param Email          $notification
      * @param \Swift_Message $email
      */
     protected function addAttachments(Email $notification, \Swift_Message $email)
@@ -104,7 +129,7 @@ class SwiftMailerConverter
     /**
      * Adds the {@see Email::additionalHeaders} to the message.
      *
-     * @param Email $notification
+     * @param Email          $notification
      * @param \Swift_Message $email
      */
     protected function addHeaders(Email $notification, \Swift_Message $email)
@@ -121,15 +146,20 @@ class SwiftMailerConverter
     }
 
     /**
-     * Create a new instance of Swift_Message
+     * Create a new instance of Swift_Message.
      *
      * @return \Swift_Message
      */
-    protected function createInstance()
+    protected function createInstance(): \Swift_Message
     {
         return new \Swift_Message();
     }
 
+    /**
+     * @param Email\Part $part
+     *
+     * @return null|\Swift_Encoder
+     */
     private function getEncoder(Email\Part $part)
     {
         $encoding = $part->getEncoding();

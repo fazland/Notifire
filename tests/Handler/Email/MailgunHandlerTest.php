@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
@@ -23,7 +23,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
         $this->mailgun = $this->prophesize(Mailgun::class);
         $this->mailgun->sendMessage(Argument::cetera())->willReturn($resp);
 
-        return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default', 'mailgun');
+        return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default');
     }
 
     public function testShouldAddTags()

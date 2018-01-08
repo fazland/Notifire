@@ -1,13 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Exception;
 
 /**
  * This Exception is raised when:
  * - an error occurs while sending a notification
- * - no notifications were sent
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * - no notifications were sent.
  */
 class NotificationFailedException extends \Exception
 {
@@ -16,7 +14,7 @@ class NotificationFailedException extends \Exception
      */
     private $details;
 
-    public function __construct($message = '', $details = [], $code = 0, \Exception $previous = null)
+    public function __construct(string $message = '', array $details = [], int $code = 0, \Exception $previous = null)
     {
         $this->details = $details;
 
@@ -26,7 +24,7 @@ class NotificationFailedException extends \Exception
     /**
      * @return array
      */
-    public function getDetails()
+    public function getDetails(): array
     {
         return $this->details;
     }

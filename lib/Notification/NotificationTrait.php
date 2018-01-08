@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification;
 
@@ -10,8 +10,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 /**
  * NotificationTrait adds a standard way to set an instance of {@see EventDispatcherInterface}
  * and to implement the {@see NotificationInterface::send()} method.
- *
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 trait NotificationTrait
 {
@@ -23,7 +21,7 @@ trait NotificationTrait
     /**
      * @var ResultSet
      */
-    private $resultSet = null;
+    private $resultSet;
 
     /**
      * @var string
@@ -51,7 +49,7 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function getResultSet()
+    public function getResultSet(): ResultSet
     {
         if (null === $this->resultSet) {
             $this->resultSet = new ResultSet();
@@ -63,17 +61,19 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function addResult(Result $result)
+    public function addResult(Result $result): self
     {
         $this->getResultSet()->addResult($result);
+
+        return $this;
     }
 
     /**
-     * @param $handlerName
+     * @param string $handlerName
      *
      * @return $this
      */
-    public function setHandlerName($handlerName)
+    public function setHandlerName(string $handlerName): self
     {
         $this->handlerName = $handlerName;
 
@@ -83,7 +83,7 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function getHandlerName()
+    public function getHandlerName(): string
     {
         return $this->handlerName;
     }

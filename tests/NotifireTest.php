@@ -1,15 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests;
 
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notifire;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @author Stefano Rainieri <stefano.rainieri@fazland.com>
- */
-class NotifireTest extends \PHPUnit_Framework_TestCase
+class NotifireTest extends TestCase
 {
     protected function tearDown()
     {

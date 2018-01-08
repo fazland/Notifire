@@ -1,10 +1,11 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Util\Email;
 
 use Fazland\Notifire\Util\Email\AddressParser;
+use PHPUnit\Framework\TestCase;
 
-class AddressParserTest extends \PHPUnit_Framework_TestCase
+class AddressParserTest extends TestCase
 {
     public function addressDataProvider()
     {

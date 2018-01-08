@@ -1,12 +1,10 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Util\Email;
 
 /**
  * ABNF grammar definitions
- * Based upon swift mailer' Swift_Mailer_Grammar class
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * Based upon swift mailer' Swift_Mailer_Grammar class.
  */
 class Grammar
 {
@@ -25,11 +23,11 @@ class Grammar
     private static $_grammar = [];
 
     /**
-     * Get the singleton instance
+     * Get the singleton instance.
      *
-     * @return Grammar
+     * @return self
      */
-    public static function getInstance()
+    public static function getInstance(): self
     {
         static $instance = null;
         if (null === $instance) {
@@ -46,7 +44,7 @@ class Grammar
      *
      * @return string
      */
-    public function getDefinition($name)
+    public function getDefinition(string $name): string
     {
         if (array_key_exists($name, self::$_grammar)) {
             return self::$_grammar[$name];
@@ -60,7 +58,7 @@ class Grammar
      *
      * @return array
      */
-    public function getGrammarDefinitions()
+    public function getGrammarDefinitions(): array
     {
         return self::$_grammar;
     }
@@ -70,7 +68,7 @@ class Grammar
      *
      * @return array
      */
-    public function getSpecials()
+    public function getSpecials(): array
     {
         return self::$_specials;
     }
@@ -84,7 +82,7 @@ class Grammar
      *
      * @return string
      */
-    public function escapeSpecials($token, $include = [], $exclude = [])
+    public function escapeSpecials(string $token, array $include = [], array $exclude = []): string
     {
         foreach (array_merge(['\\'], array_diff(self::$_specials, $exclude), $include) as $char) {
             $token = str_replace($char, '\\'.$char, $token);
@@ -170,7 +168,7 @@ class Grammar
 
     /**
      * Grammar constructor
-     * Can be called only from getInstance method
+     * Can be called only from getInstance method.
      */
     private function __construct()
     {

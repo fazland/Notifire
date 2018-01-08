@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Manager;
 
@@ -13,9 +13,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * NotificationManager holds the references to the handlers
- * and is responsible to dispatch events and trigger send commands
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * and is responsible to dispatch events and trigger send commands.
  */
 class NotificationManager implements NotificationManagerInterface
 {
@@ -35,13 +33,13 @@ class NotificationManager implements NotificationManagerInterface
     private $throwIfNotNotified = false;
 
     /**
-     * Add an handler definition
+     * Add an handler definition.
      *
      * @param NotificationHandlerInterface $handler
      *
-     * @return $this
+     * @return NotificationManagerInterface
      */
-    public function addHandler(NotificationHandlerInterface $handler)
+    public function addHandler(NotificationHandlerInterface $handler): NotificationManagerInterface
     {
         $this->handlers[] = $handler;
 
@@ -49,13 +47,13 @@ class NotificationManager implements NotificationManagerInterface
     }
 
     /**
-     * Set an event dispatcher
+     * Set an event dispatcher.
      *
      * @param EventDispatcherInterface $eventDispatcher
      *
-     * @return $this
+     * @return NotificationManagerInterface
      */
-    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null)
+    public function setEventDispatcher(EventDispatcherInterface $eventDispatcher = null): NotificationManagerInterface
     {
         $this->eventDispatcher = $eventDispatcher;
 
@@ -64,7 +62,7 @@ class NotificationManager implements NotificationManagerInterface
 
     /**
      * Send a notification.
-     * Will trigger pre/post/notify events if an event dispatcher is set
+     * Will trigger pre/post/notify events if an event dispatcher is set.
      *
      * @param NotificationInterface $notification
      *
@@ -96,13 +94,13 @@ class NotificationManager implements NotificationManagerInterface
 
     /**
      * Set the manager to throw an exception if no handler
-     * has matched the notification
+     * has matched the notification.
      *
      * @param bool $throwIfNotNotified
      *
-     * @return $this
+     * @return NotificationManagerInterface
      */
-    public function setThrowIfNotNotified($throwIfNotNotified)
+    public function setThrowIfNotNotified(bool $throwIfNotNotified): NotificationManagerInterface
     {
         $this->throwIfNotNotified = $throwIfNotNotified;
 
@@ -111,14 +109,14 @@ class NotificationManager implements NotificationManagerInterface
 
     /**
      * Checks if handler supports this notification and eventually
-     * send the notification
+     * send the notification.
      *
-     * @param NotificationInterface $notification
+     * @param NotificationInterface        $notification
      * @param NotificationHandlerInterface $handler
      *
      * @return bool
      */
-    protected function handle(NotificationInterface $notification, NotificationHandlerInterface $handler)
+    protected function handle(NotificationInterface $notification, NotificationHandlerInterface $handler): bool
     {
         if (! $handler->supports($notification)) {
             return false;

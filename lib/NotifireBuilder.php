@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire;
 
@@ -9,8 +9,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
  * A configurable builder for {@see Notifire}.
- *
- * @author Stefano Rainieri <stefano.rainieri@fazland.com>
  */
 class NotifireBuilder
 {
@@ -38,20 +36,20 @@ class NotifireBuilder
     /**
      * @return static
      */
-    public static function create()
+    public static function create(): self
     {
         return new static();
     }
 
     /**
-     * Add a {@see NotificationInterface} that will be registered in {@see Notifire}
+     * Add a {@see NotificationInterface} that will be registered in {@see Notifire}.
      *
      * @param string $notificationName
      * @param string $notificationClass
      *
      * @return $this
      */
-    public function addNotification($notificationName, $notificationClass)
+    public function addNotification(string $notificationName, string $notificationClass): self
     {
         $this->notifications[$notificationName] = $notificationClass;
 
@@ -59,7 +57,7 @@ class NotifireBuilder
     }
 
     /**
-     * Add a notification handler to the manager
+     * Add a notification handler to the manager.
      *
      * @param NotificationHandlerInterface $handler
      *
@@ -86,7 +84,7 @@ class NotifireBuilder
 
     /**
      * Initializes {@see Notifire} class with the current {@see NotificationInterface}
-     * and instance of {@see EventDispatcherInterface}
+     * and instance of {@see EventDispatcherInterface}.
      *
      * @throws Exception\NotificationAlreadyRegisteredException
      * @throws Exception\UnsupportedClassException

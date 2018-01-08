@@ -1,11 +1,9 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification\Email;
 
 /**
  * Attachment class for attaching files to a {@see Email}.
- *
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Attachment
 {
@@ -36,7 +34,7 @@ class Attachment
     /**
      * @return static
      */
-    public static function create()
+    public static function create(): self
     {
         return new static();
     }
@@ -44,11 +42,12 @@ class Attachment
     /**
      * Creates an instance of {@see Attachment} from an existing file.
      *
-     * @param string $filename
+     * @param string      $filename
      * @param string|null $contentType
+     *
      * @return static
      */
-    public static function createFromFile($filename, $contentType = null)
+    public static function createFromFile(string $filename, string $contentType = null): self
     {
         $instance = new static();
         $instance->content = file_get_contents($filename);
@@ -64,7 +63,7 @@ class Attachment
     /**
      * @return string
      */
-    public function getContent()
+    public function getContent(): string
     {
         return $this->content;
     }
@@ -74,7 +73,7 @@ class Attachment
      *
      * @return $this
      */
-    public function setContent($content)
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -84,7 +83,7 @@ class Attachment
     /**
      * @return string
      */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType;
     }
@@ -94,7 +93,7 @@ class Attachment
      *
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
 
@@ -104,7 +103,7 @@ class Attachment
     /**
      * @return string
      */
-    public function getName()
+    public function getName(): string
     {
         return $this->name;
     }
@@ -114,7 +113,7 @@ class Attachment
      *
      * @return $this
      */
-    public function setName($name)
+    public function setName(string $name): self
     {
         $this->name = $name;
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Event;
 
@@ -7,9 +7,7 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is triggered just before an handler is notified
- *
- * @author Alessandro Chitolina <alessandro.chitolina@fazland.com>
+ * This event is triggered just before an handler is notified.
  */
 class NotifyEvent extends Event
 {
@@ -24,7 +22,7 @@ class NotifyEvent extends Event
     private $handler;
 
     /**
-     * @param NotificationInterface $notification
+     * @param NotificationInterface        $notification
      * @param NotificationHandlerInterface $handler
      */
     public function __construct(NotificationInterface $notification, NotificationHandlerInterface $handler)
@@ -38,7 +36,7 @@ class NotifyEvent extends Event
      *
      * @return NotificationInterface
      */
-    public function getNotification()
+    public function getNotification(): NotificationInterface
     {
         return $this->notification;
     }
@@ -46,7 +44,7 @@ class NotifyEvent extends Event
     /**
      * @return NotificationHandlerInterface
      */
-    public function getHandler()
+    public function getHandler(): NotificationHandlerInterface
     {
         return $this->handler;
     }

@@ -10,7 +10,7 @@
         "fazland/skebby-rest-client": "^0.2@dev",
         "mailgun/mailgun-php": "^2.0",
         "mikey179/vfsStream": "^1.6",
-        "phpunit/phpunit": "^4.8|^5.0",
+        "phpunit/phpunit": "^6.0",
         "swiftmailer/swiftmailer": "^5.4",
         "twig/twig": "^1.24",
         "twilio/sdk": "^4.10",

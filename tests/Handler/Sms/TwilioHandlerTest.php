@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
@@ -6,9 +6,6 @@ use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\Sms;
 use Prophecy\Prophecy\ObjectProphecy;
 
-/**
- * @author Stefano Rainieri <stefano.rainieri@fazland.com>
- */
 class TwilioHandlerTest extends AbstractSmsHandlerTest
 {
     /**

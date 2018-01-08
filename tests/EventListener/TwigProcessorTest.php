@@ -1,12 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\EventListener;
 
 use Fazland\Notifire\Event\PreNotifyEvent;
 use Fazland\Notifire\EventListener\TwigProcessor;
 use Fazland\Notifire\Notification\Email;
+use PHPUnit\Framework\TestCase;
 
-class TwigProcessorTest extends \PHPUnit_Framework_TestCase
+class TwigProcessorTest extends TestCase
 {
     /**
      * @var \Twig_LoaderInterface
@@ -25,7 +26,7 @@ class TwigProcessorTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $this->loader = new \Twig_Loader_Filesystem(__DIR__ . '/../Fixtures/Template');
+        $this->loader = new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/Template');
         $this->twig = new \Twig_Environment($this->loader);
         $this->processor = new TwigProcessor($this->twig);
     }

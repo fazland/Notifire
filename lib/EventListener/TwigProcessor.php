@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\EventListener;
 
@@ -34,7 +34,7 @@ class TwigProcessor implements EventSubscriberInterface
     /**
      * {@inheritdoc}
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             Events::PRE_NOTIFY => ['onPreNotify', 75],

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Manager;
 
@@ -9,11 +9,12 @@ use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Manager\NotificationManager;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notification\NotificationInterface;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-class NotificationManagerTest extends \PHPUnit_Framework_TestCase
+class NotificationManagerTest extends TestCase
 {
     /**
      * @var NotificationManager
@@ -37,7 +38,7 @@ class NotificationManagerTest extends \PHPUnit_Framework_TestCase
     {
         return [
             [$this->prophesize(NotificationInterface::class)->reveal()],
-            [Email::create([])],
+            [Email::create()],
         ];
     }
 

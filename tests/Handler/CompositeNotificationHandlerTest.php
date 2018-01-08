@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Handler;
 
@@ -8,9 +8,10 @@ use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\HandlerSelectorStrategy\HandlerSelectorStrategyInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-class CompositeNotificationHandlerTest extends \PHPUnit_Framework_TestCase
+class CompositeNotificationHandlerTest extends TestCase
 {
     public function testSupportMustReturnFalseWithANotSupportedNotification()
     {

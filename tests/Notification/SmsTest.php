@@ -1,15 +1,13 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Tests\Notification;
 
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Sms;
+use PHPUnit\Framework\TestCase;
 use Prophecy\Argument;
 
-/**
- * @author Stefano Rainieri <stefano.rainieri@fazland.com>
- */
-class SmsTest extends \PHPUnit_Framework_TestCase
+class SmsTest extends TestCase
 {
     public function testShouldDispatchNotifyEvent()
     {

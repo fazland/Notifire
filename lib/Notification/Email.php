@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification;
 
@@ -10,8 +10,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Notifire's standard representation of an Email as an implementation
  * of {@see NotificationInterface}.
- *
- * @author Daniele Rapisarda <daniele.rapisarda@fazland.com>
  */
 class Email extends AbstractNotification
 {
@@ -77,7 +75,7 @@ class Email extends AbstractNotification
     private $metadata;
 
     /**
-     * @var array
+     * @var string[][]
      */
     private $recipientVariables;
 
@@ -87,7 +85,7 @@ class Email extends AbstractNotification
      * @param $handler
      * @param array $options
      */
-    public function __construct($handler = 'default', array $options = [])
+    public function __construct(string $handler = 'default', array $options = [])
     {
         $this->to = [];
         $this->cc = [];
@@ -97,7 +95,7 @@ class Email extends AbstractNotification
         $this->attachments = [];
         $this->parts = [];
         $this->additionalHeaders = [];
-        $this->contentType = null;
+        $this->contentType = '';
 
         $this->tags = [];
         $this->metadata = [];
@@ -106,7 +104,7 @@ class Email extends AbstractNotification
         parent::__construct($handler, $options);
     }
 
-    public static function create($handler = 'default', array $options = [])
+    public static function create(string $handler = 'default', array $options = [])
     {
         return new static($handler, $options);
     }
@@ -114,7 +112,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return $this->config;
     }
@@ -122,7 +120,7 @@ class Email extends AbstractNotification
     /**
      * @return Attachment[]
      */
-    public function getAttachments()
+    public function getAttachments(): array
     {
         return $this->attachments;
     }
@@ -132,7 +130,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setAttachments(array $attachments)
+    public function setAttachments(array $attachments): self
     {
         $this->attachments = $attachments;
 
@@ -144,7 +142,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addAttachment(Attachment $attachment)
+    public function addAttachment(Attachment $attachment): self
     {
         $this->attachments[] = $attachment;
 
@@ -154,7 +152,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getBcc()
+    public function getBcc(): array
     {
         return $this->bcc;
     }
@@ -164,7 +162,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setBcc(array $bcc)
+    public function setBcc(array $bcc): self
     {
         $this->bcc = $bcc;
 
@@ -176,7 +174,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addBcc($bcc)
+    public function addBcc(string $bcc): self
     {
         $this->bcc[] = $bcc;
 
@@ -186,7 +184,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getCc()
+    public function getCc(): array
     {
         return $this->cc;
     }
@@ -196,7 +194,7 @@ class Email extends AbstractNotification
      *
      * @return Email
      */
-    public function setCc(array $cc)
+    public function setCc(array $cc): self
     {
         $this->cc = $cc;
 
@@ -208,7 +206,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addCc($cc)
+    public function addCc(string $cc): self
     {
         $this->cc[] = $cc;
 
@@ -218,7 +216,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getFrom()
+    public function getFrom(): array
     {
         return $this->from;
     }
@@ -228,7 +226,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setFrom(array $from)
+    public function setFrom(array $from): self
     {
         $this->from = $from;
 
@@ -240,7 +238,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addFrom($from)
+    public function addFrom(string $from): self
     {
         $this->from[] = $from;
 
@@ -250,23 +248,23 @@ class Email extends AbstractNotification
     /**
      * @return Part[]
      */
-    public function getParts()
+    public function getParts(): array
     {
         return $this->parts;
     }
 
     /**
      * Get a Part object for the specified content type
-     * Returns NULL if not set
+     * Returns NULL if not set.
      *
-     * @param $contentType
+     * @param string $contentType
      *
      * @return Part|null
      */
-    public function getPart($contentType)
+    public function getPart(string $contentType)
     {
         if (! isset($this->parts[$contentType])) {
-            return;
+            return null;
         }
 
         return $this->parts[$contentType];
@@ -277,7 +275,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setParts(array $parts)
+    public function setParts(array $parts): self
     {
         $this->parts = [];
         foreach ($parts as $part) {
@@ -293,7 +291,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addPart(Part $part, $overwrite = false)
+    public function addPart(Part $part, $overwrite = false): self
     {
         $contentType = $part->getContentType();
         if (isset($this->parts[$contentType]) && ! $overwrite) {
@@ -311,7 +309,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function removePart(Part $part)
+    public function removePart(Part $part): self
     {
         $contentType = $part->getContentType();
         if (! isset($this->parts[$contentType])) {
@@ -324,32 +322,32 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Add or replace the HTML part of the mail
+     * Add or replace the HTML part of the mail.
      *
-     * @param $html
+     * @param string $html
      *
-     * @return Email
+     * @return $this
      */
-    public function setHtml($html)
+    public function setHtml(string $html): self
     {
         return $this->addPart(Part::create($html, 'text/html'), true);
     }
 
     /**
-     * Add or replace the plain text part of the mail
+     * Add or replace the plain text part of the mail.
      *
-     * @param $text
+     * @param string $text
      *
-     * @return Email
+     * @return $this
      */
-    public function setText($text)
+    public function setText(string $text): self
     {
         return $this->addPart(Part::create($text, 'text/plain'), true);
     }
 
     /**
      * Get the html body of the mail if set
-     * Returns NULL if no html part is present
+     * Returns NULL if no html part is present.
      *
      * @return null|string
      */
@@ -362,7 +360,7 @@ class Email extends AbstractNotification
 
     /**
      * Get the plain text body of the mail if set
-     * Returns NULL if no text part is present
+     * Returns NULL if no text part is present.
      *
      * @return null|string
      */
@@ -376,7 +374,7 @@ class Email extends AbstractNotification
     /**
      * @return string
      */
-    public function getSubject()
+    public function getSubject(): string
     {
         return $this->subject;
     }
@@ -386,7 +384,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setSubject($subject)
+    public function setSubject(string $subject): self
     {
         $this->subject = $subject;
 
@@ -396,7 +394,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getTo()
+    public function getTo(): array
     {
         return $this->to;
     }
@@ -406,7 +404,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setTo(array $to)
+    public function setTo(array $to): self
     {
         $this->to = $to;
 
@@ -418,7 +416,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addTo($to)
+    public function addTo(string $to): self
     {
         $this->to[] = $to;
 
@@ -428,7 +426,7 @@ class Email extends AbstractNotification
     /**
      * @return string[]
      */
-    public function getAdditionalHeaders()
+    public function getAdditionalHeaders(): array
     {
         return $this->additionalHeaders;
     }
@@ -438,7 +436,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setAdditionalHeaders($additionalHeaders)
+    public function setAdditionalHeaders(array $additionalHeaders): self
     {
         $this->additionalHeaders = $additionalHeaders;
 
@@ -451,14 +449,19 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addAdditionalHeader($key, $value)
+    public function addAdditionalHeader(string $key, string $value): self
     {
         $this->additionalHeaders[$key] = $value;
 
         return $this;
     }
 
-    public function getAdditionalHeader($key)
+    /**
+     * @param string $key
+     *
+     * @return string|null
+     */
+    public function getAdditionalHeader(string $key)
     {
         if (! $this->hasAdditionalHeader($key)) {
             return null;
@@ -472,7 +475,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function removeAdditionalHeader($key)
+    public function removeAdditionalHeader($key): self
     {
         unset($this->additionalHeaders[$key]);
 
@@ -480,13 +483,13 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Check if header $header is set
+     * Check if header $header is set.
      *
-     * @param $header
+     * @param string $header
      *
      * @return bool
      */
-    public function hasAdditionalHeader($header)
+    public function hasAdditionalHeader(string $header): bool
     {
         return isset($this->additionalHeaders[$header]);
     }
@@ -494,7 +497,7 @@ class Email extends AbstractNotification
     /**
      * @return string
      */
-    public function getContentType()
+    public function getContentType(): string
     {
         return $this->contentType;
     }
@@ -504,7 +507,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function setContentType($contentType)
+    public function setContentType(string $contentType): self
     {
         $this->contentType = $contentType;
 
@@ -516,19 +519,19 @@ class Email extends AbstractNotification
      *
      * @return string[]
      */
-    public function getTags()
+    public function getTags(): array
     {
         return array_values($this->tags);
     }
 
     /**
-     * Replace the tags array. Keys are dropped
+     * Replace the tags array. Keys are dropped.
      *
      * @param string[] $tags
      *
      * @return $this
      */
-    public function setTags(array $tags)
+    public function setTags(array $tags): self
     {
         $this->tags = array_combine($tags, $tags);
 
@@ -536,13 +539,13 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Add a tag
+     * Add a tag.
      *
      * @param string $tag
      *
      * @return $this
      */
-    public function addTag($tag)
+    public function addTag(string $tag): self
     {
         $this->tags[$tag] = $tag;
 
@@ -550,13 +553,13 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Remove a tag if set
+     * Remove a tag if set.
      *
      * @param string $tag
      *
      * @return $this
      */
-    public function removeTag($tag)
+    public function removeTag(string $tag): self
     {
         unset($this->tags[$tag]);
 
@@ -564,23 +567,23 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Get metadata array
+     * Get metadata array.
      *
      * @return string[]
      */
-    public function getMetadata()
+    public function getMetadata(): array
     {
         return $this->metadata;
     }
 
     /**
-     * Replace metadata array
+     * Replace metadata array.
      *
      * @param string[] $metadata
      *
      * @return $this
      */
-    public function setMetadata(array $metadata)
+    public function setMetadata(array $metadata): self
     {
         $this->metadata = $metadata;
 
@@ -588,14 +591,14 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Set a metadata value
+     * Set a metadata value.
      *
      * @param string $key
-     * @param mixed $value
+     * @param mixed  $value
      *
      * @return $this
      */
-    public function addMetadata($key, $value)
+    public function addMetadata(string $key, $value): self
     {
         $this->metadata[$key] = $value;
 
@@ -603,13 +606,13 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Remove a metadata if set
+     * Remove a metadata if set.
      *
      * @param string $key
      *
      * @return $this
      */
-    public function removeMetadata($key)
+    public function removeMetadata($key): self
     {
         unset($this->metadata[$key]);
 
@@ -617,23 +620,23 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Get the recipient variables set
+     * Get the recipient variables set.
      *
      * @return array
      */
-    public function getRecipientVariables()
+    public function getRecipientVariables(): array
     {
         return $this->recipientVariables;
     }
 
     /**
-     * Replace the recipient variables set
+     * Replace the recipient variables set.
      *
      * @param array $recipientVariables
      *
      * @return $this
      */
-    public function setRecipientVariables(array $recipientVariables)
+    public function setRecipientVariables(array $recipientVariables): self
     {
         $this->recipientVariables = $recipientVariables;
 
@@ -641,7 +644,7 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Set variable for recipient
+     * Set variable for recipient.
      *
      * @param string $recipient
      * @param string $name
@@ -649,7 +652,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addVariableForRecipient($recipient, $name, $value)
+    public function addVariableForRecipient(string $recipient, string $name, string $value): self
     {
         $this->recipientVariables[$recipient][$name] = $value;
 
@@ -657,14 +660,14 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Set variables for recipient
+     * Set variables for recipient.
      *
-     * @param string $recipient
-     * @param array $variables
+     * @param string   $recipient
+     * @param string[] $variables
      *
      * @return $this
      */
-    public function addVariablesForRecipient($recipient, array $variables)
+    public function addVariablesForRecipient(string $recipient, array $variables): self
     {
         $this->recipientVariables[$recipient] = $variables;
 
@@ -672,14 +675,14 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Remove variable for recipient
+     * Remove variable for recipient.
      *
      * @param string $recipient
      * @param string $name
      *
      * @return $this
      */
-    public function removeVariableForRecipient($recipient, $name)
+    public function removeVariableForRecipient(string $recipient, string $name): self
     {
         unset($this->recipientVariables[$recipient][$name]);
 
@@ -687,13 +690,13 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Remove variables set for recipient
+     * Remove variables set for recipient.
      *
-     * @param $recipient
+     * @param string $recipient
      *
      * @return $this
      */
-    public function removeVariablesForRecipient($recipient)
+    public function removeVariablesForRecipient(string $recipient): self
     {
         unset($this->recipientVariables[$recipient]);
 

@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace Fazland\Notifire\Notification;
 
@@ -7,7 +7,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * Base class for notifications
  * Can be simply extended to create a new notification class
- * or the {@see NotificationTrait} can be used instead
+ * or the {@see NotificationTrait} can be used instead.
  */
 abstract class AbstractNotification implements NotificationInterface
 {
@@ -22,9 +22,9 @@ abstract class AbstractNotification implements NotificationInterface
      * AbstractNotification constructor.
      *
      * @param string $handlerName
-     * @param array $options
+     * @param array  $options
      */
-    public function __construct($handlerName = 'default', array $options = [])
+    public function __construct(string $handlerName = 'default', array $options = [])
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
