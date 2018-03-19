@@ -47,7 +47,12 @@ class TwigProcessor implements EventSubscriberInterface
             return;
         }
 
-        $template = $this->twig->load($part->getTemplateName());
+        if (method_exists($this->twig, 'load')) {
+            $template = $this->twig->load($part->getTemplateName());
+        } else {
+            $template = $this->twig->loadTemplate($part->getTemplateName());
+        }
+
         $email = $part->getEmail();
 
         if (empty($email->getSubject()) && $template->hasBlock('subject')) {
