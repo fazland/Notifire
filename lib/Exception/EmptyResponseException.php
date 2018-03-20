@@ -2,6 +2,6 @@
 
 namespace Fazland\Notifire\Exception;
 
-class EmptyResponseException extends \Exception
+class EmptyResponseException extends \RuntimeException implements ExceptionInterface
 {
 }

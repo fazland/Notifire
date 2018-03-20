@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Converter;
 
+use Fazland\Notifire\Exception\UnknownEmailEncodingException;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Util\Email\AddressParser;
 
@@ -184,7 +185,7 @@ class SwiftMailerConverter
                 return new \Swift_Mime_ContentEncoder_RawContentEncoder();
 
             default:
-                throw new \InvalidArgumentException('Unknown encoding "'.$encoding.'"');
+                throw new UnknownEmailEncodingException($encoding);
         }
     }
 }

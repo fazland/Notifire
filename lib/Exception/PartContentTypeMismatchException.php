@@ -2,6 +2,6 @@
 
 namespace Fazland\Notifire\Exception;
 
-class PartContentTypeMismatchException extends \RuntimeException
+class PartContentTypeMismatchException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

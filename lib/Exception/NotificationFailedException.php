@@ -7,7 +7,7 @@ namespace Fazland\Notifire\Exception;
  * - an error occurs while sending a notification
  * - no notifications were sent.
  */
-class NotificationFailedException extends \Exception
+class NotificationFailedException extends \RuntimeException implements ExceptionInterface
 {
     /**
      * @var array

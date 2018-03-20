@@ -7,6 +7,6 @@ namespace Fazland\Notifire\Exception;
  * and there are no {@see NotificationInterface} registered under that
  * $notificationName.
  */
-class UnregisteredNotificationException extends \Exception
+class UnregisteredNotificationException extends \InvalidArgumentException implements ExceptionInterface
 {
 }

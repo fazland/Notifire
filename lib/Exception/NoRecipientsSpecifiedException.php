@@ -2,6 +2,6 @@
 
 namespace Fazland\Notifire\Exception;
 
-class NoRecipientsSpecifiedException extends \Exception
+class NoRecipientsSpecifiedException extends \RuntimeException implements ExceptionInterface
 {
 }

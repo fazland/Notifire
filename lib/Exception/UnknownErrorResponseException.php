@@ -2,6 +2,6 @@
 
 namespace Fazland\Notifire\Exception;
 
-class UnknownErrorResponseException extends \Exception
+class UnknownErrorResponseException extends \RuntimeException implements ExceptionInterface
 {
 }

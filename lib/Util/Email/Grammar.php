@@ -2,6 +2,8 @@
 
 namespace Fazland\Notifire\Util\Email;
 
+use Fazland\Notifire\Exception\NoGrammarDefinedException;
+
 /**
  * ABNF grammar definitions
  * Based upon swift mailer' Swift_Mailer_Grammar class.
@@ -23,7 +25,7 @@ class Grammar
     private static $_grammar = [];
 
     /**
-     * Get the singleton instance.
+     * Gets the singleton instance.
      *
      * @return self
      */
@@ -38,7 +40,7 @@ class Grammar
     }
 
     /**
-     * Get the grammar defined for $name token.
+     * Gets the grammar defined for $name token.
      *
      * @param string $name exactly as written in the RFC
      *
@@ -50,7 +52,7 @@ class Grammar
             return self::$_grammar[$name];
         }
 
-        throw new \RuntimeException("No such grammar '$name' defined.");
+        throw new NoGrammarDefinedException($name);
     }
 
     /**
