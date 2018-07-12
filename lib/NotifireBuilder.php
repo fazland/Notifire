@@ -63,7 +63,7 @@ class NotifireBuilder
      *
      * @return $this
      */
-    public function addHandler(NotificationHandlerInterface $handler)
+    public function addHandler(NotificationHandlerInterface $handler): self
     {
         $this->handlers->attach($handler);
 
@@ -75,7 +75,7 @@ class NotifireBuilder
      *
      * @return $this
      */
-    public function setDispatcher(EventDispatcherInterface $dispatcher)
+    public function setDispatcher(EventDispatcherInterface $dispatcher): self
     {
         $this->dispatcher = $dispatcher;
 

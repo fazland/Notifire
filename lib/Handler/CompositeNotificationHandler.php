@@ -7,6 +7,9 @@ use Fazland\Notifire\Notification\NotificationInterface;
 
 class CompositeNotificationHandler implements NotificationHandlerInterface
 {
+    /**
+     * @var string
+     */
     private $name;
 
     /**
