@@ -13,7 +13,7 @@
         "phpunit/phpunit": "^6.0",
         "swiftmailer/swiftmailer": "^5.4",
         "twig/twig": "^1.24",
-        "twilio/sdk": "^4.10",
+        "twilio/sdk": "^4.10|^5.0",
         "sendgrid/sendgrid": "^5.1"
     },
     "conflict": {
@@ -22,7 +22,7 @@
     "suggest": {
         "twilio/sdk": "Send SMS via Twilio",
         "fazland/skebby-rest-client": "Send SMS via Skebby",
-        "mailgun/mailgun-php": "Use Mailgun API to send emails",
+        "mailgun/mailgun-php": "Send emails via Mailgun",
         "sendgrid/sendgrid": "Send email via Sendgrid"
     },
     "autoload": {

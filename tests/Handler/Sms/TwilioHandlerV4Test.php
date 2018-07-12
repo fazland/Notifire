@@ -6,7 +6,7 @@ use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\Sms;
 use Prophecy\Prophecy\ObjectProphecy;
 
-class TwilioHandlerTest extends AbstractSmsHandlerTest
+class TwilioHandlerV4Test extends AbstractSmsHandlerTest
 {
     /**
      * @var \Services_Twilio|ObjectProphecy
@@ -18,6 +18,10 @@ class TwilioHandlerTest extends AbstractSmsHandlerTest
      */
     public function getHandler()
     {
+        if (! class_exists(\Services_Twilio::class)) {
+            $this->markTestSkipped('Twilio ^4.0 not installed');
+        }
+
         $this->twilio = $this->prophesize(\Services_Twilio::class);
 
         return new TwilioHandler($this->twilio->reveal());
@@ -42,13 +46,14 @@ class TwilioHandlerTest extends AbstractSmsHandlerTest
         $this->handler->notify($sms);
     }
 
-    /**
-     * @dataProvider right
-     *
-     * @param Sms $sms
-     */
-    public function testShouldUseDefaultFromNumber(Sms $sms)
+    public function testShouldUseDefaultFromNumber()
     {
+        $sms = new Sms();
+        $sms
+            ->setTo(['+393333333333'])
+            ->setContent('Foo Bar')
+        ;
+
         $twilio = $this->twilio->reveal();
         $account = $this->prophesize(\Services_Twilio_Rest_Account::class);
         $messages = $this->prophesize(\Services_Twilio_Rest_Messages::class);
@@ -58,7 +63,7 @@ class TwilioHandlerTest extends AbstractSmsHandlerTest
 
         $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
-        $this->handler->setDefaultFrom('+393333333333');
+        $this->handler->setDefaultFrom('+393334333333');
         $this->handler->notify($sms);
     }
 

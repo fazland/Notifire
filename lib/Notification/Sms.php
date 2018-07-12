@@ -113,9 +113,9 @@ class Sms extends AbstractNotification
     }
 
     /**
-     * @return string
+     * @return null|string
      */
-    public function getFrom(): string
+    public function getFrom()
     {
         return $this->from;
     }

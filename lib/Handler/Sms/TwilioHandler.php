@@ -6,6 +6,8 @@ use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 use Fazland\Notifire\Result\Result;
+use Twilio\Exceptions\RestException;
+use Twilio\Rest\Client;
 
 /**
  * Twilio handler.
@@ -28,12 +30,16 @@ class TwilioHandler extends AbstractSmsHandler
     private $messagingServiceSid;
 
     /**
-     * @param \Services_Twilio $twilio
+     * @param \Services_Twilio|Client $twilio
      * @param string           $name
      */
-    public function __construct(\Services_Twilio $twilio, string $name = 'default')
+    public function __construct($twilio, string $name = 'default')
     {
         $this->twilio = $twilio;
+
+        if (! $twilio instanceof \Services_Twilio && ! $twilio instanceof Client) {
+            throw new \TypeError('Expected ' . \Services_Twilio::class . ' or ' . Client::class . '. Got ' . get_class($twilio));
+        }
 
         parent::__construct($name);
     }
@@ -59,10 +65,33 @@ class TwilioHandler extends AbstractSmsHandler
             }
 
             try {
-                $response = $this->twilio->account->messages->create($params);
-                $this->logger->debug('Response from Twilio '.(string) $response);
+                if ($this->twilio instanceof Client) {
+                    unset($params['To']);
+
+                    $params = array_combine(array_map('lcfirst', array_keys($params)), $params);
+
+                    $response = $this->twilio->messages->create($to, $params);
+                } else {
+                    $response = $this->twilio->account->messages->create($params);
+                }
+
+                $this->logger->debug('Response from Twilio ' . (string)$response);
 
                 $result->setResponse($response);
+            } catch (RestException $e) {
+                $result->setResult(Result::FAIL)
+                    ->setResponse($e);
+
+                $failedSms[] = [
+                    'to' => $to,
+                    'response_status' => $e->getStatusCode(),
+                    'error_message' => $e->getMessage(),
+                ];
+
+                $this->logger->debug(get_class($e).' from Twilio: '.$e->getMessage(), [
+                    'exception' => $e,
+                    'response_status' => $e->getStatusCode(),
+                ]);
             } catch (\Services_Twilio_RestException $e) {
                 $result->setResult(Result::FAIL)
                     ->setResponse($e);
@@ -74,12 +103,12 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug('\Services_Twilio_RestException from Twilio: '.$e->getMessage(), [
+                $this->logger->debug(get_class($e).' from Twilio: '.$e->getMessage(), [
                     'exception' => $e,
                     'response_status' => $e->getStatus(),
                     'error_info' => $e->getInfo(),
                 ]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $result->setResult(Result::FAIL)
                     ->setResponse($e);
 
