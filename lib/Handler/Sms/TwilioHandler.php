@@ -31,14 +31,14 @@ class TwilioHandler extends AbstractSmsHandler
 
     /**
      * @param \Services_Twilio|Client $twilio
-     * @param string           $name
+     * @param string                  $name
      */
     public function __construct($twilio, string $name = 'default')
     {
         $this->twilio = $twilio;
 
         if (! $twilio instanceof \Services_Twilio && ! $twilio instanceof Client) {
-            throw new \TypeError('Expected ' . \Services_Twilio::class . ' or ' . Client::class . '. Got ' . get_class($twilio));
+            throw new \TypeError('Expected '.\Services_Twilio::class.' or '.Client::class.'. Got '.get_class($twilio));
         }
 
         parent::__construct($name);
@@ -75,7 +75,7 @@ class TwilioHandler extends AbstractSmsHandler
                     $response = $this->twilio->account->messages->create($params);
                 }
 
-                $this->logger->debug('Response from Twilio ' . (string)$response);
+                $this->logger->debug('Response from Twilio '.(string) $response);
 
                 $result->setResponse($response);
             } catch (RestException $e) {
