@@ -61,7 +61,7 @@ class TwilioHandlerV4Test extends AbstractSmsHandlerTest
         $twilio->account = $account->reveal();
         $twilio->account->messages = $messages->reveal();
 
-        $messages->create(['From' => '+393333333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
+        $messages->create(['From' => '+393334333333', 'To' => '+393333333333', 'Body' => 'Foo Bar'])->shouldBeCalled();
 
         $this->handler->setDefaultFrom('+393334333333');
         $this->handler->notify($sms);

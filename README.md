@@ -1,5 +1,7 @@
 Notifire  
 ========
+[![Build Status](https://travis-ci.org/fazland/Notifire.svg?branch=master)](https://travis-ci.org/fazland/Notifire)
+
 Notifire is a PHP library that centralizes the management of notifications (e-mails, sms, push notifications, etc.). 
 
 Requirements
