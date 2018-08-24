@@ -60,7 +60,7 @@ class TwilioHandler extends AbstractSmsHandler
             $params = $data;
             $params['To'] = $to;
 
-            if (null !== $this->messagingServiceSid) {
+            if (! empty($this->messagingServiceSid)) {
                 $params['MessagingServiceSid'] = $this->messagingServiceSid;
             }
 
