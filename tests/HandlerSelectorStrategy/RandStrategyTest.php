@@ -16,6 +16,9 @@ class RandStrategyTest extends TestCase
      */
     private $strategy;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->strategy = new RandStrategy();
@@ -23,31 +26,16 @@ class RandStrategyTest extends TestCase
 
     public function testSelectShouldReturnAnHandler()
     {
-        eval(<<<EOF
-?><?php
-
-namespace Fazland\Notifire\HandlerSelectorStrategy
-{
-    function mt_rand()
-    {
-        return 1;
-    }
-}
-EOF
-);
-
-        $handlers = [
-            new \stdClass(),
+        $chosen = $this->strategy->select([
             $this->prophesize(NotificationHandlerInterface::class)->reveal(),
-            new \stdClass(),
-        ];
+            $this->prophesize(NotificationHandlerInterface::class)->reveal(),
+        ]);
 
-        $chosen = $this->strategy->select($handlers);
-        $this->assertInstanceOf(NotificationHandlerInterface::class, $chosen);
+        self::assertInstanceOf(NotificationHandlerInterface::class, $chosen);
     }
 
     public function testSelectShouldReturnNullIfEmptyArrayHasPassed()
     {
-        $this->assertNull($this->strategy->select([]));
+        self::assertNull($this->strategy->select([]));
     }
 }

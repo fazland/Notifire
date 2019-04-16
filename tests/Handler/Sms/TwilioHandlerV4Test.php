@@ -18,8 +18,8 @@ class TwilioHandlerV4Test extends AbstractSmsHandlerTest
      */
     public function getHandler()
     {
-        if (! class_exists(\Services_Twilio::class)) {
-            $this->markTestSkipped('Twilio ^4.0 not installed');
+        if (! \class_exists(\Services_Twilio::class)) {
+            self::markTestSkipped('Twilio ^4.0 not installed');
         }
 
         $this->twilio = $this->prophesize(\Services_Twilio::class);

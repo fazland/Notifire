@@ -32,7 +32,7 @@ class ResultSet
     public function all(): array
     {
         $results = [];
-        array_walk_recursive($this->results, function ($v) use (&$results) {
+        \array_walk_recursive($this->results, function ($v) use (&$results) {
             $results[] = $v;
         });
 

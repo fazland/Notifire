@@ -27,7 +27,7 @@ class CompositeNotificationHandlerTest extends TestCase
             ->addNotificationHandler($notificationHandler->reveal())
         ;
 
-        $this->assertFalse($compositeNotificationHandler->supports($notification));
+        self::assertFalse($compositeNotificationHandler->supports($notification));
     }
 
     public function testSupportMustReturnTrueWithASupportedNotification()
@@ -44,7 +44,7 @@ class CompositeNotificationHandlerTest extends TestCase
             ->addNotificationHandler($notificationHandler->reveal())
         ;
 
-        $this->assertTrue($compositeNotificationHandler->supports($notification));
+        self::assertTrue($compositeNotificationHandler->supports($notification));
     }
 
     public function testNotifyCallUseRightHandler()

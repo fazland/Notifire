@@ -24,6 +24,6 @@ class AddressParserTest extends TestCase
      */
     public function testParse($expected, $address)
     {
-        $this->assertEquals($expected, AddressParser::parse($address));
+        self::assertEquals($expected, AddressParser::parse($address));
     }
 }

@@ -20,8 +20,8 @@ class TwilioHandlerV5Test extends AbstractSmsHandlerTest
      */
     public function getHandler()
     {
-        if (! class_exists(Client::class)) {
-            $this->markTestSkipped('Twilio ^5.0 not installed');
+        if (! \class_exists(Client::class)) {
+            self::markTestSkipped('Twilio ^5.0 not installed');
         }
 
         $this->twilio = $this->prophesize(Client::class);

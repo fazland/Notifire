@@ -48,7 +48,7 @@ class Grammar
      */
     public function getDefinition(string $name): string
     {
-        if (array_key_exists($name, self::$_grammar)) {
+        if (\array_key_exists($name, self::$_grammar)) {
             return self::$_grammar[$name];
         }
 
@@ -86,8 +86,8 @@ class Grammar
      */
     public function escapeSpecials(string $token, array $include = [], array $exclude = []): string
     {
-        foreach (array_merge(['\\'], array_diff(self::$_specials, $exclude), $include) as $char) {
-            $token = str_replace($char, '\\'.$char, $token);
+        foreach (\array_merge(['\\'], \array_diff(self::$_specials, $exclude), $include) as $char) {
+            $token = \str_replace($char, '\\'.$char, $token);
         }
 
         return $token;
@@ -95,7 +95,7 @@ class Grammar
 
     protected function init()
     {
-        if (count(self::$_specials) > 0) {
+        if (\count(self::$_specials) > 0) {
             return;
         }
 

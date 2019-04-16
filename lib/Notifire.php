@@ -65,7 +65,7 @@ class Notifire
         }
 
         $notificationInterfaceName = NotificationInterface::class;
-        if (! is_subclass_of($notificationClass, $notificationInterfaceName)) {
+        if (! \is_subclass_of($notificationClass, $notificationInterfaceName)) {
             $message = "Expected instance of $notificationInterfaceName, got $notificationClass";
 
             throw new UnsupportedClassException($message);
@@ -86,8 +86,11 @@ class Notifire
      *
      * @throws UnregisteredNotificationException
      */
-    public static function factory(string $notificationName, string $handler = 'default', array $options = [])
-    {
+    public static function factory(
+        string $notificationName,
+        string $handler = 'default',
+        array $options = []
+    ): NotificationInterface {
         if (! isset(static::$notifications[$notificationName])) {
             throw new UnregisteredNotificationException();
         }
@@ -108,7 +111,7 @@ class Notifire
      *
      * @throws UnregisteredNotificationException
      */
-    public static function __callStatic(string $name, array $arguments)
+    public static function __callStatic(string $name, array $arguments): NotificationInterface
     {
         if (! isset($arguments[0])) {
             $arguments[0] = 'default';
@@ -118,11 +121,11 @@ class Notifire
             $arguments[1] = [];
         }
 
-        if (! is_string($arguments[0])) {
+        if (! \is_string($arguments[0])) {
             throw new \InvalidArgumentException('Argument 1 should be a string or null');
         }
 
-        if (! is_array($arguments[1])) {
+        if (! \is_array($arguments[1])) {
             throw new \InvalidArgumentException('Argument 2 should be an array or null');
         }
 
@@ -136,12 +139,12 @@ class Notifire
     {
         $builder = NotifireBuilder::create();
 
-        if (class_exists('Swift_Mailer')) {
+        if (\class_exists('Swift_Mailer')) {
             $transport = new \Swift_SmtpTransport('localhost', 25);
             $mailer = new \Swift_Mailer($transport);
 
             $handler = new SwiftMailerHandler($mailer, 'default');
-            if (class_exists('Twig_Environment')) {
+            if (\class_exists('Twig_Environment')) {
                 $env = new \Twig_Environment(new \Twig_Loader_Filesystem());
                 $handler->setTwig($env);
             }

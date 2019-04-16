@@ -77,7 +77,7 @@ class SkebbyHandler extends AbstractSmsHandler
             $notification->addResult($result);
         }
 
-        if (count($tos) === count($failedSms)) {
+        if (\count($tos) === \count($failedSms)) {
             throw new NotificationFailedException('All the sms failed to be send', ['failed_sms' => $failedSms]);
         }
     }

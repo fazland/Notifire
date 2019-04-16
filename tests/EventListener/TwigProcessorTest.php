@@ -42,7 +42,7 @@ class TwigProcessorTest extends TestCase
 
         $this->processor->onPreNotify(new PreNotifyEvent($email));
 
-        $this->assertEquals('This is the body', $email->getPart('text/html')->getContent());
+        self::assertEquals('This is the body', $email->getPart('text/html')->getContent());
     }
 
     public function testShouldAlsoSetSubjectIfTemplateHasBlockSubject()
@@ -56,7 +56,7 @@ class TwigProcessorTest extends TestCase
 
         $this->processor->onPreNotify(new PreNotifyEvent($email));
 
-        $this->assertEquals('This is the body', $email->getPart('text/html')->getContent());
-        $this->assertEquals('This is the subject', $email->getSubject());
+        self::assertEquals('This is the body', $email->getPart('text/html')->getContent());
+        self::assertEquals('This is the subject', $email->getSubject());
     }
 }

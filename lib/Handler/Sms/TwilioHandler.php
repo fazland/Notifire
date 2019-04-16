@@ -38,7 +38,7 @@ class TwilioHandler extends AbstractSmsHandler
         $this->twilio = $twilio;
 
         if (! $twilio instanceof \Services_Twilio && ! $twilio instanceof Client) {
-            throw new \TypeError('Expected '.\Services_Twilio::class.' or '.Client::class.'. Got '.get_class($twilio));
+            throw new \TypeError('Expected '.\Services_Twilio::class.' or '.Client::class.'. Got '.\get_class($twilio));
         }
 
         parent::__construct($name);
@@ -68,7 +68,7 @@ class TwilioHandler extends AbstractSmsHandler
                 if ($this->twilio instanceof Client) {
                     unset($params['To']);
 
-                    $params = array_combine(array_map('lcfirst', array_keys($params)), $params);
+                    $params = \array_combine(\array_map('lcfirst', \array_keys($params)), $params);
 
                     $response = $this->twilio->messages->create($to, $params);
                 } else {
@@ -88,7 +88,7 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug(get_class($e).' from Twilio: '.$e->getMessage(), [
+                $this->logger->debug(\get_class($e).' from Twilio: '.$e->getMessage(), [
                     'exception' => $e,
                     'response_status' => $e->getStatusCode(),
                 ]);
@@ -103,7 +103,7 @@ class TwilioHandler extends AbstractSmsHandler
                     'error_message' => $e->getMessage(),
                 ];
 
-                $this->logger->debug(get_class($e).' from Twilio: '.$e->getMessage(), [
+                $this->logger->debug(\get_class($e).' from Twilio: '.$e->getMessage(), [
                     'exception' => $e,
                     'response_status' => $e->getStatus(),
                     'error_info' => $e->getInfo(),
@@ -123,7 +123,7 @@ class TwilioHandler extends AbstractSmsHandler
             $notification->addResult($result);
         }
 
-        if (count($tos) === count($failedSms)) {
+        if (\count($tos) === \count($failedSms)) {
             throw new NotificationFailedException('All the sms failed to be send', ['failed_sms' => $failedSms]);
         }
     }

@@ -45,7 +45,7 @@ class MailgunHandler extends AbstractMailHandler
      */
     public function notify(NotificationInterface $notification)
     {
-        if (! class_exists('Swift_Message')) {
+        if (! \class_exists('Swift_Message')) {
             throw new \RuntimeException('You need to install swift mailer to use mailgun transport');
         }
 
@@ -74,15 +74,15 @@ class MailgunHandler extends AbstractMailHandler
         }
 
         if ($recipientVariables = $notification->getRecipientVariables()) {
-            $postData['recipient-variables'] = json_encode($recipientVariables);
+            $postData['recipient-variables'] = \json_encode($recipientVariables);
         }
 
         $failed = [];
         $success = [];
 
-        $to = array_merge(array_values($notification->getTo()), array_values($notification->getCc()), array_values($notification->getBcc()));
+        $to = \array_merge(\array_values($notification->getTo()), \array_values($notification->getCc()), \array_values($notification->getBcc()));
         if (! empty($to)) {
-            foreach (array_chunk($to, 1000) as $to_chunk) {
+            foreach (\array_chunk($to, 1000) as $to_chunk) {
                 $result = new Result('mailgun', $this->getName());
 
                 $data = $postData;
@@ -100,7 +100,7 @@ class MailgunHandler extends AbstractMailHandler
                 $notification->addResult($result);
             }
 
-            if (0 === count($success)) {
+            if (0 === \count($success)) {
                 throw new NotificationFailedException("Sending failed for message {$notification->getSubject()}", $failed);
             }
         }

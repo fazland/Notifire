@@ -13,6 +13,6 @@ class RandStrategy implements HandlerSelectorStrategyInterface
             return null;
         }
 
-        return $handlers[mt_rand(0, count($handlers) - 1)];
+        return $handlers[\mt_rand(0, \count($handlers) - 1)];
     }
 }

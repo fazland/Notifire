@@ -81,9 +81,9 @@ class NotificationManager implements NotificationManagerInterface
         }
 
         if ($this->throwIfNotNotified && ! $notified) {
-            $message = 'No handler has been defined for '.get_class($notification);
-            if (method_exists($notification, 'getConfig')) {
-                $message .= ' ('.json_encode($notification->getConfig()).')';
+            $message = 'No handler has been defined for '.\get_class($notification);
+            if (\method_exists($notification, 'getConfig')) {
+                $message .= ' ('.\json_encode($notification->getConfig()).')';
             }
 
             throw new NotificationFailedException($message);

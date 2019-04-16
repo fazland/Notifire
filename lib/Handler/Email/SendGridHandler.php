@@ -39,10 +39,10 @@ class SendGridHandler extends AbstractMailHandler
         /** @var Email $notification */
         $fromEmails = $notification->getFrom();
 
-        if (count($fromEmails) > 1) {
+        if (\count($fromEmails) > 1) {
             throw new \Exception('With sendgrid you can use one from email address');
         }
-        $fromEmail = array_pop($fromEmails);
+        $fromEmail = \array_pop($fromEmails);
 
         $from = new SendGrid\Email(null, $fromEmail);
         $subject = $notification->getSubject();

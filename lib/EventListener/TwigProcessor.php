@@ -47,7 +47,7 @@ class TwigProcessor implements EventSubscriberInterface
             return;
         }
 
-        if (method_exists($this->twig, 'load')) {
+        if (\method_exists($this->twig, 'load')) {
             $template = $this->twig->load($part->getTemplateName());
         } else {
             $template = $this->twig->loadTemplate($part->getTemplateName());
@@ -56,7 +56,7 @@ class TwigProcessor implements EventSubscriberInterface
         $email = $part->getEmail();
 
         if (empty($email->getSubject()) && $template->hasBlock('subject')) {
-            $email->setSubject(trim($template->renderBlock('subject', $part->getVars())));
+            $email->setSubject(\trim($template->renderBlock('subject', $part->getVars())));
         }
 
         $part->setContent($template->render($part->getVars()));

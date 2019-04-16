@@ -7,11 +7,11 @@ use Fazland\Notifire\Handler\NotificationHandlerInterface;
 interface HandlerSelectorStrategyInterface
 {
     /**
-     * This method retrieve an handler choosen between handlers passed.
+     * This method retrieve an handler chosen between handlers passed.
      *
      * @param NotificationHandlerInterface[]
      *
-     * @return null|NotificationHandlerInterface
+     * @return NotificationHandlerInterface|null
      */
     public function select(array $handlers);
 }

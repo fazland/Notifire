@@ -22,7 +22,7 @@ class SwiftMailerConverter
     public function convert(Email $email): \Swift_Message
     {
         $message = $this->createInstance()->setSubject($email->getSubject());
-        $message->setBoundary($boundary = md5(uniqid()));
+        $message->setBoundary($boundary = \md5(\uniqid()));
 
         $this->addAddresses($email, $message);
         $this->addParts($email, $message, $boundary);
@@ -87,8 +87,8 @@ class SwiftMailerConverter
     protected function addParts(Email $notification, \Swift_Message $email, string $boundary)
     {
         $parts = $notification->getParts();
-        if (1 === count($parts)) {
-            $part = reset($parts);
+        if (1 === \count($parts)) {
+            $part = \reset($parts);
             $email->setBody($part->getContent(), $part->getContentType());
 
             if ($encoder = $this->getEncoder($part)) {
@@ -159,7 +159,7 @@ class SwiftMailerConverter
     /**
      * @param Email\Part $part
      *
-     * @return null|\Swift_Encoder
+     * @return \Swift_Encoder|null
      */
     private function getEncoder(Email\Part $part)
     {

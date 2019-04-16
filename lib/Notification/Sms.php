@@ -113,7 +113,7 @@ class Sms extends AbstractNotification
     }
 
     /**
-     * @return null|string
+     * @return string|null
      */
     public function getFrom()
     {
@@ -171,7 +171,7 @@ class Sms extends AbstractNotification
      */
     public function removeTo(string $to): self
     {
-        $itemPosition = array_search($to, $this->to);
+        $itemPosition = \array_search($to, $this->to);
 
         if (false !== $itemPosition) {
             unset($this->to[$itemPosition]);

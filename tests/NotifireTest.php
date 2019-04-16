@@ -50,6 +50,6 @@ class NotifireTest extends TestCase
         Notifire::addNotification('email', Email::class);
         $email = Notifire::email();
 
-        $this->assertInstanceOf(Email::class, $email);
+        self::assertInstanceOf(Email::class, $email);
     }
 }

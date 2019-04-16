@@ -34,7 +34,7 @@ abstract class AbstractEmailHandlerTest extends TestCase
      */
     public function testSupportsShouldReturnFalseOnUnsupportedNotifications($notification)
     {
-        $this->assertFalse($this->handler->supports($notification));
+        self::assertFalse($this->handler->supports($notification));
     }
 
     abstract protected function getHandler();

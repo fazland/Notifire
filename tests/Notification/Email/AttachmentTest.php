@@ -24,8 +24,8 @@ class AttachmentTest extends TestCase
 
         $attachment = Attachment::createFromFile($file->url(), 'text/plain');
 
-        $this->assertEquals('text/plain', $attachment->getContentType());
-        $this->assertEquals('attachment.txt', $attachment->getName());
-        $this->assertEquals('FOO BAR. Test content', $attachment->getContent());
+        self::assertEquals('text/plain', $attachment->getContentType());
+        self::assertEquals('attachment.txt', $attachment->getName());
+        self::assertEquals('FOO BAR. Test content', $attachment->getContent());
     }
 }

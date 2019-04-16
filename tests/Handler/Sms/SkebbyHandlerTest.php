@@ -56,7 +56,7 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
 
         /** @var Result $result */
         foreach ($sms->getResultSet()->all() as $result) {
-            $this->assertTrue(Result::OK === $result->getResult());
+            self::assertTrue(Result::OK === $result->getResult());
         }
     }
 
@@ -83,7 +83,7 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
 
         /** @var Result $result */
         foreach ($sms->getResultSet()->all() as $result) {
-            $this->assertTrue(Result::FAIL === $result->getResult());
+            self::assertTrue(Result::FAIL === $result->getResult());
         }
     }
 }

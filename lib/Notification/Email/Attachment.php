@@ -50,8 +50,8 @@ class Attachment
     public static function createFromFile(string $filename, string $contentType = null): self
     {
         $instance = new static();
-        $instance->content = file_get_contents($filename);
-        $instance->name = basename($filename);
+        $instance->content = \file_get_contents($filename);
+        $instance->name = \basename($filename);
 
         if (null !== $contentType) {
             $instance->contentType = $contentType;

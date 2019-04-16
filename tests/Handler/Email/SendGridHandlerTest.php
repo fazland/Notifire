@@ -21,7 +21,7 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldThrowExceptionIfNotificationFails()
     {
-        $this->markTestSkipped('Bug on Prophecy');
+        self::markTestSkipped('Bug on Prophecy');
 
         $this->expectException(NotificationFailedException::class);
         $email = new Email();
@@ -41,7 +41,7 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
 
     public function testShouldNotThrowExceptionWithValidResponseBySendGridApi()
     {
-        $this->markTestSkipped('Bug on Prophecy');
+        self::markTestSkipped('Bug on Prophecy');
 
         $email = new Email();
         $email->addTo('info@example.org');

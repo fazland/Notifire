@@ -349,7 +349,7 @@ class Email extends AbstractNotification
      * Get the html body of the mail if set
      * Returns NULL if no html part is present.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getHtml()
     {
@@ -362,7 +362,7 @@ class Email extends AbstractNotification
      * Get the plain text body of the mail if set
      * Returns NULL if no text part is present.
      *
-     * @return null|string
+     * @return string|null
      */
     public function getText()
     {
@@ -521,7 +521,7 @@ class Email extends AbstractNotification
      */
     public function getTags(): array
     {
-        return array_values($this->tags);
+        return \array_values($this->tags);
     }
 
     /**
@@ -533,7 +533,7 @@ class Email extends AbstractNotification
      */
     public function setTags(array $tags): self
     {
-        $this->tags = array_combine($tags, $tags);
+        $this->tags = \array_combine($tags, $tags);
 
         return $this;
     }

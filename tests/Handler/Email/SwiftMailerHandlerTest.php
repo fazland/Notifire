@@ -46,7 +46,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertCount(1, $argument->getTo());
+                self::assertCount(1, $argument->getTo());
 
                 return true;
             }))
@@ -65,7 +65,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 return false;
             }
 
-            $this->assertCount(1, $argument->getCc());
+            self::assertCount(1, $argument->getCc());
 
             return true;
         }))
@@ -85,7 +85,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertCount(1, $argument->getBcc());
+                self::assertCount(1, $argument->getBcc());
 
                 return true;
             }))
@@ -108,7 +108,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertCount(1, $argument->getFrom());
+                self::assertCount(1, $argument->getFrom());
 
                 return true;
             }))
@@ -132,8 +132,8 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertTrue($argument->getHeaders()->has('X-Additional-Header'));
-                $this->assertEquals('header_value', $argument->getHeaders()->get('X-Additional-Header')->getFieldBody());
+                self::assertTrue($argument->getHeaders()->has('X-Additional-Header'));
+                self::assertEquals('header_value', $argument->getHeaders()->get('X-Additional-Header')->getFieldBody());
 
                 return true;
             }))
@@ -157,9 +157,9 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 }
 
                 $children = $argument->getChildren();
-                $this->assertCount(1, $children);
-                $this->assertEquals('ATTACHMENT', $children[0]->getBody());
-                $this->assertEquals('application/octet-stream', $children[0]->getContentType());
+                self::assertCount(1, $children);
+                self::assertEquals('ATTACHMENT', $children[0]->getBody());
+                self::assertEquals('application/octet-stream', $children[0]->getContentType());
 
                 return true;
             }))
@@ -183,9 +183,9 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertCount(0, $argument->getChildren());
-                $this->assertEquals('text/plain', $argument->getContentType());
-                $this->assertEquals('BODY PART', $argument->getBody());
+                self::assertCount(0, $argument->getChildren());
+                self::assertEquals('text/plain', $argument->getContentType());
+                self::assertEquals('BODY PART', $argument->getBody());
 
                 return true;
             }))
@@ -208,8 +208,8 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                     return false;
                 }
 
-                $this->assertCount(2, $argument->getChildren());
-                $this->assertEquals('multipart/alternative', $argument->getContentType());
+                self::assertCount(2, $argument->getChildren());
+                self::assertEquals('multipart/alternative', $argument->getContentType());
 
                 return true;
             }))
