@@ -2,7 +2,7 @@
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
-use Fazland\Notifire\Handler\Email\AbstractMailHandler;
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\NotificationInterface;
 use Fazland\Notifire\Notification\Sms;
 use PHPUnit\Framework\TestCase;
@@ -10,16 +10,19 @@ use PHPUnit\Framework\TestCase;
 abstract class AbstractEmailHandlerTest extends TestCase
 {
     /**
-     * @var AbstractMailHandler
+     * @var NotificationHandlerInterface
      */
     protected $handler;
 
-    public function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    public function setUp(): void
     {
         $this->handler = $this->getHandler();
     }
 
-    public function unsupportedNotificationsDataProvider()
+    public function unsupportedNotificationsDataProvider(): iterable
     {
         $sms = new Sms();
 
@@ -32,10 +35,15 @@ abstract class AbstractEmailHandlerTest extends TestCase
     /**
      * @dataProvider unsupportedNotificationsDataProvider
      */
-    public function testSupportsShouldReturnFalseOnUnsupportedNotifications($notification)
+    public function testSupportsShouldReturnFalseOnUnsupportedNotifications(object $notification): void
     {
         self::assertFalse($this->handler->supports($notification));
     }
 
-    abstract protected function getHandler();
+    /**
+     * Prepares the notification handler for the current test.
+     *
+     * @return NotificationHandlerInterface
+     */
+    abstract protected function getHandler(): NotificationHandlerInterface;
 }

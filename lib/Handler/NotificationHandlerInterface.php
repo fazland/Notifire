@@ -23,7 +23,7 @@ interface NotificationHandlerInterface
      *
      * @param NotificationInterface $notification
      */
-    public function notify(NotificationInterface $notification);
+    public function notify(NotificationInterface $notification): void;
 
     /**
      * Return handler name.

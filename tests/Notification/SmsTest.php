@@ -9,7 +9,7 @@ use Prophecy\Argument;
 
 class SmsTest extends TestCase
 {
-    public function testShouldDispatchNotifyEvent()
+    public function testShouldDispatchNotifyEvent(): void
     {
         $manager = $this->prophesize(NotificationManagerInterface::class);
         $manager->notify(Argument::type(Sms::class))->shouldBeCalled();

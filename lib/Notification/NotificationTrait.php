@@ -16,7 +16,7 @@ trait NotificationTrait
     /**
      * @var NotificationManagerInterface
      */
-    private $notificationManager = null;
+    private $notificationManager;
 
     /**
      * @var ResultSet
@@ -31,7 +31,7 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function setManager(NotificationManagerInterface $notificationManager)
+    public function setManager(NotificationManagerInterface $notificationManager): self
     {
         $this->notificationManager = $notificationManager;
 
@@ -41,7 +41,7 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function send()
+    public function send(): void
     {
         $this->notificationManager->notify($this);
     }
@@ -61,7 +61,7 @@ trait NotificationTrait
     /**
      * {@inheritdoc}
      */
-    public function addResult(Result $result): self
+    public function addResult(Result $result): NotificationInterface
     {
         $this->getResultSet()->addResult($result);
 

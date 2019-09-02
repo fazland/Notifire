@@ -6,9 +6,9 @@ Notifire is a PHP library that centralizes the management of notifications (e-ma
 
 Requirements
 ------------
-- php >= 7.0
-- symfony/event-dispatcher >= 2.7
-- symfony/options-resolver >= 2.7
+- `php` >= 7.2
+- `symfony/event-dispatcher` >= 4.3
+- `symfony/options-resolver` >= 4.3
 
 Installation
 ------------
@@ -36,6 +36,8 @@ Notifire::create();
 
 2) custom configuration with `NotifireBuilder` by registering the notifications and the desired instance of `EventDispatcherInterface`
 ```php
+require_once('vendor/autoload.php');
+
 $dispatcher = new EventDispatcher();
 
 $builder = NotifireBuilder::create()

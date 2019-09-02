@@ -22,7 +22,8 @@ class SwiftMailerConverter
     public function convert(Email $email): \Swift_Message
     {
         $message = $this->createInstance()->setSubject($email->getSubject());
-        $message->setBoundary($boundary = \md5(\uniqid()));
+        $boundary = \md5(\uniqid());
+        $message->setBoundary($boundary);
 
         $this->addAddresses($email, $message);
         $this->addParts($email, $message, $boundary);
@@ -39,10 +40,10 @@ class SwiftMailerConverter
     /**
      * Adds to, cc, bcc and from addresses to the mail object.
      *
-     * @param Email $notification
-     * @param $email
+     * @param Email          $notification
+     * @param \Swift_Message $email
      */
-    protected function addAddresses(Email $notification, \Swift_Message $email)
+    protected function addAddresses(Email $notification, \Swift_Message $email): void
     {
         foreach ($notification->getTo() as $to) {
             $this->addAddress($email, 'to', $to);
@@ -69,7 +70,7 @@ class SwiftMailerConverter
      * @param string         $type
      * @param string         $address
      */
-    protected function addAddress(\Swift_Message $email, string $type, string $address)
+    protected function addAddress(\Swift_Message $email, string $type, string $address): void
     {
         $method = 'add'.$type;
 
@@ -84,7 +85,7 @@ class SwiftMailerConverter
      * @param \Swift_Message $email
      * @param string         $boundary
      */
-    protected function addParts(Email $notification, \Swift_Message $email, string $boundary)
+    protected function addParts(Email $notification, \Swift_Message $email, string $boundary): void
     {
         $parts = $notification->getParts();
         if (1 === \count($parts)) {
@@ -114,7 +115,7 @@ class SwiftMailerConverter
      * @param Email          $notification
      * @param \Swift_Message $email
      */
-    protected function addAttachments(Email $notification, \Swift_Message $email)
+    protected function addAttachments(Email $notification, \Swift_Message $email): void
     {
         foreach ($notification->getAttachments() as $attachment) {
             $email->attach(
@@ -133,7 +134,7 @@ class SwiftMailerConverter
      * @param Email          $notification
      * @param \Swift_Message $email
      */
-    protected function addHeaders(Email $notification, \Swift_Message $email)
+    protected function addHeaders(Email $notification, \Swift_Message $email): void
     {
         $headers = $email->getHeaders();
 
@@ -161,7 +162,7 @@ class SwiftMailerConverter
      *
      * @return \Swift_Encoder|null
      */
-    private function getEncoder(Email\Part $part)
+    private function getEncoder(Email\Part $part): ?\Swift_Encoder
     {
         $encoding = $part->getEncoding();
         if (null === $encoding) {

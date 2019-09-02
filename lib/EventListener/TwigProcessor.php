@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\EventListener;
 
-use Fazland\Notifire\Event\Events;
 use Fazland\Notifire\Event\PreNotifyEvent;
 use Fazland\Notifire\Notification\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -19,7 +18,7 @@ class TwigProcessor implements EventSubscriberInterface
         $this->twig = $twig;
     }
 
-    public function onPreNotify(PreNotifyEvent $event)
+    public function onPreNotify(PreNotifyEvent $event): void
     {
         $email = $event->getNotification();
         if (! $email instanceof Email) {
@@ -37,11 +36,11 @@ class TwigProcessor implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            Events::PRE_NOTIFY => ['onPreNotify', 75],
+            PreNotifyEvent::class => ['onPreNotify', 75],
         ];
     }
 
-    protected function processPart(Email\Part $part)
+    protected function processPart(Email\Part $part): void
     {
         if (! $part instanceof Email\TwigTemplatePart) {
             return;

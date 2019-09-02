@@ -1,20 +1,24 @@
 {
     "name": "fazland/notifire",
     "require": {
-        "php": ">=7.0",
-        "symfony/event-dispatcher": "^2.7|^3.0|^4.0",
-        "symfony/options-resolver": "^2.7|^3.0|^4.0",
+        "php": ">=7.2",
+        "ext-json": "*",
+        "symfony/event-dispatcher": "^4.3",
+        "symfony/options-resolver": "^4.3",
         "psr/log": "^1.0"
     },
     "require-dev": {
         "fazland/skebby-rest-client": "^0.2@dev",
         "mailgun/mailgun-php": "^2.0",
         "mikey179/vfsStream": "^1.6",
-        "phpunit/phpunit": "^6.0",
+        "phpunit/phpunit": "^8.0",
         "swiftmailer/swiftmailer": "^5.4",
         "twig/twig": "^1.24",
-        "twilio/sdk": "^4.10|^5.0",
+        "twilio/sdk": "^5.0",
         "sendgrid/sendgrid": "^5.1"
+    },
+    "config": {
+        "sort-packages": true
     },
     "conflict": {
         "fazland/skebby-rest-client": "<0.2"
@@ -34,9 +38,6 @@
         "psr-4": {
             "Fazland\\Notifire\\Tests\\": "tests/"
         }
-    },
-    "config": {
-        "bin-dir": "bin/"
     },
     "extra": {
         "branch-alias": {

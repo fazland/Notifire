@@ -15,7 +15,7 @@ use Twilio\Rest\Client;
 class TwilioHandler extends AbstractSmsHandler
 {
     /**
-     * @var \Services_Twilio
+     * @var Client
      */
     private $twilio;
 
@@ -30,16 +30,12 @@ class TwilioHandler extends AbstractSmsHandler
     private $messagingServiceSid;
 
     /**
-     * @param \Services_Twilio|Client $twilio
-     * @param string                  $name
+     * @param Client $twilio
+     * @param string $name
      */
-    public function __construct($twilio, string $name = 'default')
+    public function __construct(Client $twilio, string $name = 'default')
     {
         $this->twilio = $twilio;
-
-        if (! $twilio instanceof \Services_Twilio && ! $twilio instanceof Client) {
-            throw new \TypeError('Expected '.\Services_Twilio::class.' or '.Client::class.'. Got '.\get_class($twilio));
-        }
 
         parent::__construct($name);
     }
@@ -47,7 +43,7 @@ class TwilioHandler extends AbstractSmsHandler
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
         $failedSms = [];
 
@@ -80,7 +76,8 @@ class TwilioHandler extends AbstractSmsHandler
                 $result->setResponse($response);
             } catch (RestException $e) {
                 $result->setResult(Result::FAIL)
-                    ->setResponse($e);
+                    ->setResponse($e)
+                ;
 
                 $failedSms[] = [
                     'to' => $to,
@@ -94,7 +91,8 @@ class TwilioHandler extends AbstractSmsHandler
                 ]);
             } catch (\Services_Twilio_RestException $e) {
                 $result->setResult(Result::FAIL)
-                    ->setResponse($e);
+                    ->setResponse($e)
+                ;
 
                 $failedSms[] = [
                     'to' => $to,
@@ -110,7 +108,8 @@ class TwilioHandler extends AbstractSmsHandler
                 ]);
             } catch (\Throwable $e) {
                 $result->setResult(Result::FAIL)
-                    ->setResponse($e);
+                    ->setResponse($e)
+                ;
 
                 $failedSms[] = [
                     'to' => $to,
@@ -128,7 +127,7 @@ class TwilioHandler extends AbstractSmsHandler
         }
     }
 
-    public function setMessagingServiceSid(string $messagingServiceSid)
+    public function setMessagingServiceSid(string $messagingServiceSid): void
     {
         $this->messagingServiceSid = $messagingServiceSid;
     }
@@ -138,7 +137,7 @@ class TwilioHandler extends AbstractSmsHandler
      *
      * @param string $defaultFrom
      */
-    public function setDefaultFrom(string $defaultFrom)
+    public function setDefaultFrom(string $defaultFrom): void
     {
         $this->defaultFrom = $defaultFrom;
     }
@@ -150,7 +149,7 @@ class TwilioHandler extends AbstractSmsHandler
      *
      * @return array
      */
-    protected function getData(Sms $notification)
+    protected function getData(Sms $notification): array
     {
         return [
             'From' => $notification->getFrom() ?: $this->defaultFrom,

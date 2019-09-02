@@ -47,7 +47,7 @@ class Attachment
      *
      * @return static
      */
-    public static function createFromFile(string $filename, string $contentType = null): self
+    public static function createFromFile(string $filename, ?string $contentType = null): self
     {
         $instance = new static();
         $instance->content = \file_get_contents($filename);

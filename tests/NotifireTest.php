@@ -2,6 +2,9 @@
 
 namespace Fazland\Notifire\Tests;
 
+use Fazland\Notifire\Exception\NotificationAlreadyRegisteredException;
+use Fazland\Notifire\Exception\UnregisteredNotificationException;
+use Fazland\Notifire\Exception\UnsupportedClassException;
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use Fazland\Notifire\Notifire;
@@ -9,43 +12,45 @@ use PHPUnit\Framework\TestCase;
 
 class NotifireTest extends TestCase
 {
-    protected function tearDown()
+    /**
+     * {@inheritdoc}
+     */
+    protected function tearDown(): void
     {
         Notifire::reset();
     }
 
-    protected function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
     {
         $manager = $this->prophesize(NotificationManagerInterface::class);
         Notifire::setManager($manager->reveal());
     }
 
-    /**
-     * @expectedException \Fazland\Notifire\Exception\NotificationAlreadyRegisteredException
-     */
-    public function testNotificationAlreadyRegisteredExceptionShouldBeThrownIfAlreadyRegistered()
+    public function testNotificationAlreadyRegisteredExceptionShouldBeThrownIfAlreadyRegistered(): void
     {
+        $this->expectException(NotificationAlreadyRegisteredException::class);
         Notifire::addNotification('email', Email::class);
         Notifire::addNotification('email', Email::class);
     }
 
-    /**
-     * @expectedException \Fazland\Notifire\Exception\UnsupportedClassException
-     */
-    public function testUnsupportedClassExceptionShouldBeThrownIfClassIsNotSupported()
+    public function testUnsupportedClassExceptionShouldBeThrownIfClassIsNotSupported(): void
     {
+        $this->expectException(UnsupportedClassException::class);
+
         Notifire::addNotification('unsupported', \stdClass::class);
     }
 
-    /**
-     * @expectedException \Fazland\Notifire\Exception\UnregisteredNotificationException
-     */
-    public function testFactoryShouldThrowUnregisteredNotificationExceptionIfNotFound()
+    public function testFactoryShouldThrowUnregisteredNotificationExceptionIfNotFound(): void
     {
+        $this->expectException(UnregisteredNotificationException::class);
+
         Notifire::factory('email');
     }
 
-    public function testFactoryEmailShouldReturnAnInstanceOfEmail()
+    public function testFactoryEmailShouldReturnAnInstanceOfEmail(): void
     {
         Notifire::addNotification('email', Email::class);
         $email = Notifire::email();

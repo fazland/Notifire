@@ -3,6 +3,7 @@
 namespace Fazland\Notifire\Tests\Handler\Email;
 
 use Fazland\Notifire\Handler\Email\MailgunHandler;
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\Email;
 use Mailgun\Mailgun;
 use Prophecy\Argument;
@@ -15,7 +16,10 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
      */
     private $mailgun;
 
-    protected function getHandler()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getHandler(): NotificationHandlerInterface
     {
         $resp = new \stdClass();
         $resp->http_response_code = 200;
@@ -26,7 +30,7 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
         return new MailgunHandler($this->mailgun->reveal(), 'www.example.org', 'default');
     }
 
-    public function testShouldAddTags()
+    public function testShouldAddTags(): void
     {
         $that = $this;
         $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
@@ -40,17 +44,18 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
                 $resp->http_response_code = 200;
 
                 return $resp;
-            });
+            })
+        ;
 
         $this->handler->notify(Email::create()->addTag('tag')->addTo('unused'));
     }
 
-    public function testShouldAddMetadata()
+    public function testShouldAddMetadata(): void
     {
         $that = $this;
         $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
             ->shouldBeCalled()
-            ->will(function ($args) use ($that) {
+            ->will(function ($args) use ($that): object {
                 $postData = $args[1];
 
                 $that->assertArrayHasKey('v:meta_foo', $postData);
@@ -60,17 +65,18 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
                 $resp->http_response_code = 200;
 
                 return $resp;
-            });
+            })
+        ;
 
         $this->handler->notify(Email::create()->addMetadata('meta_foo', 'bar')->addTo('unused'));
     }
 
-    public function testShouldAddRecipientVariables()
+    public function testShouldAddRecipientVariables(): void
     {
         $that = $this;
         $this->mailgun->sendMessage('www.example.org', Argument::type('array'), Argument::cetera())
             ->shouldBeCalled()
-            ->will(function ($args) use ($that) {
+            ->will(function ($args) use ($that): object {
                 $postData = $args[1];
 
                 $that->assertArrayHasKey('recipient-variables', $postData);
@@ -80,7 +86,8 @@ class MailgunHandlerTest extends AbstractEmailHandlerTest
                 $resp->http_response_code = 200;
 
                 return $resp;
-            });
+            })
+        ;
 
         $this->handler->notify(
             Email::create()

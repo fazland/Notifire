@@ -2,13 +2,14 @@
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Handler\Sms\TwilioHandler;
 use Fazland\Notifire\Notification\Sms;
 use Prophecy\Prophecy\ObjectProphecy;
 use Twilio\Rest\Api\V2010\Account\MessageList;
 use Twilio\Rest\Client;
 
-class TwilioHandlerV5Test extends AbstractSmsHandlerTest
+class TwilioHandlerTest extends AbstractSmsHandlerTest
 {
     /**
      * @var Client|ObjectProphecy
@@ -18,7 +19,7 @@ class TwilioHandlerV5Test extends AbstractSmsHandlerTest
     /**
      * {@inheritdoc}
      */
-    public function getHandler()
+    public function getHandler(): NotificationHandlerInterface
     {
         if (! \class_exists(Client::class)) {
             self::markTestSkipped('Twilio ^5.0 not installed');
@@ -31,10 +32,8 @@ class TwilioHandlerV5Test extends AbstractSmsHandlerTest
 
     /**
      * @dataProvider right
-     *
-     * @param Sms $sms
      */
-    public function testShouldCallMessagesCreate(Sms $sms)
+    public function testShouldCallMessagesCreate(Sms $sms): void
     {
         $twilio = $this->twilio->reveal();
         $messages = $this->prophesize(MessageList::class);
@@ -46,7 +45,7 @@ class TwilioHandlerV5Test extends AbstractSmsHandlerTest
         $this->handler->notify($sms);
     }
 
-    public function testShouldUseDefaultFromNumber()
+    public function testShouldUseDefaultFromNumber(): void
     {
         $sms = new Sms();
         $sms
@@ -67,10 +66,8 @@ class TwilioHandlerV5Test extends AbstractSmsHandlerTest
 
     /**
      * @dataProvider right
-     *
-     * @param Sms $sms
      */
-    public function testShouldSetMessagingServiceSid(Sms $sms)
+    public function testShouldSetMessagingServiceSid(Sms $sms): void
     {
         $twilio = $this->twilio->reveal();
         $messages = $this->prophesize(MessageList::class);

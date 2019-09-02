@@ -93,7 +93,7 @@ class Grammar
         return $token;
     }
 
-    protected function init()
+    protected function init(): void
     {
         if (\count(self::$_specials) > 0) {
             return;

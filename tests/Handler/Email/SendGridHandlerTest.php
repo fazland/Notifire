@@ -4,6 +4,7 @@ namespace Fazland\Notifire\Tests\Handler\Email;
 
 use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Handler\Email\SendGridHandler;
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\Email;
 use Prophecy\Argument;
 use SendGrid\Response;
@@ -12,14 +13,17 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
 {
     private $mailer;
 
-    protected function getHandler()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getHandler(): NotificationHandlerInterface
     {
         $this->mailer = $this->prophesize(\SendGrid::class);
 
         return new SendGridHandler($this->mailer->reveal(), 'www.example.org', 'default');
     }
 
-    public function testShouldThrowExceptionIfNotificationFails()
+    public function testShouldThrowExceptionIfNotificationFails(): void
     {
         self::markTestSkipped('Bug on Prophecy');
 
@@ -39,7 +43,7 @@ class SendGridHandlerTest extends AbstractEmailHandlerTest
         $this->handler->notify($email);
     }
 
-    public function testShouldNotThrowExceptionWithValidResponseBySendGridApi()
+    public function testShouldNotThrowExceptionWithValidResponseBySendGridApi(): void
     {
         self::markTestSkipped('Bug on Prophecy');
 

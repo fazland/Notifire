@@ -24,35 +24,40 @@ class TwigProcessorTest extends TestCase
      */
     private $processor;
 
-    protected function setUp()
+    /**
+     * {@inheritdoc}
+     */
+    protected function setUp(): void
     {
         $this->loader = new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/Template');
         $this->twig = new \Twig_Environment($this->loader);
         $this->processor = new TwigProcessor($this->twig);
     }
 
-    public function testShouldRenderTwigParts()
+    public function testShouldRenderTwigParts(): void
     {
         $email = new Email();
         $email
             ->addTo('unused@example.org')
             ->addPart(
-                Email\TwigTemplatePart::create('template.html.twig', [], 'text/html')
-            );
+                Email\TwigTemplatePart::create('template.html.twig', 'text/html')
+            )
+        ;
 
         $this->processor->onPreNotify(new PreNotifyEvent($email));
 
         self::assertEquals('This is the body', $email->getPart('text/html')->getContent());
     }
 
-    public function testShouldAlsoSetSubjectIfTemplateHasBlockSubject()
+    public function testShouldAlsoSetSubjectIfTemplateHasBlockSubject(): void
     {
         $email = new Email();
         $email
             ->addTo('unused@example.org')
             ->addPart(
-                Email\TwigTemplatePart::create('template_with_subject.html.twig', [], 'text/html')
-            );
+                Email\TwigTemplatePart::create('template_with_subject.html.twig', 'text/html')
+            )
+        ;
 
         $this->processor->onPreNotify(new PreNotifyEvent($email));
 

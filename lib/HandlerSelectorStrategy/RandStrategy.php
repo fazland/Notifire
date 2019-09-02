@@ -2,12 +2,14 @@
 
 namespace Fazland\Notifire\HandlerSelectorStrategy;
 
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
+
 class RandStrategy implements HandlerSelectorStrategyInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function select(array $handlers)
+    public function select(array $handlers): ?NotificationHandlerInterface
     {
         if (empty($handlers)) {
             return null;

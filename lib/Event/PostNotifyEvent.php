@@ -6,8 +6,11 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is dispatched after all the handlers have
- * been notified.
+ * Represents a PostNotifyEvent.
+ *
+ * Dispatched after the handlers have been notified and the notification is sent.
+ *
+ * If no handler matched the notification this event is not triggered, but an exception is thrown instead.
  */
 class PostNotifyEvent extends Event
 {

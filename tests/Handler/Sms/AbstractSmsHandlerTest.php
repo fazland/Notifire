@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
+use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\Sms;
 use PHPUnit\Framework\TestCase;
@@ -16,17 +17,19 @@ abstract class AbstractSmsHandlerTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->handler = $this->getHandler();
     }
 
     /**
+     * Prepares the notification handler for the current test.
+     *
      * @return NotificationHandlerInterface
      */
-    abstract public function getHandler();
+    abstract public function getHandler(): NotificationHandlerInterface;
 
-    public function withoutTo()
+    public function withoutTo(): iterable
     {
         $s1 = new Sms();
         $s1->setFrom('+393333333333');
@@ -44,7 +47,7 @@ abstract class AbstractSmsHandlerTest extends TestCase
         ];
     }
 
-    public function right()
+    public function right(): iterable
     {
         $sms = new Sms();
         $sms
@@ -60,13 +63,11 @@ abstract class AbstractSmsHandlerTest extends TestCase
 
     /**
      * @dataProvider withoutTo
-     *
-     * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
-     *
-     * @param Sms $sms
      */
-    public function testShouldThrowNotificationFailedExceptionWithoutToField(Sms $sms)
+    public function testShouldThrowNotificationFailedExceptionWithoutToField(Sms $sms): void
     {
+        $this->expectException(NotificationFailedException::class);
+
         $this->handler->notify($sms);
     }
 }

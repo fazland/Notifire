@@ -115,7 +115,7 @@ class Sms extends AbstractNotification
     /**
      * @return string|null
      */
-    public function getFrom()
+    public function getFrom(): ?string
     {
         return $this->from;
     }
@@ -171,7 +171,7 @@ class Sms extends AbstractNotification
      */
     public function removeTo(string $to): self
     {
-        $itemPosition = \array_search($to, $this->to);
+        $itemPosition = \array_search($to, $this->to, true);
 
         if (false !== $itemPosition) {
             unset($this->to[$itemPosition]);
@@ -189,9 +189,9 @@ class Sms extends AbstractNotification
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'service' => 'default',

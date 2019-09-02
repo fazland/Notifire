@@ -32,7 +32,7 @@ class Notifire
     /**
      * @param NotificationManagerInterface $dispatcher
      */
-    public static function setManager(NotificationManagerInterface $dispatcher)
+    public static function setManager(NotificationManagerInterface $dispatcher): void
     {
         static::$manager = $dispatcher;
     }
@@ -40,7 +40,7 @@ class Notifire
     /**
      * Removes all registered notifications and current {@see EventDispatcherInterface}.
      */
-    public static function reset()
+    public static function reset(): void
     {
         static::$notifications = [];
         static::$manager = null;
@@ -58,7 +58,7 @@ class Notifire
      * @throws NotificationAlreadyRegisteredException
      * @throws UnsupportedClassException
      */
-    public static function addNotification(string $notificationName, string $notificationClass)
+    public static function addNotification(string $notificationName, string $notificationClass): void
     {
         if (isset(static::$notifications[$notificationName])) {
             throw new NotificationAlreadyRegisteredException();
@@ -135,7 +135,7 @@ class Notifire
     /**
      * Configuration shortcut to a base library initialization.
      */
-    public static function create()
+    public static function create(): void
     {
         $builder = NotifireBuilder::create();
 

@@ -19,12 +19,12 @@ class RandStrategyTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->strategy = new RandStrategy();
     }
 
-    public function testSelectShouldReturnAnHandler()
+    public function testSelectShouldReturnAnHandler(): void
     {
         $chosen = $this->strategy->select([
             $this->prophesize(NotificationHandlerInterface::class)->reveal(),
@@ -34,7 +34,7 @@ class RandStrategyTest extends TestCase
         self::assertInstanceOf(NotificationHandlerInterface::class, $chosen);
     }
 
-    public function testSelectShouldReturnNullIfEmptyArrayHasPassed()
+    public function testSelectShouldReturnNullIfEmptyArrayHasPassed(): void
     {
         self::assertNull($this->strategy->select([]));
     }

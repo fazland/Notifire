@@ -34,7 +34,7 @@ class SwiftMailerHandler extends AbstractMailHandler
         parent::__construct($mailerName);
     }
 
-    public function setConverter(SwiftMailerConverter $converter)
+    public function setConverter(SwiftMailerConverter $converter): void
     {
         $this->converter = $converter;
     }
@@ -42,7 +42,7 @@ class SwiftMailerHandler extends AbstractMailHandler
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
         /* @var Email $notification */
         if (null === $this->converter) {

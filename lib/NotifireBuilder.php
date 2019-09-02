@@ -89,7 +89,7 @@ class NotifireBuilder
      * @throws Exception\NotificationAlreadyRegisteredException
      * @throws Exception\UnsupportedClassException
      */
-    public function initialize()
+    public function initialize(): void
     {
         Notifire::reset();
 

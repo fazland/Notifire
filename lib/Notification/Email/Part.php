@@ -40,7 +40,7 @@ class Part
      *
      * @return static
      */
-    public static function create($content = null, $contentType = 'text/plain')
+    public static function create(?string $content = null, string $contentType = 'text/plain')
     {
         $instance = new static();
 
@@ -53,7 +53,7 @@ class Part
     /**
      * @return string|null
      */
-    public function getContent()
+    public function getContent(): ?string
     {
         return $this->content;
     }
@@ -63,7 +63,7 @@ class Part
      *
      * @return $this
      */
-    public function setContent($content): self
+    public function setContent(string $content): self
     {
         $this->content = $content;
 
@@ -95,7 +95,7 @@ class Part
      *
      * @return string|null
      */
-    public function getEncoding()
+    public function getEncoding(): ?string
     {
         return $this->encoding;
     }

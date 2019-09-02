@@ -14,7 +14,7 @@ class NotificationFailedException extends \RuntimeException implements Exception
      */
     private $details;
 
-    public function __construct(string $message = '', array $details = [], int $code = 0, \Exception $previous = null)
+    public function __construct(string $message = '', array $details = [], int $code = 0, \Throwable $previous = null)
     {
         $this->details = $details;
 

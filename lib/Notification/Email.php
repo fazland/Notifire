@@ -13,11 +13,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
  */
 class Email extends AbstractNotification
 {
-    const ENCODING_RAW = 'raw';
-    const ENCODING_BASE64 = 'b64';
-    const ENCODING_8BIT = '8bit';
-    const ENCODING_7BIT = '7bit';
-    const ENCODING_QUOTED_PRINTABLE = 'qp';
+    public const ENCODING_RAW = 'raw';
+    public const ENCODING_BASE64 = 'b64';
+    public const ENCODING_8BIT = '8bit';
+    public const ENCODING_7BIT = '7bit';
+    public const ENCODING_QUOTED_PRINTABLE = 'qp';
 
     /**
      * @var string[]
@@ -261,7 +261,7 @@ class Email extends AbstractNotification
      *
      * @return Part|null
      */
-    public function getPart(string $contentType)
+    public function getPart(string $contentType): ?Part
     {
         if (! isset($this->parts[$contentType])) {
             return null;
@@ -291,7 +291,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function addPart(Part $part, $overwrite = false): self
+    public function addPart(Part $part, bool $overwrite = false): self
     {
         $contentType = $part->getContentType();
         if (isset($this->parts[$contentType]) && ! $overwrite) {
@@ -322,15 +322,16 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Add or replace the HTML part of the mail.
+     * Get the plain text body of the mail if set
+     * Returns NULL if no text part is present.
      *
-     * @param string $html
-     *
-     * @return $this
+     * @return string|null
      */
-    public function setHtml(string $html): self
+    public function getText(): ?string
     {
-        return $this->addPart(Part::create($html, 'text/html'), true);
+        $part = $this->getPart('text/plain');
+
+        return null !== $part ? $part->getContent() : null;
     }
 
     /**
@@ -342,7 +343,7 @@ class Email extends AbstractNotification
      */
     public function setText(string $text): self
     {
-        return $this->addPart(Part::create($text, 'text/plain'), true);
+        return $this->addPart(Part::create($text), true);
     }
 
     /**
@@ -351,7 +352,7 @@ class Email extends AbstractNotification
      *
      * @return string|null
      */
-    public function getHtml()
+    public function getHtml(): ?string
     {
         $part = $this->getPart('text/html');
 
@@ -359,16 +360,15 @@ class Email extends AbstractNotification
     }
 
     /**
-     * Get the plain text body of the mail if set
-     * Returns NULL if no text part is present.
+     * Add or replace the HTML part of the mail.
      *
-     * @return string|null
+     * @param string $html
+     *
+     * @return $this
      */
-    public function getText()
+    public function setHtml(string $html): self
     {
-        $part = $this->getPart('text/plain');
-
-        return null !== $part ? $part->getContent() : null;
+        return $this->addPart(Part::create($html, 'text/html'), true);
     }
 
     /**
@@ -461,7 +461,7 @@ class Email extends AbstractNotification
      *
      * @return string|null
      */
-    public function getAdditionalHeader(string $key)
+    public function getAdditionalHeader(string $key): ?string
     {
         if (! $this->hasAdditionalHeader($key)) {
             return null;
@@ -612,7 +612,7 @@ class Email extends AbstractNotification
      *
      * @return $this
      */
-    public function removeMetadata($key): self
+    public function removeMetadata(string $key): self
     {
         unset($this->metadata[$key]);
 
@@ -704,9 +704,9 @@ class Email extends AbstractNotification
     }
 
     /**
-     * @param OptionsResolver $resolver
+     * {@inheritdoc}
      */
-    protected function configureOptions(OptionsResolver $resolver)
+    protected function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'mailer' => 'default',

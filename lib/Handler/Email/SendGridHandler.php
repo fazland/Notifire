@@ -17,33 +17,33 @@ class SendGridHandler extends AbstractMailHandler
     /**
      * @var SendGrid
      */
-    private $sg;
+    private $sendGrid;
 
     /**
-     * @param SendGrid $sg
+     * @param SendGrid $sendGrid
      * @param string   $domain
      * @param string   $mailerName
      */
-    public function __construct(SendGrid $sg, string $domain, string $mailerName)
+    public function __construct(SendGrid $sendGrid, string $domain, string $mailerName)
     {
         parent::__construct($mailerName);
         $this->domain = $domain;
-        $this->sg = $sg;
+        $this->sendGrid = $sendGrid;
     }
 
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
         /** @var Email $notification */
         $fromEmails = $notification->getFrom();
 
         if (\count($fromEmails) > 1) {
-            throw new \Exception('With sendgrid you can use one from email address');
+            throw new \RuntimeException('With SendGrid you can use one from email address');
         }
-        $fromEmail = \array_pop($fromEmails);
 
+        $fromEmail = \array_pop($fromEmails);
         $from = new SendGrid\Email(null, $fromEmail);
         $subject = $notification->getSubject();
         $mail = new SendGrid\Mail();
@@ -70,11 +70,18 @@ class SendGridHandler extends AbstractMailHandler
         }
         $mail->addPersonalization($personalization);
 
-        /** @var \SendGrid\Response $response */
-        $response = $this->sg->client->mail()->send()->post($mail);
+        /** @var SendGrid\Response $response */
+        $response = $this->sendGrid->client->mail()->send()->post($mail);
 
-        if ($response->statusCode() > 204) {
-            throw new NotificationFailedException('Sending failed via sendgrid with status code '.$response->statusCode().' and body of response '.$response->body(), [$response]);
+        $statusCode = $response->statusCode();
+        if ($statusCode > 204) {
+            throw new NotificationFailedException(
+                \sprintf(
+                    'Sending failed via SendGrid with status code %s and body of response %s',
+                    $statusCode,
+                    $response->body()
+                )[$response])
+            ;
         }
     }
 }

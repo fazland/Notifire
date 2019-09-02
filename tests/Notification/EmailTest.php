@@ -2,6 +2,7 @@
 
 namespace Fazland\Notifire\Tests\Notification;
 
+use Fazland\Notifire\Exception\PartContentTypeMismatchException;
 use Fazland\Notifire\Manager\NotificationManagerInterface;
 use Fazland\Notifire\Notification\Email;
 use PHPUnit\Framework\TestCase;
@@ -9,7 +10,7 @@ use Prophecy\Argument;
 
 class EmailTest extends TestCase
 {
-    public function testSendShouldCallNotificationManager()
+    public function testSendShouldCallNotificationManager(): void
     {
         $manager = $this->prophesize(NotificationManagerInterface::class);
         $manager->notify(Argument::type(Email::class))->shouldBeCalled();
@@ -20,14 +21,13 @@ class EmailTest extends TestCase
         $email->send();
     }
 
-    /**
-     * @expectedException \Fazland\Notifire\Exception\PartContentTypeMismatchException
-     */
-    public function testAddPartShouldThrowIfTwoPartsWithSameContentTypeHasAdded()
+    public function testAddPartShouldThrowIfTwoPartsWithSameContentTypeHasAdded(): void
     {
+        $this->expectException(PartContentTypeMismatchException::class);
+
         Email::create()
             ->addPart(Email\Part::create('BlaBla', 'text/html'))
             ->addPart(Email\Part::create('Foo bar', 'text/html'))
-            ;
+        ;
     }
 }

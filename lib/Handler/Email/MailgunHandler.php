@@ -9,7 +9,8 @@ use Fazland\Notifire\Result\Result;
 use Mailgun\Mailgun;
 
 /**
- * Mailgun handler
+ * Mailgun handler.
+ *
  * It uses swift mailer to build a mime message that will be sent
  * through the Mailgun APIs.
  */
@@ -43,9 +44,9 @@ class MailgunHandler extends AbstractMailHandler
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
-        if (! \class_exists('Swift_Message')) {
+        if (! \class_exists(\Swift_Message::class)) {
             throw new \RuntimeException('You need to install swift mailer to use mailgun transport');
         }
 
@@ -89,7 +90,7 @@ class MailgunHandler extends AbstractMailHandler
                 $data['to'] = $to_chunk;
 
                 $res = $this->mailgun->sendMessage($this->domain, $data, $message->toString());
-                if (200 == $res->http_response_code) {
+                if (200 === $res->http_response_code) {
                     $success[] = $res;
                 } else {
                     $result->setResult(Result::FAIL);

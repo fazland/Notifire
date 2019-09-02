@@ -28,5 +28,5 @@ interface NotificationManagerInterface
      *
      * @throws NotificationFailedException
      */
-    public function notify(NotificationInterface $notification);
+    public function notify(NotificationInterface $notification): void;
 }

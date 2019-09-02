@@ -7,7 +7,7 @@ use PHPUnit\Framework\TestCase;
 
 class AddressParserTest extends TestCase
 {
-    public function addressDataProvider()
+    public function addressDataProvider(): iterable
     {
         return [
             [['address' => 'pete@silly.example', 'personal' => 'Pete'], 'Pete <pete@silly.example>'],
@@ -22,7 +22,7 @@ class AddressParserTest extends TestCase
     /**
      * @dataProvider addressDataProvider
      */
-    public function testParse($expected, $address)
+    public function testParse(array $expected, string $address): void
     {
         self::assertEquals($expected, AddressParser::parse($address));
     }

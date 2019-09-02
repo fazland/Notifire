@@ -7,7 +7,12 @@ class ResultSet
     /**
      * @var Result[][]
      */
-    private $results = [];
+    private $results;
+
+    public function __construct()
+    {
+        $this->results = [];
+    }
 
     /**
      * Add a result to the array.
@@ -32,7 +37,7 @@ class ResultSet
     public function all(): array
     {
         $results = [];
-        \array_walk_recursive($this->results, function ($v) use (&$results) {
+        \array_walk_recursive($this->results, static function ($v) use (&$results) {
             $results[] = $v;
         });
 

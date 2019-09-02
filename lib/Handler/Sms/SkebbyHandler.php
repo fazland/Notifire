@@ -29,7 +29,7 @@ class SkebbyHandler extends AbstractSmsHandler
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
         $failedSms = [];
         $tos = $notification->getTo();
@@ -60,7 +60,7 @@ class SkebbyHandler extends AbstractSmsHandler
                         'error_message' => $response->getErrorMessage(),
                     ];
                 }
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 $result
                     ->setResult(Result::FAIL)
                     ->setResponse($e)

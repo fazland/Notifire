@@ -13,7 +13,7 @@ class AddressParser
      *
      * @return array|null
      */
-    public static function parse(string $address)
+    public static function parse(string $address): ?array
     {
         static $regex = null;
         if (null === $regex) {
@@ -30,7 +30,7 @@ class AddressParser
             return null;
         }
 
-        $addr = isset($match['addressalt']) ? $match['addressalt'] : $match['address'];
+        $addr = $match['addressalt'] ?? $match['address'];
 
         $name = $match['name'] ?? '';
         $name = \trim($name, " \t\n\r\0\x0B\"");

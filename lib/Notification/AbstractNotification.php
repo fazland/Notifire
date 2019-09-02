@@ -32,5 +32,10 @@ abstract class AbstractNotification implements NotificationInterface
         $this->handlerName = $handlerName;
     }
 
+    /**
+     * Configures the options for this notification.
+     *
+     * @param OptionsResolver $resolver
+     */
     abstract protected function configureOptions(OptionsResolver $resolver);
 }

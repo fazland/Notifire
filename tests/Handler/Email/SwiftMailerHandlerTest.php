@@ -2,7 +2,9 @@
 
 namespace Fazland\Notifire\Tests\Handler\Email;
 
+use Fazland\Notifire\Exception\NotificationFailedException;
 use Fazland\Notifire\Handler\Email\SwiftMailerHandler;
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Notification\Email;
 use Prophecy\Argument;
 use Prophecy\Prophecy\ObjectProphecy;
@@ -14,34 +16,37 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
      */
     private $mailer;
 
-    protected function getHandler()
+    /**
+     * {@inheritdoc}
+     */
+    protected function getHandler(): NotificationHandlerInterface
     {
         $this->mailer = $this->prophesize(\Swift_Mailer::class);
 
         return new SwiftMailerHandler($this->mailer->reveal(), 'default');
     }
 
-    /**
-     * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
-     */
-    public function testShouldThrowExceptionIfNotificationFails()
+    public function testShouldThrowExceptionIfNotificationFails(): void
     {
+        $this->expectException(NotificationFailedException::class);
+
         $email = new Email();
         $email->addTo('info@example.org');
 
         $this->mailer->send(Argument::type(\Swift_Message::class))
-            ->willReturn(0);
+            ->willReturn(0)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddToAddresses()
+    public function testShouldAddToAddresses(): void
     {
         $email = new Email();
         $email->addTo('info@example.org');
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -50,37 +55,40 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
                 return true;
             }))
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddCcAddresses()
+    public function testShouldAddCcAddresses(): void
     {
         $email = new Email();
         $email->addCc('info@example.org');
 
-        $this->mailer->send(Argument::that(function ($argument) {
-            if (! $argument instanceof \Swift_Message) {
-                return false;
-            }
+        $this->mailer
+            ->send(Argument::that(function ($argument) {
+                if (! $argument instanceof \Swift_Message) {
+                    return false;
+                }
 
-            self::assertCount(1, $argument->getCc());
+                self::assertCount(1, $argument->getCc());
 
-            return true;
-        }))
-            ->willReturn(1);
+                return true;
+            }))
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddBccAddresses()
+    public function testShouldAddBccAddresses(): void
     {
         $email = new Email();
         $email->addBcc('info@example.org');
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -89,12 +97,13 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
                 return true;
             }))
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddFromAddresses()
+    public function testShouldAddFromAddresses(): void
     {
         $email = new Email();
         $email
@@ -103,7 +112,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
         ;
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -113,12 +122,13 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 return true;
             }))
             ->shouldBeCalled()
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddHeaders()
+    public function testShouldAddHeaders(): void
     {
         $email = new Email();
         $email
@@ -127,7 +137,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
         ;
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -137,12 +147,13 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
 
                 return true;
             }))
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldAddAttachments()
+    public function testShouldAddAttachments(): void
     {
         $email = new Email();
         $email
@@ -151,7 +162,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
         ;
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -164,12 +175,13 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 return true;
             }))
             ->shouldBeCalled()
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
 
         $this->handler->notify($email);
     }
 
-    public function testShouldSetFirstPartAsMessageBody()
+    public function testShouldSetFirstPartAsMessageBody(): void
     {
         $email = new Email();
         $email
@@ -178,7 +190,7 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
         ;
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -190,20 +202,23 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 return true;
             }))
             ->shouldBeCalled()
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
+
         $this->handler->notify($email);
     }
 
-    public function testShouldSetMultipartAlternativeIfEmailIsMultipart()
+    public function testShouldSetMultipartAlternativeIfEmailIsMultipart(): void
     {
         $email = new Email();
         $email
             ->addTo('recipient@example.org')
-            ->addPart(Email\Part::create('BODY PART', 'text/plain'))
-            ->addPart(Email\Part::create('PART 2', 'text/html'));
+            ->addPart(Email\Part::create('BODY PART'))
+            ->addPart(Email\Part::create('PART 2', 'text/html'))
+        ;
 
         $this->mailer
-            ->send(Argument::that(function ($argument) {
+            ->send(Argument::that(function ($argument): bool {
                 if (! $argument instanceof \Swift_Message) {
                     return false;
                 }
@@ -214,7 +229,9 @@ class SwiftMailerHandlerTest extends AbstractEmailHandlerTest
                 return true;
             }))
             ->shouldBeCalled()
-            ->willReturn(1);
+            ->willReturn(1)
+        ;
+
         $this->handler->notify($email);
     }
 }

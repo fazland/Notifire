@@ -13,7 +13,7 @@ use Prophecy\Argument;
 
 class CompositeNotificationHandlerTest extends TestCase
 {
-    public function testSupportMustReturnFalseWithANotSupportedNotification()
+    public function testSupportMustReturnFalseWithANotSupportedNotification(): void
     {
         $strategy = $this->prophesize(HandlerSelectorStrategyInterface::class);
         $compositeNotificationHandler = new CompositeNotificationHandler('default', $strategy->reveal());
@@ -30,7 +30,7 @@ class CompositeNotificationHandlerTest extends TestCase
         self::assertFalse($compositeNotificationHandler->supports($notification));
     }
 
-    public function testSupportMustReturnTrueWithASupportedNotification()
+    public function testSupportMustReturnTrueWithASupportedNotification(): void
     {
         $strategy = $this->prophesize(HandlerSelectorStrategyInterface::class);
         $compositeNotificationHandler = new CompositeNotificationHandler('default', $strategy->reveal());
@@ -47,7 +47,7 @@ class CompositeNotificationHandlerTest extends TestCase
         self::assertTrue($compositeNotificationHandler->supports($notification));
     }
 
-    public function testNotifyCallUseRightHandler()
+    public function testNotifyCallUseRightHandler(): void
     {
         $notificationHandler = $this->prophesize(TwilioHandler::class);
 

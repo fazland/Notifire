@@ -8,8 +8,8 @@ namespace Fazland\Notifire\Result;
  */
 class Result
 {
-    const OK = 'ok';
-    const FAIL = 'fail';
+    public const OK = 'ok';
+    public const FAIL = 'fail';
 
     /**
      * The Handler class name.

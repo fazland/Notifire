@@ -2,6 +2,8 @@
 
 namespace Fazland\Notifire\Tests\Handler\Sms;
 
+use Fazland\Notifire\Exception\NotificationFailedException;
+use Fazland\Notifire\Handler\NotificationHandlerInterface;
 use Fazland\Notifire\Handler\Sms\SkebbyHandler;
 use Fazland\Notifire\Notification\Sms;
 use Fazland\Notifire\Result\Result;
@@ -28,7 +30,7 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
     /**
      * {@inheritdoc}
      */
-    public function getHandler()
+    public function getHandler(): NotificationHandlerInterface
     {
         $this->skebby = $this->prophesize(SkebbyRestClient::class);
 
@@ -37,10 +39,8 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
 
     /**
      * @dataProvider right
-     *
-     * @param Sms $sms
      */
-    public function testNotifyShouldCallSkebbySendAndReceiveSuccessfulResponse(Sms $sms)
+    public function testNotifyShouldCallSkebbySendAndReceiveSuccessfulResponse(Sms $sms): void
     {
         $skebbySms = SkebbySms::create()
             ->setRecipients($sms->getTo())
@@ -62,13 +62,11 @@ class SkebbyHandlerTest extends AbstractSmsHandlerTest
 
     /**
      * @dataProvider right
-     *
-     * @expectedException \Fazland\Notifire\Exception\NotificationFailedException
-     *
-     * @param Sms $sms
      */
-    public function testNotifyShouldCallSkebbySendReceiveFailingResponseAndThrowNotificationFailedException(Sms $sms)
+    public function testNotifyShouldCallSkebbySendReceiveFailingResponseAndThrowNotificationFailedException(Sms $sms): void
     {
+        $this->expectException(NotificationFailedException::class);
+
         $skebbySms = SkebbySms::create()
             ->setRecipients($sms->getTo())
             ->setText($sms->getContent())

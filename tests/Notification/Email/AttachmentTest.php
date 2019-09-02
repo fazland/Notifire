@@ -9,12 +9,15 @@ use PHPUnit\Framework\TestCase;
 
 class AttachmentTest extends TestCase
 {
-    public function tearDown()
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown(): void
     {
         vfsStreamWrapper::unregister();
     }
 
-    public function testCreateFromFileShouldLoadContentFromFile()
+    public function testCreateFromFileShouldLoadContentFromFile(): void
     {
         $root = vfsStream::setup();
 

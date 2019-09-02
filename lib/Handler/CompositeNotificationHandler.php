@@ -52,7 +52,7 @@ class CompositeNotificationHandler implements NotificationHandlerInterface
     /**
      * {@inheritdoc}
      */
-    public function notify(NotificationInterface $notification)
+    public function notify(NotificationInterface $notification): void
     {
         $handlers = $this->getHandlersFor($notification);
         $handler = $this->strategy->select($handlers);

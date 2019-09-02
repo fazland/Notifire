@@ -16,7 +16,7 @@ interface NotificationInterface
      * Implementors SHOULD inform the notification manager
      * about this object.
      */
-    public function send();
+    public function send(): void;
 
     /**
      * Set the manager that will send this notification.
@@ -29,8 +29,10 @@ interface NotificationInterface
      * Add a result for this notification.
      *
      * @param Result $result
+     *
+     * @return $this
      */
-    public function addResult(Result $result);
+    public function addResult(Result $result): self;
 
     /**
      * Get the ResultSet.

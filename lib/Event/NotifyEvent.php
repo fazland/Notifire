@@ -7,7 +7,12 @@ use Fazland\Notifire\Notification\NotificationInterface;
 use Symfony\Component\EventDispatcher\Event;
 
 /**
- * This event is triggered just before an handler is notified.
+ * Represents a NotifyEvent.
+ *
+ * Dispatched just before an handler sends the notification.
+ *
+ * Notification is cloned before being passed to the event, so it can be used to modify the
+ * notification for a single handler.
  */
 class NotifyEvent extends Event
 {
