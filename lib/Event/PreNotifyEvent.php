@@ -8,8 +8,7 @@ use Symfony\Contracts\EventDispatcher\Event;
 /**
  * Represents a PreNotifyEvent.
  *
- * This event is called before the handlers are checked
- * and notified about this notification.
+ * This event is called before the handlers are checked and notified about this notification.
  *
  * Can be used to add/filter data in notification.
  */

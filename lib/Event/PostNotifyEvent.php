@@ -3,7 +3,7 @@
 namespace Fazland\Notifire\Event;
 
 use Fazland\Notifire\Notification\NotificationInterface;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Represents a PostNotifyEvent.
