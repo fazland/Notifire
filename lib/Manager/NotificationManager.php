@@ -2,7 +2,6 @@
 
 namespace Fazland\Notifire\Manager;
 
-use Fazland\Notifire\Event\Events;
 use Fazland\Notifire\Event\NotifyEvent;
 use Fazland\Notifire\Event\PostNotifyEvent;
 use Fazland\Notifire\Event\PreNotifyEvent;

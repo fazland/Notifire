@@ -6,16 +6,18 @@ use Fazland\Notifire\Event\PreNotifyEvent;
 use Fazland\Notifire\EventListener\TwigProcessor;
 use Fazland\Notifire\Notification\Email;
 use PHPUnit\Framework\TestCase;
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
 
 class TwigProcessorTest extends TestCase
 {
     /**
-     * @var \Twig_LoaderInterface
+     * @var FilesystemLoader
      */
     private $loader;
 
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
@@ -29,8 +31,8 @@ class TwigProcessorTest extends TestCase
      */
     protected function setUp(): void
     {
-        $this->loader = new \Twig_Loader_Filesystem(__DIR__.'/../Fixtures/Template');
-        $this->twig = new \Twig_Environment($this->loader);
+        $this->loader = new FilesystemLoader(__DIR__.'/../Fixtures/Template');
+        $this->twig = new Environment($this->loader);
         $this->processor = new TwigProcessor($this->twig);
     }
 

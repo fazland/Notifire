@@ -144,11 +144,6 @@ class Notifire
             $mailer = new \Swift_Mailer($transport);
 
             $handler = new SwiftMailerHandler($mailer, 'default');
-            if (\class_exists('Twig_Environment')) {
-                $env = new \Twig_Environment(new \Twig_Loader_Filesystem());
-                $handler->setTwig($env);
-            }
-
             $builder->addHandler($handler);
             $builder->addNotification('email', Email::class);
         }

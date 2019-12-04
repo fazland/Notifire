@@ -13,7 +13,7 @@
         "mikey179/vfsStream": "^1.6",
         "phpunit/phpunit": "^8.0",
         "swiftmailer/swiftmailer": "^5.4",
-        "twig/twig": "^1.24",
+        "twig/twig": "^2.12",
         "twilio/sdk": "^5.0",
         "sendgrid/sendgrid": "^5.1"
     },
@@ -41,7 +41,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "0.4.x-dev"
+            "dev-master": "2.0.x-dev"
         }
     },
     "license": "MIT"

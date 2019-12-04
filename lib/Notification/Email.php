@@ -708,8 +708,6 @@ class Email extends AbstractNotification
      */
     protected function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'mailer' => 'default',
-        ]);
+        $resolver->setDefaults(['mailer' => 'default']);
     }
 }

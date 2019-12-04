@@ -24,7 +24,7 @@ class TwigTemplatePart extends Part
         $this->setContentType($contentType);
     }
 
-    public static function create(?string $templateName = null, string $contentType = 'text/plain', array $vars = [])
+    public static function create(?string $templateName = null, string $contentType = 'text/plain', array $vars = []): Part
     {
         return new self($templateName, $vars, $contentType);
     }

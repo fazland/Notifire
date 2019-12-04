@@ -40,7 +40,7 @@ class Part
      *
      * @return static
      */
-    public static function create(?string $content = null, string $contentType = 'text/plain')
+    public static function create(?string $content = null, string $contentType = 'text/plain'): self
     {
         $instance = new static();
 

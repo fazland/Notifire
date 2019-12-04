@@ -5,15 +5,16 @@ namespace Fazland\Notifire\EventListener;
 use Fazland\Notifire\Event\PreNotifyEvent;
 use Fazland\Notifire\Notification\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Twig\Environment;
 
 class TwigProcessor implements EventSubscriberInterface
 {
     /**
-     * @var \Twig_Environment
+     * @var Environment
      */
     private $twig;
 
-    public function __construct(\Twig_Environment $twig)
+    public function __construct(Environment $twig)
     {
         $this->twig = $twig;
     }
